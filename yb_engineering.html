@@ -1,0 +1,1208 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>영보이엔지 (주) | 산업용 탱크 전문 제조</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #0D1F3C;
+    --navy-mid: #1A3560;
+    --blue: #1B4F92;
+    --accent: #E07B1A;
+    --accent-light: #F59E0B;
+    --light: #F4F6FA;
+    --mid: #E8ECF2;
+    --text: #1C2B3A;
+    --muted: #6B7A8D;
+    --white: #FFFFFF;
+    --border: #D1D9E6;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Noto Sans KR', sans-serif;
+    color: var(--text);
+    background: var(--white);
+    overflow-x: hidden;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+    background: rgba(13, 31, 60, 0.97);
+    backdrop-filter: blur(8px);
+    border-bottom: 2px solid var(--accent);
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 5%;
+    height: 64px;
+  }
+
+  .nav-logo {
+    display: flex; align-items: center; gap: 10px;
+    text-decoration: none;
+  }
+  .nav-logo-mark {
+    width: 38px; height: 38px;
+    background: var(--accent);
+    border-radius: 4px;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 800; font-size: 20px; color: white;
+    letter-spacing: -1px;
+  }
+  .nav-logo-text {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700; font-size: 18px;
+    color: white; letter-spacing: 0.5px;
+    line-height: 1.2;
+  }
+  .nav-logo-text span { color: var(--accent); }
+  .nav-logo-sub {
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 10px; color: rgba(255,255,255,0.55);
+    font-weight: 300; letter-spacing: 1px;
+  }
+
+  .nav-links {
+    display: flex; align-items: center; gap: 32px;
+    list-style: none;
+  }
+  .nav-links a {
+    color: rgba(255,255,255,0.8);
+    text-decoration: none;
+    font-size: 13.5px; font-weight: 400;
+    letter-spacing: 0.3px;
+    transition: color 0.2s;
+    padding-bottom: 2px;
+    border-bottom: 1px solid transparent;
+  }
+  .nav-links a:hover { color: var(--accent); border-bottom-color: var(--accent); }
+
+  .nav-cta {
+    background: var(--accent);
+    color: white !important; border: none !important;
+    padding: 8px 20px; border-radius: 3px;
+    font-weight: 500 !important;
+    transition: background 0.2s !important;
+  }
+  .nav-cta:hover { background: #c96d10 !important; }
+
+  /* ── HERO ── */
+  #hero {
+    min-height: 100vh;
+    background: var(--navy);
+    display: flex; flex-direction: column; justify-content: center;
+    position: relative; overflow: hidden;
+    padding: 64px 5% 0;
+  }
+
+  .hero-bg-pattern {
+    position: absolute; inset: 0; pointer-events: none;
+    background-image:
+      linear-gradient(rgba(27,79,146,0.08) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(27,79,146,0.08) 1px, transparent 1px);
+    background-size: 60px 60px;
+  }
+  .hero-bg-glow {
+    position: absolute; top: -100px; right: -100px;
+    width: 600px; height: 600px;
+    background: radial-gradient(circle, rgba(224,123,26,0.12) 0%, transparent 65%);
+    pointer-events: none;
+  }
+  .hero-bg-glow2 {
+    position: absolute; bottom: -50px; left: 5%;
+    width: 400px; height: 400px;
+    background: radial-gradient(circle, rgba(27,79,146,0.25) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .hero-content {
+    position: relative; z-index: 2;
+    max-width: 760px;
+  }
+
+  .hero-badge {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: rgba(224,123,26,0.15);
+    border: 1px solid rgba(224,123,26,0.4);
+    border-radius: 20px;
+    padding: 5px 14px;
+    font-size: 12px; color: var(--accent-light);
+    letter-spacing: 1px; font-weight: 500;
+    margin-bottom: 28px;
+  }
+  .hero-badge::before {
+    content: '';
+    width: 6px; height: 6px;
+    background: var(--accent);
+    border-radius: 50%;
+  }
+
+  .hero-h1 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: clamp(48px, 7vw, 86px);
+    font-weight: 800;
+    color: white;
+    line-height: 1.0;
+    letter-spacing: -1px;
+    margin-bottom: 20px;
+  }
+  .hero-h1 em {
+    font-style: normal;
+    color: var(--accent);
+  }
+
+  .hero-desc {
+    font-size: 16px; color: rgba(255,255,255,0.65);
+    line-height: 1.8; max-width: 520px;
+    font-weight: 300;
+    margin-bottom: 40px;
+  }
+
+  .hero-actions {
+    display: flex; gap: 14px; flex-wrap: wrap;
+    margin-bottom: 72px;
+  }
+  .btn-primary {
+    background: var(--accent);
+    color: white;
+    padding: 14px 32px;
+    border: none; border-radius: 3px;
+    font-size: 14px; font-weight: 600;
+    cursor: pointer; text-decoration: none;
+    display: inline-flex; align-items: center; gap: 8px;
+    transition: background 0.2s, transform 0.15s;
+    letter-spacing: 0.3px;
+  }
+  .btn-primary:hover { background: #c96d10; transform: translateY(-1px); }
+
+  .btn-outline {
+    background: transparent;
+    color: rgba(255,255,255,0.85);
+    padding: 14px 32px;
+    border: 1px solid rgba(255,255,255,0.25); border-radius: 3px;
+    font-size: 14px; font-weight: 500;
+    cursor: pointer; text-decoration: none;
+    display: inline-flex; align-items: center; gap: 8px;
+    transition: border-color 0.2s, color 0.2s;
+  }
+  .btn-outline:hover { border-color: rgba(255,255,255,0.6); color: white; }
+
+  .hero-stats {
+    position: relative; z-index: 2;
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    border-top: 1px solid rgba(255,255,255,0.08);
+    padding-top: 40px; padding-bottom: 56px;
+    gap: 0;
+  }
+  .stat-item {
+    padding: 0 32px 0 0;
+    border-right: 1px solid rgba(255,255,255,0.08);
+  }
+  .stat-item:last-child { border-right: none; }
+  .stat-item:first-child { padding-left: 0; }
+  .stat-num {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 48px; font-weight: 800;
+    color: white; line-height: 1;
+    letter-spacing: -1px;
+  }
+  .stat-num span { color: var(--accent); font-size: 32px; }
+  .stat-label {
+    font-size: 12.5px; color: rgba(255,255,255,0.5);
+    margin-top: 6px; font-weight: 300; letter-spacing: 0.5px;
+  }
+
+  /* ── SECTION BASE ── */
+  section { padding: 96px 5%; }
+
+  .section-eyebrow {
+    font-size: 11.5px; font-weight: 600;
+    color: var(--accent); letter-spacing: 2.5px;
+    text-transform: uppercase; margin-bottom: 12px;
+  }
+  .section-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: clamp(32px, 4vw, 52px);
+    font-weight: 800; color: var(--navy);
+    line-height: 1.1; letter-spacing: -0.5px;
+    margin-bottom: 16px;
+  }
+  .section-desc {
+    font-size: 15px; color: var(--muted);
+    line-height: 1.8; max-width: 540px;
+    font-weight: 300;
+  }
+
+  /* ── ABOUT ── */
+  #about { background: var(--white); }
+
+  .about-grid {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 80px; align-items: center;
+    margin-top: 64px;
+  }
+
+  .about-img-block {
+    position: relative;
+  }
+  .about-img-placeholder {
+    width: 100%; aspect-ratio: 4/3;
+    background: linear-gradient(135deg, var(--navy) 0%, var(--navy-mid) 60%, var(--blue) 100%);
+    border-radius: 6px;
+    display: flex; align-items: center; justify-content: center;
+    position: relative; overflow: hidden;
+  }
+  .about-img-placeholder::before {
+    content: '';
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+    background-size: 30px 30px;
+  }
+  .factory-icon {
+    font-size: 80px; opacity: 0.15;
+  }
+  .about-badge-overlay {
+    position: absolute; bottom: -20px; right: -20px;
+    background: var(--accent);
+    border-radius: 4px;
+    padding: 20px 24px;
+    text-align: center; color: white;
+    box-shadow: 0 8px 24px rgba(224,123,26,0.35);
+  }
+  .about-badge-num {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 44px; font-weight: 800; line-height: 1;
+  }
+  .about-badge-text {
+    font-size: 11px; font-weight: 500;
+    letter-spacing: 0.5px; margin-top: 4px; opacity: 0.9;
+  }
+
+  .about-features {
+    margin-top: 36px;
+    display: flex; flex-direction: column; gap: 20px;
+  }
+  .about-feature {
+    display: flex; gap: 16px; align-items: flex-start;
+  }
+  .about-feature-icon {
+    width: 40px; height: 40px; flex-shrink: 0;
+    background: var(--light);
+    border-radius: 4px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px;
+    border-left: 3px solid var(--accent);
+  }
+  .about-feature-title {
+    font-size: 14px; font-weight: 700; color: var(--navy);
+    margin-bottom: 4px;
+  }
+  .about-feature-desc {
+    font-size: 13px; color: var(--muted); line-height: 1.6; font-weight: 300;
+  }
+
+  /* ── PRODUCTS ── */
+  #products { background: var(--light); }
+
+  .products-header {
+    display: flex; justify-content: space-between; align-items: flex-end;
+    margin-bottom: 48px; flex-wrap: wrap; gap: 24px;
+  }
+
+  .products-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    overflow: hidden;
+  }
+
+  .product-card {
+    background: white;
+    padding: 32px 28px;
+    transition: background 0.2s;
+    cursor: default;
+    position: relative;
+  }
+  .product-card:hover { background: var(--navy); }
+  .product-card:hover .product-name { color: white; }
+  .product-card:hover .product-desc { color: rgba(255,255,255,0.6); }
+  .product-card:hover .product-icon-bg { background: rgba(224,123,26,0.2); }
+  .product-card:hover .product-icon-bg span { filter: brightness(1.5); }
+  .product-card:hover .product-arrow { opacity: 1; color: var(--accent); }
+
+  .product-icon-bg {
+    width: 52px; height: 52px;
+    background: var(--light);
+    border-radius: 6px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 24px;
+    margin-bottom: 18px;
+    transition: background 0.2s;
+  }
+  .product-name {
+    font-size: 15px; font-weight: 700; color: var(--navy);
+    margin-bottom: 8px; transition: color 0.2s;
+  }
+  .product-desc {
+    font-size: 12.5px; color: var(--muted); line-height: 1.6;
+    font-weight: 300; transition: color 0.2s;
+  }
+  .product-arrow {
+    position: absolute; top: 28px; right: 24px;
+    font-size: 18px; color: var(--muted); opacity: 0;
+    transition: opacity 0.2s;
+  }
+
+  /* ── STRENGTHS ── */
+  #strengths { background: var(--white); }
+
+  .strengths-grid {
+    display: grid; grid-template-columns: repeat(2, 1fr);
+    gap: 32px; margin-top: 56px;
+  }
+
+  .strength-card {
+    border: 1px solid var(--border);
+    border-radius: 6px; padding: 36px;
+    position: relative; overflow: hidden;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  .strength-card:hover {
+    border-color: var(--accent);
+    box-shadow: 0 4px 20px rgba(224,123,26,0.1);
+  }
+  .strength-card::before {
+    content: '';
+    position: absolute; top: 0; left: 0;
+    width: 4px; height: 100%;
+    background: var(--border);
+    transition: background 0.2s;
+  }
+  .strength-card:hover::before { background: var(--accent); }
+
+  .strength-num {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 64px; font-weight: 800;
+    color: var(--light); line-height: 1;
+    position: absolute; top: 16px; right: 24px;
+    pointer-events: none;
+  }
+  .strength-icon { font-size: 28px; margin-bottom: 16px; }
+  .strength-title {
+    font-size: 17px; font-weight: 700; color: var(--navy); margin-bottom: 10px;
+  }
+  .strength-desc {
+    font-size: 13.5px; color: var(--muted); line-height: 1.75; font-weight: 300;
+  }
+
+  /* ── PROCESS ── */
+  #process { background: var(--navy); }
+  #process .section-title { color: white; }
+  #process .section-eyebrow { color: var(--accent-light); }
+  #process .section-desc { color: rgba(255,255,255,0.5); }
+
+  .process-steps {
+    display: grid; grid-template-columns: repeat(5, 1fr);
+    gap: 0; margin-top: 56px; position: relative;
+  }
+  .process-steps::after {
+    content: '';
+    position: absolute;
+    top: 32px; left: 10%; right: 10%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), rgba(255,255,255,0.15), transparent);
+  }
+
+  .process-step {
+    text-align: center; padding: 0 16px;
+    position: relative; z-index: 1;
+  }
+  .step-circle {
+    width: 64px; height: 64px;
+    background: var(--navy-mid);
+    border: 2px solid rgba(255,255,255,0.12);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 20px;
+    font-size: 24px;
+    transition: background 0.2s, border-color 0.2s;
+  }
+  .process-step:hover .step-circle {
+    background: var(--accent);
+    border-color: var(--accent);
+  }
+  .step-num {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 11px; font-weight: 700;
+    color: var(--accent); letter-spacing: 1px;
+    text-transform: uppercase; margin-bottom: 8px;
+  }
+  .step-title {
+    font-size: 14px; font-weight: 700; color: white; margin-bottom: 8px;
+  }
+  .step-desc {
+    font-size: 12px; color: rgba(255,255,255,0.45);
+    line-height: 1.6; font-weight: 300;
+  }
+
+  /* ── CERTS ── */
+  #certs { background: var(--light); }
+
+  .cert-grid {
+    display: flex; flex-wrap: wrap; gap: 12px;
+    margin-top: 48px;
+  }
+  .cert-tag {
+    display: flex; align-items: center; gap: 10px;
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 14px 20px;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  .cert-tag:hover {
+    border-color: var(--accent);
+    box-shadow: 0 2px 12px rgba(224,123,26,0.12);
+  }
+  .cert-tag-icon { font-size: 20px; }
+  .cert-tag-name {
+    font-size: 13px; font-weight: 600; color: var(--navy);
+  }
+  .cert-tag-body {
+    font-size: 11px; color: var(--muted); font-weight: 300;
+  }
+
+  .clients-row {
+    margin-top: 64px;
+    border-top: 1px solid var(--border); padding-top: 48px;
+  }
+  .clients-label {
+    font-size: 11.5px; color: var(--muted);
+    letter-spacing: 2px; text-transform: uppercase;
+    font-weight: 500; margin-bottom: 28px;
+  }
+  .clients-logos {
+    display: flex; flex-wrap: wrap; gap: 0;
+  }
+  .client-logo {
+    padding: 16px 32px;
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    margin-right: 8px; margin-bottom: 8px;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 15px; font-weight: 700; color: var(--muted);
+    letter-spacing: 1px;
+  }
+
+  /* ── CONTACT ── */
+  #contact { background: var(--white); }
+
+  .contact-grid {
+    display: grid; grid-template-columns: 1fr 1.4fr;
+    gap: 80px; margin-top: 64px;
+  }
+
+  .contact-info { }
+  .contact-info-items {
+    margin-top: 36px;
+    display: flex; flex-direction: column; gap: 28px;
+  }
+  .contact-info-item {
+    display: flex; gap: 16px; align-items: flex-start;
+  }
+  .contact-icon {
+    width: 44px; height: 44px; flex-shrink: 0;
+    background: var(--navy);
+    border-radius: 4px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px; color: white;
+  }
+  .contact-info-label {
+    font-size: 11px; color: var(--accent);
+    font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+  .contact-info-val {
+    font-size: 14px; color: var(--navy); font-weight: 500;
+    line-height: 1.6;
+  }
+  .contact-info-sub {
+    font-size: 12px; color: var(--muted); font-weight: 300;
+  }
+
+  .contact-form-wrap { }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
+  .form-group { margin-bottom: 16px; }
+  .form-group label {
+    display: block; font-size: 12px; font-weight: 600;
+    color: var(--navy); margin-bottom: 6px; letter-spacing: 0.3px;
+  }
+  .form-group input,
+  .form-group select,
+  .form-group textarea {
+    width: 100%;
+    padding: 12px 14px;
+    border: 1px solid var(--border); border-radius: 3px;
+    font-size: 14px; font-family: 'Noto Sans KR', sans-serif;
+    color: var(--text); background: white;
+    outline: none; transition: border-color 0.2s;
+    -webkit-appearance: none;
+  }
+  .form-group input:focus,
+  .form-group select:focus,
+  .form-group textarea:focus { border-color: var(--blue); }
+  .form-group textarea { resize: vertical; min-height: 120px; }
+
+  .form-submit {
+    width: 100%; padding: 14px;
+    background: var(--navy); color: white; border: none;
+    border-radius: 3px; font-size: 14px; font-weight: 600;
+    cursor: pointer; font-family: 'Noto Sans KR', sans-serif;
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+    transition: background 0.2s;
+  }
+  .form-submit:hover { background: var(--accent); }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--navy);
+    color: rgba(255,255,255,0.6);
+    padding: 56px 5% 32px;
+  }
+  .footer-top {
+    display: grid; grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 48px; padding-bottom: 40px;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+  }
+  .footer-brand-name {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 22px; font-weight: 800; color: white;
+    letter-spacing: 0.5px; margin-bottom: 12px;
+  }
+  .footer-brand-desc {
+    font-size: 13px; line-height: 1.7; font-weight: 300;
+    max-width: 240px;
+  }
+  .footer-col-title {
+    font-size: 11px; font-weight: 700; color: white;
+    letter-spacing: 2px; text-transform: uppercase; margin-bottom: 16px;
+  }
+  .footer-col ul { list-style: none; }
+  .footer-col ul li { margin-bottom: 10px; }
+  .footer-col ul a {
+    color: rgba(255,255,255,0.55);
+    text-decoration: none; font-size: 13px; font-weight: 300;
+    transition: color 0.2s;
+  }
+  .footer-col ul a:hover { color: var(--accent-light); }
+  .footer-bottom {
+    display: flex; justify-content: space-between; align-items: center;
+    padding-top: 28px; flex-wrap: wrap; gap: 12px;
+  }
+  .footer-bottom-left {
+    font-size: 12px; font-weight: 300;
+  }
+  .footer-bottom-right {
+    display: flex; gap: 20px;
+  }
+  .footer-bottom-right a {
+    color: rgba(255,255,255,0.4);
+    font-size: 12px; text-decoration: none;
+    transition: color 0.2s;
+  }
+  .footer-bottom-right a:hover { color: rgba(255,255,255,0.8); }
+
+  /* ── DIVIDER ── */
+  .divider-line {
+    height: 1px; background: var(--border);
+    margin: 0;
+  }
+
+  /* ── SCROLL REVEAL ── */
+  .reveal {
+    opacity: 0; transform: translateY(28px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+  .reveal.visible { opacity: 1; transform: none; }
+  .reveal-delay-1 { transition-delay: 0.1s; }
+  .reveal-delay-2 { transition-delay: 0.2s; }
+  .reveal-delay-3 { transition-delay: 0.3s; }
+  .reveal-delay-4 { transition-delay: 0.4s; }
+
+  /* ── BANNER STRIP ── */
+  .info-strip {
+    background: var(--accent);
+    padding: 12px 5%;
+    display: flex; align-items: center; justify-content: center; gap: 32px;
+    font-size: 13px; font-weight: 500; color: white;
+    flex-wrap: wrap;
+  }
+  .info-strip-item { display: flex; align-items: center; gap: 8px; }
+  .info-strip-sep { opacity: 0.4; }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 1024px) {
+    .hero-stats { grid-template-columns: repeat(2, 1fr); gap: 28px; }
+    .about-grid { grid-template-columns: 1fr; gap: 48px; }
+    .products-grid { grid-template-columns: repeat(2, 1fr); }
+    .process-steps { grid-template-columns: repeat(3, 1fr); }
+    .process-steps::after { display: none; }
+    .strengths-grid { grid-template-columns: 1fr; }
+    .contact-grid { grid-template-columns: 1fr; gap: 48px; }
+    .footer-top { grid-template-columns: 1fr 1fr; }
+  }
+  @media (max-width: 768px) {
+    nav { padding: 0 4%; }
+    .nav-links { display: none; }
+    section { padding: 72px 4%; }
+    .hero-h1 { font-size: 48px; }
+    .hero-stats { grid-template-columns: repeat(2, 1fr); }
+    .stat-item { padding: 16px; }
+    .products-grid { grid-template-columns: 1fr; }
+    .process-steps { grid-template-columns: repeat(2, 1fr); }
+    .form-row { grid-template-columns: 1fr; }
+    .footer-top { grid-template-columns: 1fr; gap: 32px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#hero" class="nav-logo">
+    <div class="nav-logo-mark">YB</div>
+    <div>
+      <div class="nav-logo-text">영보이엔지 <span>(주)</span></div>
+      <div class="nav-logo-sub">YB ENGINEERING CO., LTD.</div>
+    </div>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#about">회사소개</a></li>
+    <li><a href="#products">제품안내</a></li>
+    <li><a href="#strengths">기술력</a></li>
+    <li><a href="#process">제조공정</a></li>
+    <li><a href="#certs">인증·실적</a></li>
+    <li><a href="#contact" class="nav-cta">견적 문의</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-bg-pattern"></div>
+  <div class="hero-bg-glow"></div>
+  <div class="hero-bg-glow2"></div>
+
+  <div class="hero-content">
+    <div class="hero-badge">35년 이상의 산업용 탱크 제조 전문기업</div>
+    <h1 class="hero-h1">
+      TRUSTED<br>
+      TANK <em>SOLUTIONS</em><br>
+      SINCE 1989
+    </h1>
+    <p class="hero-desc">
+      디젤탱크, 스테인리스탱크, FRP분리탱크, 열교환기 등 산업용 탱크의 설계·제작에서 설치까지
+      원스톱으로 제공합니다. 엄격한 품질관리와 35년의 경험을 바탕으로 최적의 솔루션을 제안합니다.
+    </p>
+    <div class="hero-actions">
+      <a href="#products" class="btn-primary">제품 둘러보기 →</a>
+      <a href="#contact" class="btn-outline">견적 문의</a>
+    </div>
+  </div>
+
+  <div class="hero-stats">
+    <div class="stat-item">
+      <div class="stat-num">35<span>+</span></div>
+      <div class="stat-label">업력 (년)</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">5,000<span>+</span></div>
+      <div class="stat-label">납품 실적 (건)</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">9</div>
+      <div class="stat-label">주요 제품 라인</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">2</div>
+      <div class="stat-label">사업장 (서울·경기)</div>
+    </div>
+  </div>
+</section>
+
+<!-- INFO STRIP -->
+<div class="info-strip">
+  <div class="info-strip-item">📞 대표번호: 02-XXX-XXXX</div>
+  <div class="info-strip-sep">|</div>
+  <div class="info-strip-item">✉️ yb@ybtank.co.kr</div>
+  <div class="info-strip-sep">|</div>
+  <div class="info-strip-item">🏭 경기도 광주시 공장 | 서울 본사</div>
+  <div class="info-strip-sep">|</div>
+  <div class="info-strip-item">⏰ 평일 09:00 – 18:00</div>
+</div>
+
+<!-- ABOUT -->
+<section id="about">
+  <div>
+    <div class="section-eyebrow reveal">ABOUT US</div>
+    <h2 class="section-title reveal reveal-delay-1">35년, 탱크 하나에<br>집중해온 전문성</h2>
+  </div>
+
+  <div class="about-grid">
+    <div class="about-img-block reveal">
+      <div class="about-img-placeholder">
+        <div class="factory-icon">🏭</div>
+      </div>
+      <div class="about-badge-overlay">
+        <div class="about-badge-num">1989</div>
+        <div class="about-badge-text">설립 연도</div>
+      </div>
+    </div>
+
+    <div class="reveal reveal-delay-2">
+      <p class="section-desc">
+        (주)영보이엔지는 1989년 창업 이래 산업용 저장 탱크와 압력용기 제조 분야에서
+        꾸준히 기술력을 쌓아왔습니다. 서울 본사와 경기도 광주 공장을 중심으로
+        설계, 제작, 시공까지 원스톱 서비스를 제공합니다.
+      </p>
+
+      <div class="about-features">
+        <div class="about-feature">
+          <div class="about-feature-icon">🔧</div>
+          <div>
+            <div class="about-feature-title">자체 설계 · 제작 역량</div>
+            <div class="about-feature-desc">도면 설계부터 금속 가공, 용접, 도장, 설치까지 자사 공장에서 일괄 처리합니다.</div>
+          </div>
+        </div>
+        <div class="about-feature">
+          <div class="about-feature-icon">✅</div>
+          <div>
+            <div class="about-feature-title">엄격한 품질 관리</div>
+            <div class="about-feature-desc">KS·산업안전기준을 준수하며, 출하 전 전수 누설·압력 검사를 시행합니다.</div>
+          </div>
+        </div>
+        <div class="about-feature">
+          <div class="about-feature-icon">🚀</div>
+          <div>
+            <div class="about-feature-title">신속한 납기</div>
+            <div class="about-feature-desc">표준 제품은 2주 이내, 맞춤 제작 제품도 고객 일정에 맞춘 납기를 지킵니다.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRODUCTS -->
+<section id="products">
+  <div class="products-header">
+    <div>
+      <div class="section-eyebrow reveal">PRODUCTS</div>
+      <h2 class="section-title reveal reveal-delay-1">주요 제품</h2>
+      <p class="section-desc reveal reveal-delay-2">산업 현장의 다양한 요구에 맞춘 9가지 전문 제품 라인업을 보유하고 있습니다.</p>
+    </div>
+    <a href="#contact" class="btn-primary reveal" style="white-space:nowrap">맞춤 제작 문의 →</a>
+  </div>
+
+  <div class="products-grid">
+    <div class="product-card reveal">
+      <div class="product-icon-bg"><span>⛽</span></div>
+      <div class="product-name">디젤(경유)탱크</div>
+      <div class="product-desc">지상·지하용, 이중벽 구조 등 다양한 용량과 사양으로 제작 가능합니다.</div>
+      <div class="product-arrow">→</div>
+    </div>
+    <div class="product-card reveal reveal-delay-1">
+      <div class="product-icon-bg"><span>🔩</span></div>
+      <div class="product-name">스테인리스 탱크</div>
+      <div class="product-desc">SUS304/316L 소재, 식품·의약·화학 공정에 최적화된 위생 탱크입니다.</div>
+      <div class="product-arrow">→</div>
+    </div>
+    <div class="product-card reveal reveal-delay-2">
+      <div class="product-icon-bg"><span>💧</span></div>
+      <div class="product-name">FRP 분리탱크</div>
+      <div class="product-desc">유수분리기·세퍼레이터. 부식에 강한 FRP 소재로 장기 내구성을 보장합니다.</div>
+      <div class="product-arrow">→</div>
+    </div>
+    <div class="product-card reveal reveal-delay-1">
+      <div class="product-icon-bg"><span>🌡️</span></div>
+      <div class="product-name">열교환기</div>
+      <div class="product-desc">쉘앤튜브, 판형 등 공정 조건에 따른 최적 열교환 솔루션을 설계합니다.</div>
+      <div class="product-arrow">→</div>
+    </div>
+    <div class="product-card reveal reveal-delay-2">
+      <div class="product-icon-bg"><span>⚗️</span></div>
+      <div class="product-name">약품(화학)탱크</div>
+      <div class="product-desc">산·알칼리 등 부식성 화학물질 저장을 위한 내식성 탱크입니다.</div>
+      <div class="product-arrow">→</div>
+    </div>
+    <div class="product-card reveal reveal-delay-3">
+      <div class="product-icon-bg"><span>🛢️</span></div>
+      <div class="product-name">오일 탱크</div>
+      <div class="product-desc">냉동기유·작동유 등 각종 유류 저장에 적합한 탱크를 제작합니다.</div>
+      <div class="product-arrow">→</div>
+    </div>
+    <div class="product-card reveal">
+      <div class="product-icon-bg"><span>🏗️</span></div>
+      <div class="product-name">압력용기</div>
+      <div class="product-desc">KS·ASME 기준에 따른 압력용기 설계 및 제작, 각종 인증 지원.</div>
+      <div class="product-arrow">→</div>
+    </div>
+    <div class="product-card reveal reveal-delay-1">
+      <div class="product-icon-bg"><span>🌊</span></div>
+      <div class="product-name">물탱크 (STS/SMC)</div>
+      <div class="product-desc">건물·공장용 스테인리스 및 SMC 패널 물탱크. 위생 등급 소재 사용.</div>
+      <div class="product-arrow">→</div>
+    </div>
+    <div class="product-card reveal reveal-delay-2">
+      <div class="product-icon-bg"><span>🔁</span></div>
+      <div class="product-name">맞춤 제작</div>
+      <div class="product-desc">고객 도면 또는 사양서 기반의 특수 탱크 설계·제작 서비스입니다.</div>
+      <div class="product-arrow">→</div>
+    </div>
+  </div>
+</section>
+
+<!-- STRENGTHS -->
+<section id="strengths">
+  <div class="section-eyebrow reveal">WHY CHOOSE US</div>
+  <h2 class="section-title reveal reveal-delay-1">영보이엔지를 선택하는<br>4가지 이유</h2>
+
+  <div class="strengths-grid">
+    <div class="strength-card reveal">
+      <div class="strength-num">01</div>
+      <div class="strength-icon">🏆</div>
+      <div class="strength-title">35년 축적 기술력</div>
+      <div class="strength-desc">
+        1989년 창업 이래 수천 건의 납품 실적과 현장 경험을 바탕으로
+        어떠한 규격·재질·용도의 탱크도 설계·제작할 수 있는 역량을 보유합니다.
+      </div>
+    </div>
+    <div class="strength-card reveal reveal-delay-1">
+      <div class="strength-num">02</div>
+      <div class="strength-icon">🔍</div>
+      <div class="strength-title">전수 품질 검사</div>
+      <div class="strength-desc">
+        제품 출하 전 100% 누설 테스트 및 압력 검사를 시행합니다.
+        KS·산업안전보건기준 등 관련 법규를 철저히 준수합니다.
+      </div>
+    </div>
+    <div class="strength-card reveal">
+      <div class="strength-num">03</div>
+      <div class="strength-icon">⚡</div>
+      <div class="strength-title">신속한 납기 보장</div>
+      <div class="strength-desc">
+        경기도 광주 자사 공장 보유로 외주 없이 즉시 생산 가능합니다.
+        표준 제품 2주 내 납품, 긴급 발주에도 유연하게 대응합니다.
+      </div>
+    </div>
+    <div class="strength-card reveal reveal-delay-1">
+      <div class="strength-num">04</div>
+      <div class="strength-icon">🤝</div>
+      <div class="strength-title">원스톱 서비스</div>
+      <div class="strength-desc">
+        초기 상담→설계→제작→설치→사후관리까지 한 회사에서 책임집니다.
+        다수 협력사 관리 없이 단일 창구로 프로젝트를 진행하세요.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROCESS -->
+<section id="process">
+  <div class="section-eyebrow">PROCESS</div>
+  <h2 class="section-title">제조 공정</h2>
+  <p class="section-desc">상담 접수부터 현장 설치까지, 체계적인 5단계 프로세스로 진행됩니다.</p>
+
+  <div class="process-steps">
+    <div class="process-step reveal">
+      <div class="step-circle">📋</div>
+      <div class="step-num">STEP 01</div>
+      <div class="step-title">상담 · 견적</div>
+      <div class="step-desc">용도·용량·설치환경 등 요구사항 수집 후 맞춤 견적 제출</div>
+    </div>
+    <div class="process-step reveal reveal-delay-1">
+      <div class="step-circle">✏️</div>
+      <div class="step-num">STEP 02</div>
+      <div class="step-title">설계 · 도면</div>
+      <div class="step-desc">관련 법규·고객 사양에 맞는 설계 도면 작성 및 승인</div>
+    </div>
+    <div class="process-step reveal reveal-delay-2">
+      <div class="step-circle">🔩</div>
+      <div class="step-num">STEP 03</div>
+      <div class="step-title">소재 가공</div>
+      <div class="step-desc">인증 자재 구매 후 절단·벤딩·용접 등 정밀 가공</div>
+    </div>
+    <div class="process-step reveal reveal-delay-3">
+      <div class="step-circle">🔬</div>
+      <div class="step-num">STEP 04</div>
+      <div class="step-title">검사 · 도장</div>
+      <div class="step-desc">전수 누설·압력 검사 후 방청·도장 처리</div>
+    </div>
+    <div class="process-step reveal reveal-delay-4">
+      <div class="step-circle">🚚</div>
+      <div class="step-num">STEP 05</div>
+      <div class="step-title">납품 · 설치</div>
+      <div class="step-desc">현장 운반, 설치 시공 및 시운전 확인</div>
+    </div>
+  </div>
+</section>
+
+<!-- CERTS -->
+<section id="certs">
+  <div class="section-eyebrow reveal">CERTIFICATIONS</div>
+  <h2 class="section-title reveal reveal-delay-1">인증 및 주요 실적</h2>
+  <p class="section-desc reveal reveal-delay-2">공인된 품질로 신뢰를 검증합니다.</p>
+
+  <div class="cert-grid">
+    <div class="cert-tag reveal">
+      <div class="cert-tag-icon">📜</div>
+      <div>
+        <div class="cert-tag-name">ISO 9001</div>
+        <div class="cert-tag-body">품질경영시스템</div>
+      </div>
+    </div>
+    <div class="cert-tag reveal reveal-delay-1">
+      <div class="cert-tag-icon">⚙️</div>
+      <div>
+        <div class="cert-tag-name">KS 인증</div>
+        <div class="cert-tag-body">한국산업표준</div>
+      </div>
+    </div>
+    <div class="cert-tag reveal reveal-delay-2">
+      <div class="cert-tag-icon">🛡️</div>
+      <div>
+        <div class="cert-tag-name">위험물 제조소 허가</div>
+        <div class="cert-tag-body">소방청 / 지자체</div>
+      </div>
+    </div>
+    <div class="cert-tag reveal">
+      <div class="cert-tag-icon">🏅</div>
+      <div>
+        <div class="cert-tag-name">압력용기 제조 등록</div>
+        <div class="cert-tag-body">고용노동부</div>
+      </div>
+    </div>
+    <div class="cert-tag reveal reveal-delay-1">
+      <div class="cert-tag-icon">🔎</div>
+      <div>
+        <div class="cert-tag-name">비파괴검사 자격</div>
+        <div class="cert-tag-body">RT / UT / PT</div>
+      </div>
+    </div>
+    <div class="cert-tag reveal reveal-delay-2">
+      <div class="cert-tag-icon">✅</div>
+      <div>
+        <div class="cert-tag-name">벤처기업 확인</div>
+        <div class="cert-tag-body">중소벤처기업부</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="clients-row reveal">
+    <div class="clients-label">주요 납품처 (일부)</div>
+    <div class="clients-logos">
+      <div class="client-logo">LH 공사</div>
+      <div class="client-logo">GS 칼텍스</div>
+      <div class="client-logo">SK 에너지</div>
+      <div class="client-logo">현대건설</div>
+      <div class="client-logo">삼성물산</div>
+      <div class="client-logo">한전 KPS</div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="section-eyebrow reveal">CONTACT</div>
+  <h2 class="section-title reveal reveal-delay-1">견적 · 기술 문의</h2>
+  <p class="section-desc reveal reveal-delay-2">제품 사양, 납기, 설치까지 빠르게 안내드립니다. 아래 양식을 작성해 주시면 1영업일 이내 연락드립니다.</p>
+
+  <div class="contact-grid">
+    <div class="contact-info reveal">
+      <div class="contact-info-items">
+        <div class="contact-info-item">
+          <div class="contact-icon">🏢</div>
+          <div>
+            <div class="contact-info-label">서울 본사</div>
+            <div class="contact-info-val">서울특별시 (주소 입력)</div>
+            <div class="contact-info-sub">TEL: 02-XXX-XXXX</div>
+          </div>
+        </div>
+        <div class="contact-info-item">
+          <div class="contact-icon">🏭</div>
+          <div>
+            <div class="contact-info-label">경기 공장</div>
+            <div class="contact-info-val">경기도 광주시 (주소 입력)</div>
+            <div class="contact-info-sub">FAX: 031-XXX-XXXX</div>
+          </div>
+        </div>
+        <div class="contact-info-item">
+          <div class="contact-icon">✉️</div>
+          <div>
+            <div class="contact-info-label">이메일</div>
+            <div class="contact-info-val">yb@ybtank.co.kr</div>
+          </div>
+        </div>
+        <div class="contact-info-item">
+          <div class="contact-icon">⏰</div>
+          <div>
+            <div class="contact-info-label">운영 시간</div>
+            <div class="contact-info-val">평일 09:00 – 18:00</div>
+            <div class="contact-info-sub">토·일·공휴일 휴무</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="contact-form-wrap reveal reveal-delay-2">
+      <div class="form-row">
+        <div class="form-group">
+          <label>회사명 *</label>
+          <input type="text" placeholder="(주)회사명">
+        </div>
+        <div class="form-group">
+          <label>담당자명 *</label>
+          <input type="text" placeholder="홍길동">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>연락처 *</label>
+          <input type="tel" placeholder="010-0000-0000">
+        </div>
+        <div class="form-group">
+          <label>이메일</label>
+          <input type="email" placeholder="example@company.com">
+        </div>
+      </div>
+      <div class="form-group">
+        <label>문의 제품</label>
+        <select>
+          <option value="">-- 제품을 선택해 주세요 --</option>
+          <option>디젤(경유)탱크</option>
+          <option>스테인리스 탱크</option>
+          <option>FRP 분리탱크</option>
+          <option>열교환기</option>
+          <option>약품(화학)탱크</option>
+          <option>오일 탱크</option>
+          <option>압력용기</option>
+          <option>물탱크</option>
+          <option>맞춤 제작</option>
+          <option>기타</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>문의 내용 *</label>
+        <textarea placeholder="용량, 소재, 수량, 설치 장소 등 상세한 요구사항을 입력해 주세요."></textarea>
+      </div>
+      <button class="form-submit">문의 접수하기 →</button>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-top">
+    <div>
+      <div class="footer-brand-name">영보이엔지 (주)</div>
+      <div class="footer-brand-desc">
+        1989년 창업 이래 35년간 산업용 탱크 제조 한 길을 걸어온 전문기업입니다.
+        품질과 신뢰를 바탕으로 고객의 현장을 지원합니다.
+      </div>
+      <div style="margin-top:20px; font-size:12px; line-height:1.9;">
+        사업자등록번호: 000-00-00000<br>
+        대표: OOO | 서울특별시 OO구 OO로 OO
+      </div>
+    </div>
+
+    <div class="footer-col">
+      <div class="footer-col-title">제품</div>
+      <ul>
+        <li><a href="#products">디젤탱크</a></li>
+        <li><a href="#products">스테인리스탱크</a></li>
+        <li><a href="#products">FRP탱크</a></li>
+        <li><a href="#products">열교환기</a></li>
+        <li><a href="#products">약품탱크</a></li>
+      </ul>
+    </div>
+
+    <div class="footer-col">
+      <div class="footer-col-title">회사</div>
+      <ul>
+        <li><a href="#about">회사소개</a></li>
+        <li><a href="#strengths">기술력</a></li>
+        <li><a href="#process">제조공정</a></li>
+        <li><a href="#certs">인증·실적</a></li>
+      </ul>
+    </div>
+
+    <div class="footer-col">
+      <div class="footer-col-title">연락처</div>
+      <ul>
+        <li><a href="tel:02XXXXXXXX">TEL: 02-XXX-XXXX</a></li>
+        <li><a href="mailto:yb@ybtank.co.kr">yb@ybtank.co.kr</a></li>
+        <li><a href="#contact">견적 문의</a></li>
+        <li><a href="http://www.ybtank.co.kr">www.ybtank.co.kr</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    <div class="footer-bottom-left">© 2025 영보이엔지 (주). All rights reserved.</div>
+    <div class="footer-bottom-right">
+      <a href="#">개인정보처리방침</a>
+      <a href="#">이용약관</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+// Scroll reveal
+const reveals = document.querySelectorAll('.reveal');
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) { e.target.classList.add('visible'); }
+  });
+}, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+reveals.forEach(el => observer.observe(el));
+
+// Stat counter animation
+function animateCounters() {
+  document.querySelectorAll('.stat-num').forEach(el => {
+    const target = parseInt(el.textContent.replace(/[^0-9]/g, ''));
+    if (!target) return;
+    const suffix = el.innerHTML.includes('<span>') ? el.querySelector('span').outerHTML : '';
+    let current = 0;
+    const step = target / 50;
+    const timer = setInterval(() => {
+      current = Math.min(current + step, target);
+      el.innerHTML = Math.round(current).toLocaleString() + suffix;
+      if (current >= target) clearInterval(timer);
+    }, 30);
+  });
+}
+
+const heroSection = document.querySelector('#hero');
+const counterObs = new IntersectionObserver((entries) => {
+  if (entries[0].isIntersecting) { animateCounters(); counterObs.disconnect(); }
+}, { threshold: 0.5 });
+counterObs.observe(heroSection);
+
+// Form submit (placeholder)
+document.querySelector('.form-submit').addEventListener('click', () => {
+  alert('문의가 접수되었습니다. 1영업일 이내 연락드리겠습니다.\n감사합니다.');
+});
+</script>
+</body>
+</html>

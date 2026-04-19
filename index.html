@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="영보이엔지(주) — 35년 산업용 탱크 전문 제조. 디젤탱크, STS탱크, FRP분리탱크, 열교환기 설계·제작·설치.">
+<meta name="description" content="영보이엔지(주) — 37년 산업용 탱크 전문 제조. 디젤탱크, STS탱크, FRP분리탱크, 열교환기 설계·제작·설치.">
 <meta name="keywords" content="산업용탱크, 디젤탱크, 스테인리스탱크, FRP탱크, 열교환기, 압력용기, 탱크제조, 영보이엔지">
 <meta property="og:title" content="영보이엔지 (주) | 산업용 탱크 전문 제조">
-<meta property="og:description" content="35년 산업용 탱크 전문 제조. 디젤탱크, STS탱크, FRP분리탱크, 열교환기 설계·제작·설치.">
+<meta property="og:description" content="37년 산업용 탱크 전문 제조. 디젤탱크, STS탱크, FRP분리탱크, 열교환기 설계·제작·설치.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://www.ybtank.co.kr">
 <title>영보이엔지 (주) | 산업용 탱크 전문 제조</title>
@@ -709,6 +709,97 @@
   .info-strip-item { display: flex; align-items: center; gap: 8px; }
   .info-strip-sep { opacity: 0.4; }
 
+  /* ── NAV PHONE ── */
+  .nav-phone {
+    display: flex; align-items: center; gap: 6px;
+    color: rgba(255,255,255,0.9) !important;
+    font-size: 13.5px !important; font-weight: 600 !important;
+    border-bottom: none !important; padding-bottom: 0 !important;
+    letter-spacing: 0 !important;
+  }
+  .nav-phone:hover { color: var(--accent-light) !important; border-bottom: none !important; }
+
+  /* ── TRUST BAR ── */
+  .trust-bar {
+    margin-top: 64px;
+    background: var(--navy-mid);
+    border-bottom: 2px solid rgba(27,79,146,0.6);
+    padding: 0 5%;
+    display: flex; justify-content: center; align-items: stretch;
+  }
+  .trust-bar-item {
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    padding: 16px 40px;
+    color: white;
+    border-right: 1px solid rgba(255,255,255,0.1);
+    flex: 1; max-width: 200px;
+  }
+  .trust-bar-item:last-child { border-right: none; }
+  .trust-bar-num {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 28px; font-weight: 800;
+    color: var(--accent-light); line-height: 1;
+    letter-spacing: -0.5px;
+  }
+  .trust-bar-label {
+    font-size: 11px; color: rgba(255,255,255,0.55);
+    font-weight: 400; margin-top: 4px; text-align: center;
+    letter-spacing: 0.3px;
+  }
+
+  /* ── TRACK RECORD ── */
+  #track-record { background: var(--navy); }
+  #track-record .section-eyebrow { color: var(--accent-light); }
+  #track-record .section-title { color: white; }
+  #track-record .section-desc { color: rgba(255,255,255,0.55); }
+  .track-stats {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 1px; background: rgba(255,255,255,0.08);
+    border-radius: 6px; overflow: hidden;
+    border: 1px solid rgba(255,255,255,0.08);
+    margin: 48px 0;
+  }
+  .track-stat {
+    background: rgba(255,255,255,0.03);
+    padding: 36px 32px;
+  }
+  .track-stat-num {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 56px; font-weight: 800;
+    color: white; line-height: 1; letter-spacing: -1px;
+  }
+  .track-stat-num span { color: var(--accent); font-size: 36px; }
+  .track-stat-label {
+    font-size: 12.5px; color: rgba(255,255,255,0.5);
+    margin-top: 8px; font-weight: 300; letter-spacing: 0.5px;
+  }
+  .track-clients-label {
+    font-size: 11px; font-weight: 700;
+    color: rgba(255,255,255,0.35);
+    letter-spacing: 2px; text-transform: uppercase; margin-bottom: 18px;
+  }
+  .track-clients-grid {
+    display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 14px;
+  }
+  .track-client {
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 4px; padding: 10px 22px;
+    color: rgba(255,255,255,0.75);
+    font-size: 14px; font-weight: 500;
+  }
+  .track-clients-note {
+    font-size: 11.5px; color: rgba(255,255,255,0.25); font-weight: 300;
+  }
+
+  /* ── FORM PROMISE ── */
+  .form-promise {
+    font-size: 12.5px; color: var(--muted);
+    margin-top: 14px; padding: 11px 16px;
+    background: var(--light); border-radius: 4px;
+    border-left: 3px solid var(--accent); font-weight: 400;
+  }
+
   /* ── RESPONSIVE ── */
   @media (max-width: 1024px) {
     .hero-stats { grid-template-columns: repeat(2, 1fr); gap: 28px; }
@@ -732,6 +823,19 @@
     .process-steps { grid-template-columns: repeat(2, 1fr); }
     .form-row { grid-template-columns: 1fr; }
     .footer-top { grid-template-columns: 1fr; gap: 32px; }
+    .trust-bar {
+      display: grid; grid-template-columns: 1fr 1fr;
+      padding: 0; gap: 0;
+    }
+    .trust-bar-item {
+      padding: 14px 8px; max-width: none;
+      border-right: 1px solid rgba(255,255,255,0.1);
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+    .trust-bar-item:nth-child(2n) { border-right: none; }
+    .trust-bar-item:nth-child(3),
+    .trust-bar-item:nth-child(4) { border-bottom: none; }
+    .track-stats { grid-template-columns: 1fr; gap: 1px; }
   }
 </style>
 </head>
@@ -750,8 +854,8 @@
     <li><a href="#about">회사소개</a></li>
     <li><a href="#products">제품안내</a></li>
     <li><a href="#strengths">기술력</a></li>
-    <li><a href="#process">제조공정</a></li>
     <li><a href="#certs">인증·실적</a></li>
+    <li><a href="tel:031-764-0248" class="nav-phone">📞 031-764-0248</a></li>
     <li><a href="#contact" class="nav-cta">견적 문의</a></li>
   </ul>
   <button class="hamburger" id="hamburger" aria-label="메뉴 열기">
@@ -762,10 +866,30 @@
   <a href="#about" class="mobile-link">회사소개</a>
   <a href="#products" class="mobile-link">제품안내</a>
   <a href="#strengths" class="mobile-link">기술력</a>
-  <a href="#process" class="mobile-link">제조공정</a>
   <a href="#certs" class="mobile-link">인증·실적</a>
+  <a href="tel:031-764-0248" class="mobile-link" style="font-weight:600; color: var(--accent-light);">📞 031-764-0248</a>
   <a href="#contact" class="nav-cta mobile-link">견적 문의</a>
 </nav>
+
+<!-- TRUST BAR -->
+<div class="trust-bar">
+  <div class="trust-bar-item">
+    <div class="trust-bar-num">37년</div>
+    <div class="trust-bar-label">1989년 창업</div>
+  </div>
+  <div class="trust-bar-item">
+    <div class="trust-bar-num">9종</div>
+    <div class="trust-bar-label">전문 제품군</div>
+  </div>
+  <div class="trust-bar-item">
+    <div class="trust-bar-num">5,000+</div>
+    <div class="trust-bar-label">누적 납품 건수</div>
+  </div>
+  <div class="trust-bar-item">
+    <div class="trust-bar-num">ISO·KS</div>
+    <div class="trust-bar-label">인증 보유</div>
+  </div>
+</div>
 
 <!-- HERO -->
 <section id="hero">
@@ -774,7 +898,7 @@
   <div class="hero-bg-glow2"></div>
 
   <div class="hero-content">
-    <div class="hero-badge">35년 이상의 산업용 탱크 제조 전문기업</div>
+    <div class="hero-badge">37년 산업용 탱크 제조 전문기업 · 1989년 창업</div>
     <h1 class="hero-h1">
       TRUSTED<br>
       TANK <em>SOLUTIONS</em><br>
@@ -782,7 +906,7 @@
     </h1>
     <p class="hero-desc">
       디젤탱크, 스테인리스탱크, FRP분리탱크, 열교환기 등 산업용 탱크의 설계·제작에서 설치까지
-      원스톱으로 제공합니다. 엄격한 품질관리와 35년의 경험을 바탕으로 최적의 솔루션을 제안합니다.
+      원스톱으로 제공합니다. 37년의 현장 경험과 엄격한 품질관리로 최적의 솔루션을 제안합니다.
     </p>
     <div class="hero-actions">
       <a href="#products" class="btn-primary">제품 둘러보기 →</a>
@@ -792,8 +916,8 @@
 
   <div class="hero-stats">
     <div class="stat-item">
-      <div class="stat-num">35<span>+</span></div>
-      <div class="stat-label">업력 (년)</div>
+      <div class="stat-num">37<span>년</span></div>
+      <div class="stat-label">업력 (1989년 창업)</div>
     </div>
     <div class="stat-item">
       <div class="stat-num">5,000<span>+</span></div>
@@ -825,7 +949,7 @@
 <section id="about">
   <div>
     <div class="section-eyebrow reveal">ABOUT US</div>
-    <h2 class="section-title reveal reveal-delay-1">35년, 탱크 하나에<br>집중해온 전문성</h2>
+    <h2 class="section-title reveal reveal-delay-1">37년, 탱크 하나에<br>집중해온 전문성</h2>
   </div>
 
   <div class="about-grid">
@@ -942,6 +1066,41 @@
   </div>
 </section>
 
+<!-- 시공실적 -->
+<section id="track-record">
+  <div class="section-eyebrow reveal">TRACK RECORD</div>
+  <h2 class="section-title reveal reveal-delay-1">주요 납품 실적</h2>
+  <p class="section-desc reveal reveal-delay-2">국내 건설사·에너지사·공공기관에 납품한 실적입니다.</p>
+
+  <div class="track-stats reveal">
+    <div class="track-stat">
+      <div class="track-stat-num">5,000<span>+</span></div>
+      <div class="track-stat-label">누적 납품 건수</div>
+    </div>
+    <div class="track-stat">
+      <div class="track-stat-num">37<span>년</span></div>
+      <div class="track-stat-label">업력 (1989년 창업)</div>
+    </div>
+    <div class="track-stat">
+      <div class="track-stat-num">100<span>%</span></div>
+      <div class="track-stat-label">출하 전 전수 품질 검사</div>
+    </div>
+  </div>
+
+  <div class="reveal">
+    <div class="track-clients-label">주요 납품처 (일부)</div>
+    <div class="track-clients-grid">
+      <div class="track-client">LH 공사</div>
+      <div class="track-client">GS 칼텍스</div>
+      <div class="track-client">SK 에너지</div>
+      <div class="track-client">현대건설</div>
+      <div class="track-client">삼성물산</div>
+      <div class="track-client">한전 KPS</div>
+    </div>
+    <p class="track-clients-note">* 동의를 받은 납품처 일부만 표기합니다. 추가 납품 실적은 문의 시 별도 안내드립니다.</p>
+  </div>
+</section>
+
 <!-- STRENGTHS -->
 <section id="strengths">
   <div class="section-eyebrow reveal">WHY CHOOSE US</div>
@@ -951,9 +1110,9 @@
     <div class="strength-card reveal">
       <div class="strength-num">01</div>
       <div class="strength-icon">🏆</div>
-      <div class="strength-title">35년 축적 기술력</div>
+      <div class="strength-title">37년 축적 기술력</div>
       <div class="strength-desc">
-        1989년 창업 이래 수천 건의 납품 실적과 현장 경험을 바탕으로
+        1989년 창업 이래 5,000건+ 납품 실적과 현장 경험을 바탕으로
         어떠한 규격·재질·용도의 탱크도 설계·제작할 수 있는 역량을 보유합니다.
       </div>
     </div>
@@ -983,46 +1142,6 @@
         초기 상담→설계→제작→설치→사후관리까지 한 회사에서 책임집니다.
         다수 협력사 관리 없이 단일 창구로 프로젝트를 진행하세요.
       </div>
-    </div>
-  </div>
-</section>
-
-<!-- PROCESS -->
-<section id="process">
-  <div class="section-eyebrow">PROCESS</div>
-  <h2 class="section-title">제조 공정</h2>
-  <p class="section-desc">상담 접수부터 현장 설치까지, 체계적인 5단계 프로세스로 진행됩니다.</p>
-
-  <div class="process-steps">
-    <div class="process-step reveal">
-      <div class="step-circle">📋</div>
-      <div class="step-num">STEP 01</div>
-      <div class="step-title">상담 · 견적</div>
-      <div class="step-desc">용도·용량·설치환경 등 요구사항 수집 후 맞춤 견적 제출</div>
-    </div>
-    <div class="process-step reveal reveal-delay-1">
-      <div class="step-circle">✏️</div>
-      <div class="step-num">STEP 02</div>
-      <div class="step-title">설계 · 도면</div>
-      <div class="step-desc">관련 법규·고객 사양에 맞는 설계 도면 작성 및 승인</div>
-    </div>
-    <div class="process-step reveal reveal-delay-2">
-      <div class="step-circle">🔩</div>
-      <div class="step-num">STEP 03</div>
-      <div class="step-title">소재 가공</div>
-      <div class="step-desc">인증 자재 구매 후 절단·벤딩·용접 등 정밀 가공</div>
-    </div>
-    <div class="process-step reveal reveal-delay-3">
-      <div class="step-circle">🔬</div>
-      <div class="step-num">STEP 04</div>
-      <div class="step-title">검사 · 도장</div>
-      <div class="step-desc">전수 누설·압력 검사 후 방청·도장 처리</div>
-    </div>
-    <div class="process-step reveal reveal-delay-4">
-      <div class="step-circle">🚚</div>
-      <div class="step-num">STEP 05</div>
-      <div class="step-title">납품 · 설치</div>
-      <div class="step-desc">현장 운반, 설치 시공 및 시운전 확인</div>
     </div>
   </div>
 </section>
@@ -1078,17 +1197,6 @@
     </div>
   </div>
 
-  <div class="clients-row reveal">
-    <div class="clients-label">주요 납품처 (일부)</div>
-    <div class="clients-logos">
-      <div class="client-logo">LH 공사</div>
-      <div class="client-logo">GS 칼텍스</div>
-      <div class="client-logo">SK 에너지</div>
-      <div class="client-logo">현대건설</div>
-      <div class="client-logo">삼성물산</div>
-      <div class="client-logo">한전 KPS</div>
-    </div>
-  </div>
 </section>
 
 <!-- CONTACT -->
@@ -1154,31 +1262,24 @@
             <input type="tel" name="phone" placeholder="010-0000-0000" required>
           </div>
           <div class="form-group">
-            <label>이메일</label>
-            <input type="email" name="email" placeholder="example@company.com">
+            <label>제품 종류</label>
+            <select name="product">
+              <option value="">-- 제품 선택 --</option>
+              <option>디젤(경유)탱크</option>
+              <option>스테인리스 탱크</option>
+              <option>FRP 분리탱크</option>
+              <option>열교환기</option>
+              <option>약품(화학)탱크</option>
+              <option>오일 탱크</option>
+              <option>압력용기</option>
+              <option>물탱크</option>
+              <option>맞춤 제작</option>
+              <option>기타</option>
+            </select>
           </div>
         </div>
-        <div class="form-group">
-          <label>문의 제품</label>
-          <select name="product">
-            <option value="">-- 제품을 선택해 주세요 --</option>
-            <option>디젤(경유)탱크</option>
-            <option>스테인리스 탱크</option>
-            <option>FRP 분리탱크</option>
-            <option>열교환기</option>
-            <option>약품(화학)탱크</option>
-            <option>오일 탱크</option>
-            <option>압력용기</option>
-            <option>물탱크</option>
-            <option>맞춤 제작</option>
-            <option>기타</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label>문의 내용 *</label>
-          <textarea name="message" placeholder="용량, 소재, 수량, 설치 장소 등 상세한 요구사항을 입력해 주세요." required></textarea>
-        </div>
         <button type="submit" class="form-submit" id="formSubmitBtn">문의 접수하기 →</button>
+        <p class="form-promise">접수 후 1영업일 이내 담당자가 직접 연락드립니다.</p>
       </form>
       <div class="form-success" id="formSuccess">
         <div class="form-success-icon">✅</div>
@@ -1189,13 +1290,53 @@
   </div>
 </section>
 
+<!-- PROCESS -->
+<section id="process" style="background: var(--light);">
+  <div class="section-eyebrow reveal">PROCESS</div>
+  <h2 class="section-title reveal reveal-delay-1">제조 공정</h2>
+  <p class="section-desc reveal reveal-delay-2">상담 접수부터 현장 설치까지, 체계적인 5단계 프로세스로 진행됩니다.</p>
+
+  <div class="process-steps">
+    <div class="process-step reveal">
+      <div class="step-circle">📋</div>
+      <div class="step-num">STEP 01</div>
+      <div class="step-title">상담 · 견적</div>
+      <div class="step-desc">용도·용량·설치환경 등 요구사항 수집 후 맞춤 견적 제출</div>
+    </div>
+    <div class="process-step reveal reveal-delay-1">
+      <div class="step-circle">✏️</div>
+      <div class="step-num">STEP 02</div>
+      <div class="step-title">설계 · 도면</div>
+      <div class="step-desc">관련 법규·고객 사양에 맞는 설계 도면 작성 및 승인</div>
+    </div>
+    <div class="process-step reveal reveal-delay-2">
+      <div class="step-circle">🔩</div>
+      <div class="step-num">STEP 03</div>
+      <div class="step-title">소재 가공</div>
+      <div class="step-desc">인증 자재 구매 후 절단·벤딩·용접 등 정밀 가공</div>
+    </div>
+    <div class="process-step reveal reveal-delay-3">
+      <div class="step-circle">🔬</div>
+      <div class="step-num">STEP 04</div>
+      <div class="step-title">검사 · 도장</div>
+      <div class="step-desc">전수 누설·압력 검사 후 방청·도장 처리</div>
+    </div>
+    <div class="process-step reveal reveal-delay-4">
+      <div class="step-circle">🚚</div>
+      <div class="step-num">STEP 05</div>
+      <div class="step-title">납품 · 설치</div>
+      <div class="step-desc">현장 운반, 설치 시공 및 시운전 확인</div>
+    </div>
+  </div>
+</section>
+
 <!-- FOOTER -->
 <footer>
   <div class="footer-top">
     <div>
       <div class="footer-brand-name">영보이엔지 (주)</div>
       <div class="footer-brand-desc">
-        1989년 창업 이래 35년간 산업용 탱크 제조 한 길을 걸어온 전문기업입니다.
+        1989년 창업 이래 37년간 산업용 탱크 제조 한 길을 걸어온 전문기업입니다.
         품질과 신뢰를 바탕으로 고객의 현장을 지원합니다.
       </div>
       <div style="margin-top:20px; font-size:12px; line-height:1.9;">

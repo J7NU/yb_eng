@@ -14,6 +14,7 @@
   :root {
     --accent: #1d6fa4;
     --accent-dim: rgba(29,111,164,0.15);
+    --accent-hero: rgba(29,111,164,0.65);
     --bg: #f4f4f0;
     --bg2: #ebe9e4;
     --bg3: #dddbd5;
@@ -23,6 +24,8 @@
     --border: rgba(0,0,0,0.08);
     --font-display: 'Bebas Neue', system-ui, sans-serif;
     --font-body: 'Gowun Dodum', system-ui, sans-serif;
+    --color-success: #2a8c55;
+    --color-error: #c0392b;
   }
 
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -195,7 +198,7 @@
   }
   .stat-num span { color: var(--accent); }
   .stat-label {
-    font-size: 18px;
+    font-size: 15px;
     color: var(--fg-muted);
     letter-spacing: 0.08em;
     margin-top: 4px;
@@ -279,16 +282,15 @@
   }
 
   .hero-contact-box {
-    background: var(--accent);
-    border: none;
-    border-left: none;
+    background: var(--accent-hero);
+    border-left: 3px solid var(--accent);
     padding: 20px 24px;
     margin-bottom: 28px;
   }
   .hero-contact-label {
     font-size: 18px;
     font-weight: 700;
-    letter-spacing: 0.12em;
+    letter-spacing: 1.5px;
     color: rgba(255,255,255,0.85);
     text-transform: uppercase;
     margin-bottom: 8px;
@@ -306,7 +308,7 @@
   }
   .hero-phone:hover { opacity: 0.85; }
   .hero-contact-sub {
-    font-size: 18px;
+    font-size: 13px;
     color: rgba(255,255,255,0.8);
     font-weight: 400;
   }
@@ -318,7 +320,7 @@
     margin-bottom: 8px;
   }
   .trust-badge {
-    font-size: 18px;
+    font-size: 15px;
     color: var(--fg-dim);
     background: rgba(255,255,255,0.04);
     border: 1px solid var(--border);
@@ -453,60 +455,6 @@
     margin-bottom: 16px;
   }
 
-  /* ── TECH / CERT ── */
-  #tech {
-    background: var(--bg2);
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 80px;
-    align-items: start;
-  }
-  .cert-list { margin-top: 40px; }
-  .cert-item {
-    display: flex;
-    gap: 20px;
-    padding: 24px 0;
-    border-bottom: 1px solid var(--border);
-    align-items: center;
-  }
-  .cert-item:first-child { border-top: 1px solid var(--border); }
-  .cert-num {
-    font-family: var(--font-display);
-    font-size: 22px;
-    color: var(--accent);
-    min-width: 32px;
-    letter-spacing: 0.02em;
-  }
-  .cert-name {
-    font-size: 18px;
-    font-weight: 700;
-    margin-bottom: 4px;
-    letter-spacing: -0.01em;
-  }
-  .cert-body {
-    font-size: 18px;
-    color: var(--fg-dim);
-    font-weight: 300;
-  }
-  .tech-right { padding-top: 80px; }
-  .tech-bar-row { margin-bottom: 28px; }
-  .tech-bar-label {
-    display: flex; justify-content: space-between;
-    font-size: 18px; font-weight: 500;
-    margin-bottom: 8px;
-  }
-  .tech-bar-label span { color: var(--accent); }
-  .tech-bar-track {
-    height: 3px;
-    background: var(--border);
-    position: relative;
-  }
-  .tech-bar-fill {
-    height: 100%;
-    background: var(--accent);
-    transition: width 1.2s cubic-bezier(0.4, 0, 0.2, 1);
-  }
-
   /* ── REFERENCES ── */
   #references { background: var(--bg); }
   .refs-header { margin-bottom: 56px; }
@@ -611,12 +559,17 @@
     border-color: var(--accent);
   }
   .file-name {
-    font-size: 18px;
+    font-size: 14px;
     color: var(--fg-muted);
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
     font-weight: 300;
+  }
+  .form-label-optional {
+    color: var(--fg-muted);
+    font-weight: 400;
+    font-size: 15px;
   }
   .file-name.has-file { color: var(--fg); }
   .file-hint {
@@ -656,10 +609,16 @@
     line-height: 1.8;
   }
   .info-sub {
-    font-size: 18px;
+    font-size: 14px;
     color: var(--fg-dim);
     font-weight: 300;
     margin-top: 4px;
+  }
+  .footer-biz {
+    font-size: 12px;
+    color: var(--fg-muted);
+    margin-top: 4px;
+    letter-spacing: 0.04em;
   }
   #map {
     width: 100%;
@@ -853,10 +812,10 @@
       40년의 기술력과 신뢰.
     </p>
 
-    <div class="hero-contact-box" style="background-color: rgba(29,111,164,0.65); border-color: rgb(29,111,164); border-width: 0px 0px 0px 3px; border-style: solid;">
-      <div class="hero-contact-label" style="letter-spacing: 1.5px;">지금 전화 상담</div>
+    <div class="hero-contact-box">
+      <div class="hero-contact-label">지금 전화 상담</div>
       <a id="hero-phone-link" href="tel:031-764-0248" class="hero-phone">031-764-0248</a>
-      <div class="hero-contact-sub" style="font-size: 13px;">평일 08:30 – 17:30 </div>
+      <div class="hero-contact-sub">평일 08:30 – 17:30</div>
     </div>
 
     <div class="hero-actions">
@@ -864,25 +823,25 @@
       <a href="#products" class="btn-ghost">제품 보기 →</a>
     </div>
 
-    <div class="hero-trust" style="font-size: 15px;">
-      <div class="trust-badge" style="font-size: 15px;"><span>✔</span> 1985년 설립</div>
-      <div class="trust-badge" style="font-size: 15px;"><span>✔</span> KS 인증</div>
-      <div class="trust-badge" style="font-size: 15px;"><span>✔</span> ISO 9001 인증</div>
-      <div class="trust-badge" style="font-size: 15px;"><span>✔</span> 2,000+ 납품 실적</div>
+    <div class="hero-trust">
+      <div class="trust-badge"><span>✔</span> 1985년 설립</div>
+      <div class="trust-badge"><span>✔</span> KS 인증</div>
+      <div class="trust-badge"><span>✔</span> ISO 9001 인증</div>
+      <div class="trust-badge"><span>✔</span> 2,000+ 납품 실적</div>
     </div>
 
     <div class="hero-stats">
       <div>
         <div class="stat-num">40<span>+</span></div>
-        <div class="stat-label" style="font-size: 15px;">YEARS OF EXPERTISE</div>
+        <div class="stat-label">YEARS OF EXPERTISE</div>
       </div>
       <div>
         <div class="stat-num">2K<span>+</span></div>
-        <div class="stat-label" style="font-size: 15px;">PROJECTS DELIVERED</div>
+        <div class="stat-label">PROJECTS DELIVERED</div>
       </div>
       <div>
         <div class="stat-num">100<span>%</span></div>
-        <div class="stat-label" style="font-size: 15px;">QUALITY CERTIFIED</div>
+        <div class="stat-label">QUALITY CERTIFIED</div>
       </div>
     </div>
 
@@ -1121,20 +1080,20 @@
         <textarea id="message" name="message" class="form-textarea" placeholder="용량, 규격, 수량, 설치 환경 등 요구사항을 작성해 주세요." required></textarea>
       </div>
       <div class="form-group">
-        <label class="form-label">장비일람표 <span style="color:var(--fg-muted); font-weight:400; font-size:15px;">(선택)</span></label>
+        <label class="form-label">장비일람표 <span class="form-label-optional">(선택)</span></label>
         <label class="file-upload-label">
           <input type="file" name="equipment-list" class="file-input" accept=".pdf,.dwg,.dxf,.xlsx,.xls,.jpg,.png" onchange="updateFileName(this)">
           <span class="file-btn">파일 선택</span>
-          <span class="file-name" style="font-size: 14px;">첨부파일 없음</span>
+          <span class="file-name">첨부파일 없음</span>
         </label>
         <div class="file-hint">PDF, DWG, DXF, Excel, 이미지 파일 가능</div>
       </div>
       <div class="form-group">
-        <label class="form-label">상세도면 <span style="color:var(--fg-muted); font-weight:400; font-size:15px;">(선택)</span></label>
+        <label class="form-label">상세도면 <span class="form-label-optional">(선택)</span></label>
         <label class="file-upload-label">
           <input type="file" name="detailed-drawing" class="file-input" accept=".pdf,.dwg,.dxf,.jpg,.png" onchange="updateFileName(this)">
           <span class="file-btn">파일 선택</span>
-          <span class="file-name" style="font-size: 14px;">첨부파일 없음</span>
+          <span class="file-name">첨부파일 없음</span>
         </label>
         <div class="file-hint">PDF, DWG, DXF, 이미지 파일 가능</div>
       </div>
@@ -1150,7 +1109,7 @@
     <div class="info-block">
       <div class="info-label">전화</div>
       <div class="info-value"><a id="info-phone-link" href="tel:031-764-0248" style="color:inherit; text-decoration:none;">031-764-0248</a></div>
-      <div class="info-sub" style="font-size: 14px;">평일 08:30 – 17:30</div>
+      <div class="info-sub">평일 08:30 – 17:30</div>
     </div>
     <div class="info-block">
       <div class="info-label">팩스</div>
@@ -1184,7 +1143,7 @@
 <footer>
   <div>
     <div class="footer-logo"><span>(주)영보</span>이엔지</div>
-    <div style="font-size: 12px; color:var(--fg-muted); margin-top:4px; letter-spacing:0.04em;">(주)영보이엔지 · 사업자등록번호 126-81-88893</div>
+    <div class="footer-biz">(주)영보이엔지 · 사업자등록번호 126-81-88893</div>
   </div>
   <div class="footer-copy">
     © 2026 YB Engineering. All rights reserved.
@@ -1256,18 +1215,6 @@ const io = new IntersectionObserver(entries => {
 }, { threshold: 0.12 });
 revealEls.forEach(el => io.observe(el));
 
-// ── TECH BARS ──
-const bars = document.querySelectorAll('.tech-bar-fill');
-const barIO = new IntersectionObserver(entries => {
-  entries.forEach(e => {
-    if (e.isIntersecting) {
-      e.target.style.width = e.target.dataset.w + '%';
-      barIO.unobserve(e.target);
-    }
-  });
-}, { threshold: 0.5 });
-bars.forEach(b => barIO.observe(b));
-
 // ── 파일 이름 표시 ──
 function updateFileName(input) {
   const nameEl = input.parentElement.querySelector('.file-name');
@@ -1296,7 +1243,7 @@ async function handleSubmit(e) {
     });
     if (res.ok) {
       btn.textContent = '전송 완료 ✓';
-      btn.style.background = '#2a8c55';
+      btn.style.background = 'var(--color-success)';
       e.target.reset();
       setTimeout(() => {
         btn.textContent = '문의 보내기';
@@ -1308,7 +1255,7 @@ async function handleSubmit(e) {
     }
   } catch {
     btn.textContent = '전송 실패 — 다시 시도';
-    btn.style.background = '#c0392b';
+    btn.style.background = 'var(--color-error)';
     setTimeout(() => {
       btn.textContent = '문의 보내기';
       btn.style.background = '';

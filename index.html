@@ -735,8 +735,9 @@
   .map-modal-confirm:hover { opacity: 0.85; }
 
   /* ── Scroll animations ── */
-  .reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.6s ease, transform 0.6s ease; }
-  .reveal.visible { opacity: 1; transform: none; }
+  /* js-loaded 클래스가 있을 때만 숨김 — JS 미작동 시 콘텐츠 항상 표시 */
+  .js-loaded .reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.6s ease, transform 0.6s ease; }
+  .js-loaded .reveal.visible { opacity: 1; transform: none; }
 
   /* ── 이미지 반응형 제어 ──
      .hero-img-desktop : 데스크톱(901px+)에서만 표시
@@ -1208,7 +1209,7 @@ window.addEventListener('DOMContentLoaded', () => {
 });
 
 // ── 카카오 지도 초기화 ──
-kakao.maps.load(function() {
+if (typeof kakao !== 'undefined' && kakao.maps) kakao.maps.load(function() {
   var container = document.getElementById('map');
   var options = {
     center: new kakao.maps.LatLng(SITE.mapLat, SITE.mapLng),
@@ -1239,12 +1240,13 @@ function goKakaoNav() {
   window.open(url, '_blank', 'noopener,noreferrer');
   closeMapModal();
 }
-// 오버레이 클릭으로 닫기
+// 오버레이 클릭으로 닫기 (모달 박스 바깥 영역 클릭 시)
 document.getElementById('mapModal').addEventListener('click', function(e) {
-  if (e.target === this) closeMapModal();
+  if (e.target === this || e.target.classList.contains('map-modal-overlay')) closeMapModal();
 });
 
 // ── SCROLL REVEAL ──
+document.documentElement.classList.add('js-loaded');
 const revealEls = document.querySelectorAll('.reveal');
 const io = new IntersectionObserver(entries => {
   entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); } });

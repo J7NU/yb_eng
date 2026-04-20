@@ -243,7 +243,7 @@
   }
   .hero-accent-line {
     position: absolute;
-    bottom: 80px; left: 0; right: 0;
+    bottom: 80px; right: 0;
     height: 3px;
     background: var(--accent);
     width: 40%;
@@ -1084,27 +1084,27 @@
     <form class="contact-form" onsubmit="handleSubmit(event)">
       <div class="form-row">
         <div class="form-group">
-          <label class="form-label">회사명 *</label>
-          <input type="text" name="company" class="form-input" placeholder="(주)회사명" required>
+          <label class="form-label" for="company">회사명 *</label>
+          <input type="text" id="company" name="company" class="form-input" placeholder="(주)회사명" required>
         </div>
         <div class="form-group">
-          <label class="form-label">담당자명 *</label>
-          <input type="text" name="name" class="form-input" placeholder="홍길동" required>
+          <label class="form-label" for="name">담당자명 *</label>
+          <input type="text" id="name" name="name" class="form-input" placeholder="홍길동" required>
         </div>
       </div>
       <div class="form-row">
         <div class="form-group">
-          <label class="form-label">연락처 *</label>
-          <input type="tel" name="phone" class="form-input" placeholder="010-0000-0000" required>
+          <label class="form-label" for="phone">연락처 *</label>
+          <input type="tel" id="phone" name="phone" class="form-input" placeholder="010-0000-0000" required>
         </div>
         <div class="form-group">
-          <label class="form-label">이메일</label>
-          <input type="email" name="email" class="form-input" placeholder="name@company.com">
+          <label class="form-label" for="email">이메일</label>
+          <input type="email" id="email" name="email" class="form-input" placeholder="name@company.com">
         </div>
       </div>
       <div class="form-group">
-        <label class="form-label">문의 제품</label>
-        <select name="product" class="form-select form-input">
+        <label class="form-label" for="product">문의 제품</label>
+        <select id="product" name="product" class="form-select form-input">
           <option value="">제품 선택</option>
           <option>열교환기</option>
           <option>온수 탱크</option>
@@ -1115,8 +1115,8 @@
         </select>
       </div>
       <div class="form-group">
-        <label class="form-label">문의 내용 *</label>
-        <textarea name="message" class="form-textarea" placeholder="용량, 규격, 수량, 설치 환경 등 요구사항을 작성해 주세요." required></textarea>
+        <label class="form-label" for="message">문의 내용 *</label>
+        <textarea id="message" name="message" class="form-textarea" placeholder="용량, 규격, 수량, 설치 환경 등 요구사항을 작성해 주세요." required></textarea>
       </div>
       <div class="form-group">
         <label class="form-label">장비일람표 <span style="color:var(--fg-muted); font-weight:400; font-size:15px;">(선택)</span></label>
@@ -1152,7 +1152,7 @@
     </div>
     <div class="info-block">
       <div class="info-label">팩스</div>
-      <div class="info-value"><a href="tel:031-764-0249" style="color:inherit; text-decoration:none;">031-764-0249</a></div>
+      <div class="info-value"><span>031-764-0249</span></div>
     </div>
     <div class="info-block">
       <div class="info-label">이메일</div>
@@ -1193,7 +1193,6 @@
 const SITE = {
   phone: '031-764-0248',
   fax:   '031-764-0249',
-  email: 'ybeng@hanmail.net',
   address: '경기 광주시 곤지암읍 광여로99번길 7',
   formspreeEndpoint: 'https://formspree.io/f/mdayddod',
   kakaoMapKey: 'c51341751710462b11216ff297ef1c8c',

@@ -6,15 +6,8 @@
 <title>(주)영보이엔지 — 탱크 전문 제조기업</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&family=Bebas+Neue&display=swap" rel="stylesheet">
-
-<script type="application/json" id="__tweaks__">
-{
-  "accentColor": "#1d6fa4",
-  "heroLayout": "diagonal",
-  "showGrid": true,
-  "fontStyle": "modern"
-}
-</script>
+<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=c51341751710462b11216ff297ef1c8c&autoload=false"></script>
+<!-- TODO: 애널리틱스 스니펫을 아래에 추가하세요 (예: Google Analytics, Naver Analytics) -->
 
 <style>
   :root {
@@ -27,8 +20,8 @@
     --fg-dim: #555;
     --fg-muted: #999;
     --border: rgba(0,0,0,0.08);
-    --font-display: 'Bebas Neue', sans-serif;
-    --font-body: 'Gowun Dodum', sans-serif;
+    --font-display: 'Bebas Neue', system-ui, sans-serif;
+    --font-body: 'Gowun Dodum', system-ui, sans-serif;
   }
 
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -69,7 +62,7 @@
   .nav-links a {
     color: #ffffff;
     text-decoration: none;
-    font-size: 13px;
+    font-size: 18px;
     font-weight: 500;
     letter-spacing: 0.05em;
     transition: color 0.2s;
@@ -81,7 +74,7 @@
     border: none;
     padding: 10px 22px;
     font-family: var(--font-body);
-    font-size: 13px;
+    font-size: 18px;
     font-weight: 700;
     cursor: pointer;
     transition: opacity 0.2s;
@@ -107,7 +100,7 @@
   }
   .hero-eyebrow {
     display: flex; align-items: center; gap: 12px;
-    font-size: 11px; font-weight: 700; letter-spacing: 0.15em;
+    font-size: 18px; font-weight: 700; letter-spacing: 0.15em;
     color: var(--accent); text-transform: uppercase;
     margin-bottom: 28px;
   }
@@ -128,7 +121,7 @@
     color: var(--accent);
   }
   .hero-sub {
-    font-size: 15px;
+    font-size: 18px;
     color: var(--fg-dim);
     line-height: 1.8;
     max-width: 420px;
@@ -141,7 +134,7 @@
     color: #fff;
     padding: 16px 36px;
     font-family: var(--font-body);
-    font-size: 14px;
+    font-size: 18px;
     font-weight: 700;
     border: none;
     cursor: pointer;
@@ -153,7 +146,7 @@
   .btn-primary:hover { opacity: 0.85; }
   .btn-ghost {
     color: var(--fg-dim);
-    font-size: 14px;
+    font-size: 18px;
     font-weight: 500;
     text-decoration: none;
     border-bottom: 1px solid var(--fg-muted);
@@ -176,7 +169,7 @@
   }
   .stat-num span { color: var(--accent); }
   .stat-label {
-    font-size: 11px;
+    font-size: 18px;
     color: var(--fg-muted);
     letter-spacing: 0.08em;
     margin-top: 4px;
@@ -194,7 +187,6 @@
     align-items: center; justify-content: center;
     gap: 12px;
   }
-  /* Striped background placeholder */
   .hero-img-placeholder::before {
     content: '';
     position: absolute; inset: 0;
@@ -209,13 +201,12 @@
   .placeholder-label {
     position: relative; z-index: 1;
     font-family: monospace;
-    font-size: 11px;
+    font-size: 18px;
     color: var(--fg-muted);
     letter-spacing: 0.1em;
     text-align: center;
     line-height: 2;
   }
-  /* diagonal red slash */
   .hero-right::after {
     content: '';
     position: absolute;
@@ -237,7 +228,7 @@
   /* ── SECTION COMMON ── */
   section { padding: 100px 64px; }
   .section-label {
-    font-size: 11px; font-weight: 700; letter-spacing: 0.18em;
+    font-size: 18px; font-weight: 700; letter-spacing: 0.18em;
     color: var(--accent); text-transform: uppercase;
     margin-bottom: 16px;
     display: flex; align-items: center; gap: 10px;
@@ -254,7 +245,7 @@
     margin-bottom: 16px;
   }
   .section-desc {
-    font-size: 14px;
+    font-size: 18px;
     color: var(--fg-dim);
     line-height: 1.9;
     max-width: 560px;
@@ -269,10 +260,10 @@
     margin-bottom: 28px;
   }
   .hero-contact-label {
-    font-size: 11px;
+    font-size: 18px;
     font-weight: 700;
     letter-spacing: 0.12em;
-    color: rgb(29, 111, 164);
+    color: rgba(255,255,255,0.85);
     text-transform: uppercase;
     margin-bottom: 8px;
   }
@@ -280,7 +271,7 @@
     display: block;
     font-family: var(--font-display);
     font-size: 40px;
-    color: #1a1a1a;
+    color: #fff;
     text-decoration: none;
     letter-spacing: 0.04em;
     line-height: 1;
@@ -289,8 +280,8 @@
   }
   .hero-phone:hover { opacity: 0.85; }
   .hero-contact-sub {
-    font-size: 12px;
-    color: #555;
+    font-size: 18px;
+    color: rgba(255,255,255,0.8);
     font-weight: 400;
   }
   .hero-trust {
@@ -301,7 +292,7 @@
     margin-bottom: 8px;
   }
   .trust-badge {
-    font-size: 12px;
+    font-size: 18px;
     color: var(--fg-dim);
     background: rgba(255,255,255,0.04);
     border: 1px solid var(--border);
@@ -343,13 +334,13 @@
     letter-spacing: 0.02em;
   }
   .about-card h4 {
-    font-size: 14px;
+    font-size: 18px;
     font-weight: 700;
     margin-bottom: 8px;
     letter-spacing: 0.03em;
   }
   .about-card p {
-    font-size: 12px;
+    font-size: 18px;
     color: var(--fg-dim);
     line-height: 1.8;
     font-weight: 300;
@@ -398,7 +389,7 @@
   .product-thumb-label {
     position: relative; z-index: 1;
     font-family: monospace;
-    font-size: 10px;
+    font-size: 18px;
     color: var(--fg-muted);
     letter-spacing: 0.08em;
     text-align: center;
@@ -406,13 +397,13 @@
   }
   .product-body { padding: 28px; }
   .product-name {
-    font-size: 16px;
+    font-size: 18px;
     font-weight: 700;
     margin-bottom: 8px;
     letter-spacing: -0.01em;
   }
   .product-desc {
-    font-size: 12px;
+    font-size: 18px;
     color: var(--fg-dim);
     line-height: 1.8;
     font-weight: 300;
@@ -427,7 +418,7 @@
   }
   .product-tag {
     display: inline-block;
-    font-size: 10px;
+    font-size: 18px;
     font-weight: 700;
     letter-spacing: 0.1em;
     color: var(--accent);
@@ -461,25 +452,21 @@
     letter-spacing: 0.02em;
   }
   .cert-name {
-    font-size: 14px;
+    font-size: 18px;
     font-weight: 700;
     margin-bottom: 4px;
     letter-spacing: -0.01em;
   }
   .cert-body {
-    font-size: 12px;
+    font-size: 18px;
     color: var(--fg-dim);
     font-weight: 300;
   }
-  .tech-right {
-    padding-top: 80px;
-  }
-  .tech-bar-row {
-    margin-bottom: 28px;
-  }
+  .tech-right { padding-top: 80px; }
+  .tech-bar-row { margin-bottom: 28px; }
   .tech-bar-label {
     display: flex; justify-content: space-between;
-    font-size: 13px; font-weight: 500;
+    font-size: 18px; font-weight: 500;
     margin-bottom: 8px;
   }
   .tech-bar-label span { color: var(--accent); }
@@ -520,14 +507,14 @@
     margin-bottom: 8px;
   }
   .ref-desc {
-    font-size: 12px;
+    font-size: 18px;
     color: var(--fg-muted);
     font-weight: 300;
     line-height: 1.7;
   }
   .refs-note {
     text-align: center;
-    font-size: 12px;
+    font-size: 18px;
     color: var(--fg-muted);
     letter-spacing: 0.05em;
   }
@@ -543,7 +530,7 @@
   .contact-form { display: flex; flex-direction: column; gap: 16px; }
   .form-group { display: flex; flex-direction: column; gap: 6px; }
   .form-label {
-    font-size: 11px;
+    font-size: 18px;
     font-weight: 700;
     letter-spacing: 0.1em;
     color: var(--fg-muted);
@@ -554,7 +541,7 @@
     color: var(--fg);
     padding: 14px 16px;
     font-family: var(--font-body);
-    font-size: 14px;
+    font-size: 18px;
     font-weight: 300;
     outline: none;
     transition: border-color 0.2s;
@@ -581,7 +568,7 @@
   .file-btn {
     background: var(--bg3);
     color: var(--fg-dim);
-    font-size: 11px;
+    font-size: 18px;
     font-weight: 700;
     letter-spacing: 0.08em;
     padding: 6px 14px;
@@ -595,7 +582,7 @@
     border-color: var(--accent);
   }
   .file-name {
-    font-size: 12px;
+    font-size: 18px;
     color: var(--fg-muted);
     overflow: hidden;
     text-overflow: ellipsis;
@@ -604,19 +591,18 @@
   }
   .file-name.has-file { color: var(--fg); }
   .file-hint {
-    font-size: 11px;
+    font-size: 18px;
     color: var(--fg-muted);
     margin-top: 4px;
     letter-spacing: 0.03em;
   }
-
   .btn-submit {
     background: var(--accent);
     color: #fff;
     border: none;
     padding: 18px 40px;
     font-family: var(--font-body);
-    font-size: 14px;
+    font-size: 18px;
     font-weight: 700;
     cursor: pointer;
     transition: opacity 0.2s;
@@ -628,7 +614,7 @@
   .contact-info { padding-top: 80px; }
   .info-block { margin-bottom: 40px; }
   .info-label {
-    font-size: 11px;
+    font-size: 18px;
     font-weight: 700;
     letter-spacing: 0.12em;
     color: var(--accent);
@@ -636,15 +622,21 @@
     margin-bottom: 8px;
   }
   .info-value {
-    font-size: 15px;
+    font-size: 18px;
     font-weight: 500;
     line-height: 1.8;
   }
   .info-sub {
-    font-size: 12px;
+    font-size: 18px;
     color: var(--fg-dim);
     font-weight: 300;
     margin-top: 4px;
+  }
+  #map {
+    width: 100%;
+    height: 220px;
+    margin-top: 48px;
+    background: var(--bg3);
   }
 
   /* ── FOOTER ── */
@@ -658,61 +650,15 @@
   }
   .footer-logo {
     font-weight: 900;
-    font-size: 15px;
+    font-size: 18px;
     letter-spacing: -0.02em;
   }
   .footer-logo span { color: var(--accent); }
   .footer-copy {
-    font-size: 12px;
+    font-size: 18px;
     color: var(--fg-muted);
     letter-spacing: 0.05em;
   }
-
-  /* ── TWEAKS PANEL ── */
-  #tweaks-panel {
-    display: none;
-    position: fixed;
-    bottom: 24px; right: 24px;
-    z-index: 9999;
-    background: #1a1a1a;
-    border: 1px solid #333;
-    padding: 24px;
-    width: 280px;
-    box-shadow: 0 20px 60px rgba(0,0,0,0.6);
-  }
-  #tweaks-panel.open { display: block; }
-  .tweaks-title {
-    font-size: 11px; font-weight: 700; letter-spacing: 0.12em;
-    color: var(--accent); text-transform: uppercase; margin-bottom: 20px;
-    display: flex; justify-content: space-between; align-items: center;
-  }
-  .tweak-row { margin-bottom: 16px; }
-  .tweak-label { font-size: 11px; color: var(--fg-muted); margin-bottom: 6px; font-weight: 500; }
-  .tweak-options { display: flex; gap: 6px; flex-wrap: wrap; }
-  .tweak-btn {
-    padding: 6px 12px;
-    font-size: 11px;
-    font-weight: 600;
-    border: 1px solid var(--border);
-    background: transparent;
-    color: var(--fg-dim);
-    cursor: pointer;
-    transition: all 0.15s;
-    letter-spacing: 0.05em;
-  }
-  .tweak-btn.active {
-    border-color: var(--accent);
-    color: var(--accent);
-    background: var(--accent-dim);
-  }
-  .tweak-swatch {
-    width: 28px; height: 28px;
-    border: 2px solid transparent;
-    cursor: pointer;
-    transition: border-color 0.15s;
-  }
-  .tweak-swatch.active { border-color: var(--fg); }
-  .tweaks-swatches { display: flex; gap: 6px; }
 
   /* ── Scroll animations ── */
   .reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.6s ease, transform 0.6s ease; }
@@ -731,22 +677,6 @@
     footer { padding: 32px 24px; flex-direction: column; gap: 12px; text-align: center; }
   }
 </style>
-<template id="__bundler_thumbnail" data-bg-color="#111111">
-  <svg viewBox="0 0 120 80" xmlns="http://www.w3.org/2000/svg">
-    <rect width="120" height="80" fill="#111111"/>
-    <rect x="0" y="0" width="4" height="80" fill="#e63b2e"/>
-    <rect x="12" y="24" width="48" height="6" rx="1" fill="#f0ede8" opacity="0.9"/>
-    <rect x="12" y="34" width="36" height="4" rx="1" fill="#f0ede8" opacity="0.5"/>
-    <rect x="12" y="44" width="28" height="4" rx="1" fill="#f0ede8" opacity="0.3"/>
-    <rect x="72" y="16" width="40" height="48" fill="#1a1a1a"/>
-    <rect x="72" y="16" width="40" height="3" fill="#e63b2e"/>
-    <rect x="76" y="24" width="32" height="4" rx="1" fill="#555" opacity="0.6"/>
-    <rect x="76" y="32" width="24" height="3" rx="1" fill="#555" opacity="0.4"/>
-    <rect x="76" y="39" width="28" height="3" rx="1" fill="#555" opacity="0.4"/>
-    <rect x="12" y="58" width="20" height="8" fill="#e63b2e"/>
-    <rect x="35" y="60" width="18" height="4" rx="1" fill="#555" opacity="0.5"/>
-  </svg>
-</template>
 </head>
 <body>
 
@@ -776,11 +706,10 @@
       고품질 탱크 솔루션을 설계·제조합니다. 30년의 기술력과 신뢰.
     </p>
 
-    <!-- 전화 상담 강조 박스 -->
-    <div class="hero-contact-box" style="background-color: rgba(29, 111, 164, 0.65); border-color: rgb(29, 111, 164); border-width: 0px 0px 0px 3px; border-style: solid;">
+    <div class="hero-contact-box" style="background-color: rgba(29,111,164,0.65); border-color: rgb(29,111,164); border-width: 0px 0px 0px 3px; border-style: solid;">
       <div class="hero-contact-label">지금 전화 상담</div>
-      <a href="tel:031-000-0000" class="hero-phone">031-000-0000</a>
-      <div class="hero-contact-sub" style="color: rgb(2, 2, 2);">평일 08:30 – 17:30 · 친절하게 답변드립니다</div>
+      <a id="hero-phone-link" href="tel:031-764-0248" class="hero-phone">031-764-0248</a>
+      <div class="hero-contact-sub">평일 08:30 – 17:30 · 친절하게 답변드립니다</div>
     </div>
 
     <div class="hero-actions">
@@ -788,7 +717,6 @@
       <a href="#products" class="btn-ghost">제품 보기 →</a>
     </div>
 
-    <!-- 신뢰 배지 -->
     <div class="hero-trust">
       <div class="trust-badge"><span>✔</span> 1995년 설립</div>
       <div class="trust-badge"><span>✔</span> KS 인증</div>
@@ -818,7 +746,6 @@
         product / factory photography
       </div>
     </div>
-
   </div>
 </section>
 
@@ -865,9 +792,9 @@
       <div class="section-label">제품 소개</div>
       <h2 class="section-title">주요 제품군</h2>
     </div>
-      <p class="section-desc" style="max-width: 320px; font-size:13px;">
-          산업 현장 특성에 맞는 다양한 탱크 제품을 설계부터 <br>제조까지 일괄 공급합니다.
-        </p>
+    <p class="section-desc" style="max-width: 320px; font-size: 18px;">
+      산업 현장 특성에 맞는 다양한 탱크 제품을 설계부터 <br>제조까지 일괄 공급합니다.
+    </p>
   </div>
   <div class="products-grid reveal">
     <div class="product-card">
@@ -877,7 +804,7 @@
       <div class="product-body">
         <div class="product-tag">SERIES 01</div>
         <div class="product-name">열교환기</div>
-        <p class="product-desc">Shell & Tube / Plate 형식의 고효율 열교환기. 냉난방, 공정 열교환, 스팀 응용 등 다양한 용도에 최적화.</p>
+        <p class="product-desc">Shell &amp; Tube / Plate 형식의 고효율 열교환기. 냉난방, 공정 열교환, 스팀 응용 등 다양한 용도에 최적화.</p>
         <span class="product-img-line"></span>
       </div>
     </div>
@@ -927,14 +854,12 @@
     </div>
     <div class="product-card" style="background: var(--bg3); display:flex; align-items:center; justify-content:center; min-height:340px; flex-direction:column; gap:12px; cursor:default;">
       <div style="font-family:var(--font-display); font-size:48px; color:var(--accent);">+</div>
-      <div style="font-size:13px; color:var(--fg-dim); font-weight:500; letter-spacing:0.05em;">특수 주문 제작</div>
-      <div style="font-size:11px; color:var(--fg-muted); text-align:center; max-width:180px; line-height:1.8;">고객 사양에 맞는 비표준 탱크 제작 문의</div>
-      <a href="#contact" class="btn-ghost" style="font-size:12px; margin-top:8px;">문의하기 →</a>
+      <div style="font-size: 18px; color:var(--fg-dim); font-weight:500; letter-spacing:0.05em;">특수 주문 제작</div>
+      <div style="font-size: 18px; color:var(--fg-muted); text-align:center; max-width:180px; line-height:1.8;">고객 사양에 맞는 비표준 탱크 제작 문의</div>
+      <a href="#contact" class="btn-ghost" style="font-size: 18px; margin-top:8px;">문의하기 →</a>
     </div>
   </div>
 </section>
-
-
 
 <!-- REFERENCES -->
 <section id="references">
@@ -976,7 +901,7 @@
     </div>
     <div class="ref-card" style="display:flex; align-items:center; justify-content:center; flex-direction:column; gap:8px;">
       <div style="font-family:var(--font-display); font-size:36px; color:var(--accent);">2K+</div>
-      <div style="font-size:11px; color:var(--fg-muted); letter-spacing:0.08em; text-align:center;">납품 프로젝트<br>누적 실적</div>
+      <div style="font-size: 18px; color:var(--fg-muted); letter-spacing:0.08em; text-align:center;">납품 프로젝트<br>누적 실적</div>
     </div>
   </div>
   <div class="refs-note">* 고객사명은 일부 요약 표기되었습니다. 상세 납품 레퍼런스는 별도 문의 바랍니다.</div>
@@ -995,26 +920,26 @@
       <div class="form-row">
         <div class="form-group">
           <label class="form-label">회사명 *</label>
-          <input type="text" class="form-input" placeholder="(주)회사명" required>
+          <input type="text" name="company" class="form-input" placeholder="(주)회사명" required>
         </div>
         <div class="form-group">
           <label class="form-label">담당자명 *</label>
-          <input type="text" class="form-input" placeholder="홍길동" required>
+          <input type="text" name="name" class="form-input" placeholder="홍길동" required>
         </div>
       </div>
       <div class="form-row">
         <div class="form-group">
           <label class="form-label">연락처 *</label>
-          <input type="tel" class="form-input" placeholder="010-0000-0000" required>
+          <input type="tel" name="phone" class="form-input" placeholder="010-0000-0000" required>
         </div>
         <div class="form-group">
           <label class="form-label">이메일</label>
-          <input type="email" class="form-input" placeholder="name@company.com">
+          <input type="email" name="email" class="form-input" placeholder="name@company.com">
         </div>
       </div>
       <div class="form-group">
         <label class="form-label">문의 제품</label>
-        <select class="form-select form-input">
+        <select name="product" class="form-select form-input">
           <option value="">제품 선택</option>
           <option>열교환기</option>
           <option>온수 탱크</option>
@@ -1026,12 +951,12 @@
       </div>
       <div class="form-group">
         <label class="form-label">문의 내용 *</label>
-        <textarea class="form-textarea" placeholder="용량, 규격, 수량, 설치 환경 등 요구사항을 작성해 주세요." required></textarea>
+        <textarea name="message" class="form-textarea" placeholder="용량, 규격, 수량, 설치 환경 등 요구사항을 작성해 주세요." required></textarea>
       </div>
       <div class="form-group">
         <label class="form-label">장비일람표 <span style="color:var(--fg-muted); font-weight:400;">(선택)</span></label>
         <label class="file-upload-label">
-          <input type="file" class="file-input" accept=".pdf,.dwg,.dxf,.xlsx,.xls,.jpg,.png" onchange="updateFileName(this)">
+          <input type="file" name="equipment-list" class="file-input" accept=".pdf,.dwg,.dxf,.xlsx,.xls,.jpg,.png" onchange="updateFileName(this)">
           <span class="file-btn">파일 선택</span>
           <span class="file-name">첨부파일 없음</span>
         </label>
@@ -1040,7 +965,7 @@
       <div class="form-group">
         <label class="form-label">상세도면 <span style="color:var(--fg-muted); font-weight:400;">(선택)</span></label>
         <label class="file-upload-label">
-          <input type="file" class="file-input" accept=".pdf,.dwg,.dxf,.jpg,.png" onchange="updateFileName(this)">
+          <input type="file" name="detailed-drawing" class="file-input" accept=".pdf,.dwg,.dxf,.jpg,.png" onchange="updateFileName(this)">
           <span class="file-btn">파일 선택</span>
           <span class="file-name">첨부파일 없음</span>
         </label>
@@ -1053,28 +978,22 @@
     <div style="height:80px"></div>
     <div class="info-block">
       <div class="info-label">주소</div>
-      <div class="info-value">경기도 시흥시 정왕동 산업로 000번길 00</div>
-      <div class="info-sub">(실제 주소로 교체 필요)</div>
+      <div class="info-value">경기 광주시 곤지암읍 광여로99번길 7</div>
     </div>
     <div class="info-block">
       <div class="info-label">전화</div>
-      <div class="info-value">031-000-0000</div>
+      <div class="info-value"><a id="info-phone-link" href="tel:031-764-0248" style="color:inherit; text-decoration:none;">031-764-0248</a></div>
       <div class="info-sub">평일 08:30 – 17:30</div>
     </div>
     <div class="info-block">
       <div class="info-label">팩스</div>
-      <div class="info-value">031-000-0001</div>
+      <div class="info-value">031-764-0249</div>
     </div>
     <div class="info-block">
       <div class="info-label">이메일</div>
-      <div class="info-value">info@yb-eng.co.kr</div>
-      <div class="info-sub">(실제 이메일로 교체 필요)</div>
+      <div class="info-value"><a href="mailto:info@yb-eng.co.kr" style="color:inherit; text-decoration:none;">info@yb-eng.co.kr</a></div>
     </div>
-    <div style="margin-top: 48px; height: 200px; background: var(--bg3); display:flex; align-items:center; justify-content:center;">
-      <div style="font-family:monospace; font-size:11px; color:var(--fg-muted); letter-spacing:0.08em; text-align:center;">
-        [ 지도 / MAP ]<br>Google Maps 또는 Kakao Map 삽입
-      </div>
-    </div>
+    <div id="map"></div>
   </div>
 </section>
 
@@ -1082,105 +1001,46 @@
 <footer>
   <div>
     <div class="footer-logo"><span>영보</span>이엔지</div>
-    <div style="font-size:11px; color:var(--fg-muted); margin-top:4px; letter-spacing:0.04em;">(주)영보이엔지 · 사업자등록번호 000-00-00000</div>
+    <div style="font-size: 18px; color:var(--fg-muted); margin-top:4px; letter-spacing:0.04em;">(주)영보이엔지 · 사업자등록번호 126-81-88893</div>
   </div>
   <div class="footer-copy">
-    © 2024 Young Bo Engineering Co., Ltd. All rights reserved.
+    © 2025 Young Bo Engineering Co., Ltd. All rights reserved.
   </div>
 </footer>
 
-<!-- TWEAKS PANEL -->
-<div id="tweaks-panel">
-  <div class="tweaks-title">
-    Tweaks
-    <span style="cursor:pointer; font-size:16px; color:var(--fg-muted);" onclick="closeTweaks()">×</span>
-  </div>
-  <div class="tweak-row">
-    <div class="tweak-label">액센트 색상</div>
-    <div class="tweaks-swatches">
-      <div class="tweak-swatch active" style="background:#e63b2e;" data-color="#e63b2e" onclick="setAccent(this)"></div>
-      <div class="tweak-swatch" style="background:#1d6fa4;" data-color="#1d6fa4" onclick="setAccent(this)"></div>
-      <div class="tweak-swatch" style="background:#c8a84b;" data-color="#c8a84b" onclick="setAccent(this)"></div>
-      <div class="tweak-swatch" style="background:#2a8c55;" data-color="#2a8c55" onclick="setAccent(this)"></div>
-    </div>
-  </div>
-  <div class="tweak-row">
-    <div class="tweak-label">배경 테마</div>
-    <div class="tweak-options">
-      <button class="tweak-btn active" onclick="setTheme('dark', this)">다크</button>
-      <button class="tweak-btn" onclick="setTheme('charcoal', this)">차콜</button>
-      <button class="tweak-btn" onclick="setTheme('light', this)">라이트</button>
-    </div>
-  </div>
-  <div class="tweak-row">
-    <div class="tweak-label">타이포 스타일</div>
-    <div class="tweak-options">
-      <button class="tweak-btn active" onclick="setFont('impact', this)">임팩트</button>
-      <button class="tweak-btn" onclick="setFont('refined', this)">세련형</button>
-    </div>
-  </div>
-</div>
-
 <script>
-// ── TWEAKS ──
-let tweakPanel = document.getElementById('tweaks-panel');
+const SITE = {
+  phone: '031-764-0248',
+  fax:   '031-764-0249',
+  email: 'info@yb-eng.co.kr',
+  address: '경기 광주시 곤지암읍 광여로99번길 7',
+  formspreeEndpoint: 'https://formspree.io/f/mdayddod',
+  kakaoMapKey: 'c51341751710462b11216ff297ef1c8c',
+  mapLat: 37.4253,  // 곤지암읍 근사 좌표 — 카카오 지도에서 정확히 확인 후 수정
+  mapLng: 127.3587,
+};
 
-window.addEventListener('message', e => {
-  if (e.data?.type === '__activate_edit_mode') tweakPanel.classList.add('open');
-  if (e.data?.type === '__deactivate_edit_mode') tweakPanel.classList.remove('open');
+// DOM에 연락처 자동 반영
+window.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('[href="tel:031-764-0248"]').forEach(el => {
+    el.href = 'tel:' + SITE.phone.replace(/-/g, '');
+  });
 });
-window.parent.postMessage({ type: '__edit_mode_available' }, '*');
 
-function closeTweaks() { tweakPanel.classList.remove('open'); }
-
-function setAccent(el) {
-  const color = el.dataset.color;
-  document.documentElement.style.setProperty('--accent', color);
-  document.documentElement.style.setProperty('--accent-dim', color + '22');
-  document.querySelectorAll('.tweak-swatch').forEach(s => s.classList.remove('active'));
-  el.classList.add('active');
-  window.parent.postMessage({ type: '__edit_mode_set_keys', edits: { accentColor: color } }, '*');
-}
-
-function setTheme(theme, el) {
-  const themes = {
-    dark: { bg: '#111111', bg2: '#1a1a1a', bg3: '#222222' },
-    charcoal: { bg: '#1c1f26', bg2: '#232830', bg3: '#2a3040' },
-    light: { bg: '#f4f2ee', bg2: '#ebe9e4', bg3: '#dddbd5' }
+// ── 카카오 지도 초기화 ──
+kakao.maps.load(function() {
+  var container = document.getElementById('map');
+  var options = {
+    center: new kakao.maps.LatLng(SITE.mapLat, SITE.mapLng),
+    level: 4
   };
-  const t = themes[theme];
-  const r = document.documentElement;
-  r.style.setProperty('--bg', t.bg);
-  r.style.setProperty('--bg2', t.bg2);
-  r.style.setProperty('--bg3', t.bg3);
-  if (theme === 'light') {
-    r.style.setProperty('--fg', '#1a1a1a');
-    r.style.setProperty('--fg-dim', '#555');
-    r.style.setProperty('--fg-muted', '#999');
-    r.style.setProperty('--border', 'rgba(0,0,0,0.08)');
-  } else {
-    r.style.setProperty('--fg', '#f0ede8');
-    r.style.setProperty('--fg-dim', '#999');
-    r.style.setProperty('--fg-muted', '#555');
-    r.style.setProperty('--border', 'rgba(255,255,255,0.07)');
-  }
-  document.querySelectorAll('.tweak-btn').forEach(b => {
-    if (b.textContent.includes('다크') || b.textContent.includes('차콜') || b.textContent.includes('라이트')) b.classList.remove('active');
+  var map = new kakao.maps.Map(container, options);
+  var marker = new kakao.maps.Marker({ map: map, position: options.center });
+  var infowindow = new kakao.maps.InfoWindow({
+    content: '<div style="padding:8px 12px; font-size:14px; font-family:sans-serif; white-space:nowrap;">(주)영보이엔지</div>'
   });
-  el.classList.add('active');
-}
-
-function setFont(style, el) {
-  if (style === 'refined') {
-    document.documentElement.style.setProperty('--font-display', "'Noto Sans KR', sans-serif");
-  } else {
-    document.documentElement.style.setProperty('--font-display', "'Bebas Neue', sans-serif");
-  }
-  document.querySelectorAll('.tweak-btn').forEach(b => {
-    if (b.textContent === '임팩트' || b.textContent === '세련형') b.classList.remove('active');
-  });
-  el.classList.add('active');
-}
+  infowindow.open(map, marker);
+});
 
 // ── SCROLL REVEAL ──
 const revealEls = document.querySelectorAll('.reveal');
@@ -1201,7 +1061,7 @@ const barIO = new IntersectionObserver(entries => {
 }, { threshold: 0.5 });
 bars.forEach(b => barIO.observe(b));
 
-// ── FORM SUBMIT ──
+// ── 파일 이름 표시 ──
 function updateFileName(input) {
   const nameEl = input.parentElement.querySelector('.file-name');
   if (input.files && input.files[0]) {
@@ -1213,18 +1073,41 @@ function updateFileName(input) {
   }
 }
 
-function handleSubmit(e) {
+// ── 폼 제출 (Formspree) ──
+async function handleSubmit(e) {
   e.preventDefault();
   const btn = e.target.querySelector('.btn-submit');
-  btn.textContent = '전송 완료 ✓';
-  btn.style.background = '#2a8c55';
+  btn.textContent = '전송 중...';
   btn.disabled = true;
-  setTimeout(() => {
-    btn.textContent = '문의 보내기';
-    btn.style.background = '';
-    btn.disabled = false;
-    e.target.reset();
-  }, 3000);
+
+  try {
+    const data = new FormData(e.target);
+    const res = await fetch(SITE.formspreeEndpoint, {
+      method: 'POST',
+      body: data,
+      headers: { 'Accept': 'application/json' }
+    });
+    if (res.ok) {
+      btn.textContent = '전송 완료 ✓';
+      btn.style.background = '#2a8c55';
+      e.target.reset();
+      setTimeout(() => {
+        btn.textContent = '문의 보내기';
+        btn.style.background = '';
+        btn.disabled = false;
+      }, 3000);
+    } else {
+      throw new Error('서버 오류');
+    }
+  } catch {
+    btn.textContent = '전송 실패 — 다시 시도';
+    btn.style.background = '#c0392b';
+    setTimeout(() => {
+      btn.textContent = '문의 보내기';
+      btn.style.background = '';
+      btn.disabled = false;
+    }, 3000);
+  }
 }
 
 // ── NAV ACTIVE ──

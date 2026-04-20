@@ -1138,33 +1138,22 @@ window.addEventListener('DOMContentLoaded', () => {
 });
 
 // ── 카카오 지도 초기화 ──
-if (typeof kakao !== 'undefined' && kakao.maps) {
-  kakao.maps.load(function() {
-    var container = document.getElementById('map');
-    var options = {
-      center: new kakao.maps.LatLng(SITE.mapLat, SITE.mapLng),
-      level: 4
-    };
-    var map = new kakao.maps.Map(container, options);
-    var marker = new kakao.maps.Marker({ map: map, position: options.center });
-    var infowindow = new kakao.maps.InfoWindow({
-      content: '<div style="padding:6px 10px;font-size:13px;font-family:sans-serif;white-space:nowrap;cursor:pointer;">(주)영보이엔지 · 길찾기 →</div>'
-    });
-    infowindow.open(map, marker);
-    kakao.maps.event.addListener(marker, 'click', function() {
-      openMapModal();
-    });
+kakao.maps.load(function() {
+  var container = document.getElementById('map');
+  var options = {
+    center: new kakao.maps.LatLng(SITE.mapLat, SITE.mapLng),
+    level: 4
+  };
+  var map = new kakao.maps.Map(container, options);
+  var marker = new kakao.maps.Marker({ map: map, position: options.center });
+  var infowindow = new kakao.maps.InfoWindow({
+    content: '<div style="padding:6px 10px;font-size:13px;font-family:sans-serif;white-space:nowrap;cursor:pointer;">(주)영보이엔지 · 길찾기 →</div>'
   });
-} else {
-  // SDK 로드 실패 시 안내 표시
-  var mapEl = document.getElementById('map');
-  if (mapEl) {
-    mapEl.style.display = 'flex';
-    mapEl.style.alignItems = 'center';
-    mapEl.style.justifyContent = 'center';
-    mapEl.innerHTML = '<a href="https://map.kakao.com/link/map/(주)영보이엔지,' + SITE.mapLat + ',' + SITE.mapLng + '" target="_blank" rel="noopener noreferrer" style="font-size:14px;color:#1d6fa4;text-decoration:none;">🗺️ 카카오맵에서 위치 보기</a>';
-  }
-}
+  infowindow.open(map, marker);
+  kakao.maps.event.addListener(marker, 'click', function() {
+    openMapModal();
+  });
+});
 
 // ── 카카오맵 길찾기 모달 ──
 function openMapModal() {

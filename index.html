@@ -514,7 +514,7 @@
   }
   .refs-note {
     text-align: center;
-    font-size: 18px;
+    font-size: 12px;
     color: var(--fg-muted);
     letter-spacing: 0.05em;
   }
@@ -591,7 +591,7 @@
   }
   .file-name.has-file { color: var(--fg); }
   .file-hint {
-    font-size: 18px;
+    font-size: 12px;
     color: var(--fg-muted);
     margin-top: 4px;
     letter-spacing: 0.03em;
@@ -659,6 +659,52 @@
     color: var(--fg-muted);
     letter-spacing: 0.05em;
   }
+
+  /* ── 지도 안내 모달 ── */
+  .map-modal-overlay {
+    display: none;
+    position: fixed; inset: 0; z-index: 9000;
+    background: rgba(0,0,0,0.55);
+    align-items: center; justify-content: center;
+  }
+  .map-modal-overlay.open { display: flex; }
+  .map-modal {
+    background: var(--bg);
+    padding: 36px 32px 28px;
+    max-width: 360px; width: 90%;
+    box-shadow: 0 24px 64px rgba(0,0,0,0.3);
+  }
+  .map-modal-icon {
+    font-size: 28px; margin-bottom: 12px;
+  }
+  .map-modal-title {
+    font-family: var(--font-body);
+    font-size: 18px; font-weight: 700;
+    margin-bottom: 10px; letter-spacing: -0.01em;
+  }
+  .map-modal-desc {
+    font-size: 18px; color: var(--fg-dim);
+    line-height: 1.7; margin-bottom: 24px; font-weight: 300;
+  }
+  .map-modal-actions {
+    display: flex; gap: 10px; justify-content: flex-end;
+  }
+  .map-modal-cancel {
+    padding: 12px 22px; font-family: var(--font-body);
+    font-size: 18px; font-weight: 500;
+    background: transparent; border: 1px solid var(--border);
+    color: var(--fg-dim); cursor: pointer;
+    transition: border-color 0.2s;
+  }
+  .map-modal-cancel:hover { border-color: var(--fg-dim); }
+  .map-modal-confirm {
+    padding: 12px 22px; font-family: var(--font-body);
+    font-size: 18px; font-weight: 700;
+    background: var(--accent); border: none;
+    color: #fff; cursor: pointer;
+    transition: opacity 0.2s;
+  }
+  .map-modal-confirm:hover { opacity: 0.85; }
 
   /* ── Scroll animations ── */
   .reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.6s ease, transform 0.6s ease; }
@@ -872,31 +918,31 @@
   </div>
   <div class="refs-grid reveal">
     <div class="ref-card">
-      <div class="ref-org">한국전력공사</div>
+      <div class="ref-org"><b>한국전력공사</b></div>
       <div class="ref-desc">발전소 냉각수 탱크 / 열교환기 납품</div>
     </div>
     <div class="ref-card">
-      <div class="ref-org">LH공사</div>
+      <div class="ref-org"><b>LH공사</b></div>
       <div class="ref-desc">아파트 단지 온수 탱크 대량 공급</div>
     </div>
     <div class="ref-card">
-      <div class="ref-org">GS건설</div>
+      <div class="ref-org"><b>GS건설</b></div>
       <div class="ref-desc">대형 빌딩 설비 경유·팽창탱크</div>
     </div>
     <div class="ref-card">
-      <div class="ref-org">삼성물산</div>
+      <div class="ref-org"><b>삼성물산</b></div>
       <div class="ref-desc">건축 기계설비용 탱크류 일괄 납품</div>
     </div>
     <div class="ref-card">
-      <div class="ref-org">한국수자원</div>
+      <div class="ref-org"><b>한국수자원</b></div>
       <div class="ref-desc">정수처리 시설 압력탱크 공급</div>
     </div>
     <div class="ref-card">
-      <div class="ref-org">현대건설</div>
+      <div class="ref-org"><b>현대건설</b></div>
       <div class="ref-desc">플랜트 설비 열교환기 시스템</div>
     </div>
     <div class="ref-card">
-      <div class="ref-org">서울시설</div>
+      <div class="ref-org"><b>서울시설</b></div>
       <div class="ref-desc">공공청사 급탕 설비 탱크 납품</div>
     </div>
     <div class="ref-card" style="display:flex; align-items:center; justify-content:center; flex-direction:column; gap:8px;">
@@ -997,6 +1043,22 @@
   </div>
 </section>
 
+<!-- 카카오맵 길찾기 확인 모달 -->
+<div class="map-modal-overlay" id="mapModal">
+  <div class="map-modal">
+    <div class="map-modal-icon">🗺️</div>
+    <div class="map-modal-title">카카오맵으로 이동</div>
+    <div class="map-modal-desc">
+      카카오맵 앱(또는 웹)에서 <strong>(주)영보이엔지</strong>까지의 길찾기를 시작합니다.<br>
+      외부 서비스로 이동합니다. 계속하시겠습니까?
+    </div>
+    <div class="map-modal-actions">
+      <button class="map-modal-cancel" onclick="closeMapModal()">취소</button>
+      <button class="map-modal-confirm" onclick="goKakaoNav()">길찾기 시작</button>
+    </div>
+  </div>
+</div>
+
 <!-- FOOTER -->
 <footer>
   <div>
@@ -1004,7 +1066,7 @@
     <div style="font-size: 18px; color:var(--fg-muted); margin-top:4px; letter-spacing:0.04em;">(주)영보이엔지 · 사업자등록번호 126-81-88893</div>
   </div>
   <div class="footer-copy">
-    © 2025 Young Bo Engineering Co., Ltd. All rights reserved.
+    © 2026 Young Bo Engineering Co., Ltd. All rights reserved.
   </div>
 </footer>
 
@@ -1016,8 +1078,8 @@ const SITE = {
   address: '경기 광주시 곤지암읍 광여로99번길 7',
   formspreeEndpoint: 'https://formspree.io/f/mdayddod',
   kakaoMapKey: 'c51341751710462b11216ff297ef1c8c',
-  mapLat: 37.4253,  // 곤지암읍 근사 좌표 — 카카오 지도에서 정확히 확인 후 수정
-  mapLng: 127.3587,
+  mapLat: 37.350160,  // 곤지암읍 근사 좌표 — 카카오 지도에서 정확히 확인 후 수정
+  mapLng: 127.356580,
 };
 
 // DOM에 연락처 자동 반영
@@ -1037,9 +1099,32 @@ kakao.maps.load(function() {
   var map = new kakao.maps.Map(container, options);
   var marker = new kakao.maps.Marker({ map: map, position: options.center });
   var infowindow = new kakao.maps.InfoWindow({
-    content: '<div style="padding:8px 12px; font-size:14px; font-family:sans-serif; white-space:nowrap;">(주)영보이엔지</div>'
+    content: '<div style="padding:6px 10px;font-size:13px;font-family:sans-serif;white-space:nowrap;cursor:pointer;">(주)영보이엔지 · 길찾기 →</div>'
   });
   infowindow.open(map, marker);
+  // 마커 클릭 → 확인 모달
+  kakao.maps.event.addListener(marker, 'click', function() {
+    openMapModal();
+  });
+});
+
+// ── 카카오맵 길찾기 모달 ──
+function openMapModal() {
+  document.getElementById('mapModal').classList.add('open');
+}
+function closeMapModal() {
+  document.getElementById('mapModal').classList.remove('open');
+}
+function goKakaoNav() {
+  var url = 'https://map.kakao.com/link/to/' +
+    encodeURIComponent('(주)영보이엔지') + ',' +
+    SITE.mapLat + ',' + SITE.mapLng;
+  window.open(url, '_blank', 'noopener,noreferrer');
+  closeMapModal();
+}
+// 오버레이 클릭으로 닫기
+document.getElementById('mapModal').addEventListener('click', function(e) {
+  if (e.target === this) closeMapModal();
 });
 
 // ── SCROLL REVEAL ──

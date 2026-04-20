@@ -65,9 +65,15 @@
     font-size: 18px;
     font-weight: 500;
     letter-spacing: 0.05em;
-    transition: color 0.2s;
+    transition: opacity 0.2s, border-bottom-color 0.2s;
+    border-bottom: 2px solid transparent;
+    padding-bottom: 2px;
   }
-  .nav-links a:hover { color: #ffffff; opacity: 0.75; }
+  .nav-links a:hover { opacity: 0.75; }
+  .nav-links a.active {
+    border-bottom-color: var(--accent);
+    opacity: 1;
+  }
   .nav-cta {
     background: var(--accent);
     color: #fff;
@@ -566,6 +572,9 @@
     transition: border-color 0.2s;
     width: 100%;
   }
+  .form-input::placeholder, .form-textarea::placeholder {
+    font-size: 12px;
+  }
   .form-input:focus, .form-textarea:focus, .form-select:focus {
     border-color: var(--accent);
   }
@@ -652,7 +661,7 @@
     margin-top: 4px;
   }
   #map {
-    width: 80%;
+    width: 100%;
     height: 400px;
     margin-top: 48px;
     background: var(--bg3);
@@ -669,12 +678,12 @@
   }
   .footer-logo {
     font-weight: 900;
-    font-size: 18px;
+    font-size: 12px;
     letter-spacing: -0.02em;
   }
-  .footer-logo span { color: var(--accent); }
+  .footer-logo span { color: var(--fg); }
   .footer-copy {
-    font-size: 18px;
+    font-size: 12px;
     color: var(--fg-muted);
     letter-spacing: 0.05em;
   }
@@ -729,16 +738,56 @@
   .reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.6s ease, transform 0.6s ease; }
   .reveal.visible { opacity: 1; transform: none; }
 
+  /* ── 이미지 반응형 제어 ──
+     .hero-img-desktop : 데스크톱(901px+)에서만 표시
+     .hero-img-mobile  : 모바일(900px 이하)에서만 표시  */
+  .hero-img-mobile {
+    display: none; /* 기본: 숨김 (데스크톱에서는 보이지 않음) */
+    width: 100%;
+    height: 220px;
+    margin-top: 40px;
+    background: var(--bg3);
+    position: relative;
+    overflow: hidden;
+    align-items: center;
+    justify-content: center;
+  }
+  .hero-img-mobile::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: repeating-linear-gradient(
+      -45deg,
+      transparent,
+      transparent 18px,
+      rgba(255,255,255,0.025) 18px,
+      rgba(255,255,255,0.025) 19px
+    );
+  }
+  .hero-img-mobile .placeholder-label {
+    position: relative; z-index: 1;
+  }
+
   /* ── Responsive ── */
   @media (max-width: 900px) {
-    #hero { grid-template-columns: 1fr; }
-    .hero-right { height: 220px; }
-    .hero-left { padding: 96px 24px 48px; }
-    .hero-title { font-size: clamp(40px, 10vw, 56px); }
-    .hero-phone { font-size: 28px; }
-    .hero-stats { gap: 24px; margin-top: 40px; }
+    #hero { grid-template-columns: 1fr; overflow: hidden; }
+    .hero-right { height: 0; overflow: hidden; } /* 모바일에서 데스크톱 우측 이미지 영역 숨김 */
+    .hero-img-desktop { display: none; }         /* 데스크톱 이미지 플레이스홀더 숨김 */
+    .hero-img-mobile { display: flex; }          /* 모바일 전용 이미지 표시 */
+    .hero-right::after { display: none; }
+    .hero-left { padding: 44px 20px 48px 20px; max-width: 100%; overflow: hidden; }
+    .hero-title { font-size: clamp(36px, 9vw, 52px); word-break: keep-all; }
+    .hero-eyebrow { font-size: 13px; }
+    .hero-sub { font-size: 14px; max-width: 100%; word-break: keep-all; }
+    .hero-phone { font-size: 26px; }
+    .hero-contact-label { font-size: 13px; }
+    .hero-contact-sub { font-size: 13px; }
+    .hero-stats { gap: 20px; margin-top: 32px; flex-wrap: wrap; }
+    .stat-num { font-size: 32px; }
+    .stat-label { font-size: 12px; }
+    .hero-trust { gap: 6px; }
+    .trust-badge { font-size: 13px; }
     .hero-actions { flex-direction: column; align-items: flex-start; }
-    .hero-sub { max-width: 100%; }
+    .products-header { flex-direction: column; align-items: flex-start; gap: 16px; }
     #about, #tech, #contact { grid-template-columns: 1fr; }
     .about-right { grid-template-columns: 1fr 1fr; }
     .products-grid { grid-template-columns: 1fr 1fr; }
@@ -803,7 +852,7 @@
     <div class="hero-contact-box" style="background-color: rgba(29,111,164,0.65); border-color: rgb(29,111,164); border-width: 0px 0px 0px 3px; border-style: solid;">
       <div class="hero-contact-label">지금 전화 상담</div>
       <a id="hero-phone-link" href="tel:031-764-0248" class="hero-phone">031-764-0248</a>
-      <div class="hero-contact-sub">평일 08:30 – 17:30 · 친절하게 답변드립니다</div>
+      <div class="hero-contact-sub">평일 08:30 – 17:30 </div>
     </div>
 
     <div class="hero-actions">
@@ -812,7 +861,7 @@
     </div>
 
     <div class="hero-trust">
-      <div class="trust-badge"><span>✔</span> 1995년 설립</div>
+      <div class="trust-badge"><span>✔</span> 1985년 설립</div>
       <div class="trust-badge"><span>✔</span> KS 인증</div>
       <div class="trust-badge"><span>✔</span> ISO 9001 인증</div>
       <div class="trust-badge"><span>✔</span> 2,000+ 납품 실적</div>
@@ -832,9 +881,29 @@
         <div class="stat-label">QUALITY CERTIFIED</div>
       </div>
     </div>
+
+    <!-- =============================================
+         [모바일 전용] 히어로 인라인 이미지
+         모바일(900px 이하)에서만 표시됩니다.
+         실제 사진으로 교체 시 아래 div를 <img> 태그로
+         교체하거나 background-image를 설정하세요.
+         예시: <img src="images/hero-mobile.jpg" alt="영보이엔지 모바일 대표이미지" style="width:100%;height:100%;object-fit:cover;">
+         ============================================= -->
+    <div class="hero-img-mobile">
+      <div class="placeholder-label">
+        [ 모바일 전용 대표 이미지 ]<br>
+        mobile hero image
+      </div>
+    </div>
   </div>
   <div class="hero-right">
-    <div class="hero-img-placeholder">
+    <!-- =============================================
+         [데스크톱 전용] 히어로 우측 이미지
+         PC(901px 이상)에서만 표시됩니다.
+         실제 사진으로 교체 시 <img> 태그를 사용하거나
+         background-image: url('이미지경로') 로 설정하세요.
+         ============================================= -->
+    <div class="hero-img-placeholder hero-img-desktop">
       <div class="placeholder-label">
         [ 공장 전경 또는 대표 제품 사진 ]<br>
         product / factory photography
@@ -849,7 +918,7 @@
     <div class="section-label">회사 소개</div>
     <h2 class="section-title">믿을 수 있는<br>파트너</h2>
     <p class="section-desc">
-      (주)영보이엔지는 1995년 창업 이래 열교환기, 온수 탱크, 경유 탱크 등
+      (주)영보이엔지는 1985년 창업 이래 열교환기, 온수 탱크, 경유 탱크 등
       다양한 산업용 탱크를 전문으로 설계·제조해 왔습니다. 국내 대형 기업 및
       공공기관에 납품한 풍부한 실적을 바탕으로, 고객의 현장 요구사항에 최적화된
       맞춤형 솔루션을 제공합니다.
@@ -857,14 +926,14 @@
   </div>
   <div class="about-right reveal">
     <div class="about-card">
-      <div class="about-card-icon">30Y</div>
+      <div class="about-card-icon">40 Years</div>
       <h4>40년 이상의 경력</h4>
-      <p>1985년부터 축적된 설계·제조 노하우와 현장 경험</p>
+      <p>1985년부터 축적된 설계·제조<br>노하우와 현장 경험</p>
     </div>
     <div class="about-card">
       <div class="about-card-icon">KS</div>
       <h4>KS 인증</h4>
-      <p>한국산업표준 인증을 통한 품질 보증 체계 운영</p>
+      <p>한국산업표준 인증을 통한 품질<br>보증 체계 운영</p>
     </div>
     <div class="about-card">
       <div class="about-card-icon">ODM</div>
@@ -1085,7 +1154,7 @@
     </div>
     <div class="info-block">
       <div class="info-label">이메일</div>
-      <div class="info-value"><a href="mailto:ybeng@hanmail.net" style="color:inherit; text-decoration:none;">ybeng@hanmail.net</a></div>
+      <div class="info-value"><a href="/cdn-cgi/l/email-protection#621b00070c05220a030c0f030b0e4c0c0716" style="color:inherit; text-decoration:none;"><span class="__cf_email__" data-cfemail="720b10171c15321a131c1f131b1e5c1c1706">[email&#160;protected]</span></a></div>
     </div>
     <div id="map"></div>
   </div>
@@ -1111,14 +1180,14 @@
 <footer>
   <div>
     <div class="footer-logo"><span>영보</span>이엔지</div>
-    <div style="font-size: 18px; color:var(--fg-muted); margin-top:4px; letter-spacing:0.04em;">(주)영보이엔지 · 사업자등록번호 126-81-88893</div>
+    <div style="font-size: 12px; color:var(--fg-muted); margin-top:4px; letter-spacing:0.04em;">(주)영보이엔지 · 사업자등록번호 126-81-88893</div>
   </div>
   <div class="footer-copy">
     © 2026 Young Bo Engineering Co., Ltd. All rights reserved.
   </div>
 </footer>
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js" defer></script><script>
 const SITE = {
   phone: '031-764-0248',
   fax:   '031-764-0249',
@@ -1263,9 +1332,9 @@ const navLinks = document.querySelectorAll('.nav-links a');
 const navIO = new IntersectionObserver(entries => {
   entries.forEach(e => {
     if (e.isIntersecting) {
-      navLinks.forEach(a => a.style.color = '');
+      navLinks.forEach(a => a.classList.remove('active'));
       const link = document.querySelector(`.nav-links a[href="#${e.target.id}"]`);
-      if (link) link.style.color = 'var(--fg)';
+      if (link) link.classList.add('active');
     }
   });
 }, { threshold: 0.4 });

@@ -1,0 +1,5 @@
+{
+  "name": "My Project",
+  "image": "mcr.microsoft.com/devcontainers/universal:latest",
+  "postCreateCommand": "curl -fsSL https://claude.ai/install.sh | bash"
+}

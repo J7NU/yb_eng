@@ -1989,8 +1989,11 @@
             <span style="font-size:11px;">좌표: 37.350160, 127.356580</span>
           </div>
 
-          <!-- 견적 폼 -->
-          <form class="quote-form" onsubmit="handleSubmit(event)">
+          <!-- 견적 폼 — FormSubmit.co 연결 (테스트: best020518@naver.com / 운영: ybeng@hanmail.net) -->
+          <form class="quote-form" action="https://formsubmit.co/best020518@naver.com" method="POST" enctype="multipart/form-data">
+            <input type="hidden" name="_subject" value="[영보이엔지 홈페이지 문의]">
+            <input type="hidden" name="_template" value="table">
+            <input type="hidden" name="_captcha" value="true">
             <div class="form-row">
               <div class="form-group">
                 <label class="form-label" for="company">회사명 <span style="color:var(--brand);">*</span></label>

@@ -1162,29 +1162,60 @@
       letter-spacing: -0.01em;
     }
 
-    /* 지도 placeholder */
-    .map-placeholder {
+    /* 카카오 지도 */
+    #map {
       width: 100%;
-      border: 1px dashed var(--border-strong);
+      height: 320px;
+      margin-bottom: 28px;
+      border: 1px solid var(--border);
       border-radius: var(--radius-md);
       background: var(--bg-subtle);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-direction: column;
-      gap: 6px;
-      margin-bottom: 28px;
-      padding: 32px 20px;
+      overflow: hidden;
     }
 
-    .map-placeholder span {
-      font-size: 12px;
-      font-weight: 400;
-      color: var(--text-muted);
-      letter-spacing: -0.01em;
-      text-align: center;
-      line-height: 1.7;
+    /* 지도 길찾기 안내 모달 */
+    .map-modal-overlay {
+      display: none;
+      position: fixed; inset: 0; z-index: 9000;
+      background: rgba(0,0,0,0.55);
+      align-items: center; justify-content: center;
     }
+    .map-modal-overlay.open { display: flex; }
+    .map-modal {
+      background: var(--bg);
+      padding: 36px 32px 28px;
+      max-width: 360px; width: 90%;
+      border-radius: var(--radius-md);
+      box-shadow: 0 24px 64px rgba(0,0,0,0.3);
+    }
+    .map-modal-icon { font-size: 28px; margin-bottom: 12px; }
+    .map-modal-title {
+      font-family: var(--font-body);
+      font-size: 18px; font-weight: 700;
+      margin-bottom: 10px; letter-spacing: -0.01em;
+      color: var(--text-strong);
+    }
+    .map-modal-desc {
+      font-size: 14px; color: var(--text-sub);
+      line-height: 1.7; margin-bottom: 24px; font-weight: 400;
+    }
+    .map-modal-actions { display: flex; gap: 10px; justify-content: flex-end; }
+    .map-modal-cancel {
+      padding: 12px 22px; font-family: var(--font-body);
+      font-size: 14px; font-weight: 500;
+      background: transparent; border: 1px solid var(--border-strong);
+      color: var(--text-sub); cursor: pointer; border-radius: var(--radius-sm);
+      transition: border-color 0.2s;
+    }
+    .map-modal-cancel:hover { border-color: var(--text-sub); }
+    .map-modal-confirm {
+      padding: 12px 22px; font-family: var(--font-body);
+      font-size: 14px; font-weight: 700;
+      background: var(--brand); border: none;
+      color: #fff; cursor: pointer; border-radius: var(--radius-sm);
+      transition: opacity 0.2s;
+    }
+    .map-modal-confirm:hover { opacity: 0.85; }
 
     /* 견적 폼 */
     .quote-form {
@@ -1983,11 +2014,8 @@
             </div>
           </div>
 
-          <!-- 카카오 지도 placeholder -->
-          <div class="map-placeholder">
-            <span>[ 카카오맵 약도 ]</span>
-            <span style="font-size:11px;">좌표: 37.350160, 127.356580</span>
-          </div>
+          <!-- 카카오 지도 (마커 클릭 → 길찾기 모달) -->
+          <div id="map"></div>
 
           <!-- 견적 폼 — FormSubmit.co 연결 (테스트: best020518@naver.com / 운영: ybeng@hanmail.net) -->
           <form class="quote-form" action="https://formsubmit.co/best020518@naver.com" method="POST" enctype="multipart/form-data">
@@ -2163,6 +2191,57 @@
     }
 
     document.addEventListener('keydown', e => { if (e.key === 'Escape') closeClient(); });
+  </script>
+
+  <!-- 카카오맵 길찾기 확인 모달 -->
+  <div class="map-modal-overlay" id="mapModal">
+    <div class="map-modal">
+      <div class="map-modal-icon">🗺️</div>
+      <div class="map-modal-title">카카오맵으로 이동</div>
+      <div class="map-modal-desc">
+        카카오맵 앱(또는 웹)에서 <strong>(주)영보이엔지</strong>까지의 길찾기를 시작합니다.<br>
+        외부 서비스로 이동합니다. 계속하시겠습니까?
+      </div>
+      <div class="map-modal-actions">
+        <button class="map-modal-cancel" onclick="closeMapModal()">취소</button>
+        <button class="map-modal-confirm" onclick="goKakaoNav()">길찾기 시작</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 카카오 지도 SDK + 초기화 (원본 사이트 코드 그대로) -->
+  <script src="//dapi.kakao.com/v2/maps/sdk.js?appkey=c51341751710462b11216ff297ef1c8c&autoload=false"></script>
+  <script>
+    var MAP_SITE = { name: '(주)영보이엔지', lat: 37.350160, lng: 127.356580 };
+
+    // ── 카카오 지도 초기화 ──
+    if (typeof kakao !== 'undefined' && kakao.maps) kakao.maps.load(function() {
+      var container = document.getElementById('map');
+      var options = {
+        center: new kakao.maps.LatLng(MAP_SITE.lat, MAP_SITE.lng),
+        level: 4
+      };
+      var map = new kakao.maps.Map(container, options);
+      var marker = new kakao.maps.Marker({ map: map, position: options.center });
+      var infowindow = new kakao.maps.InfoWindow({
+        content: '<div style="padding:6px 10px;font-size:13px;font-family:sans-serif;white-space:nowrap;cursor:pointer;">(주)영보이엔지 · 길찾기 →</div>'
+      });
+      infowindow.open(map, marker);
+      kakao.maps.event.addListener(marker, 'click', function() { openMapModal(); });
+    });
+
+    // ── 카카오맵 길찾기 모달 ──
+    function openMapModal() { document.getElementById('mapModal').classList.add('open'); }
+    function closeMapModal() { document.getElementById('mapModal').classList.remove('open'); }
+    function goKakaoNav() {
+      var url = 'https://map.kakao.com/link/to/' +
+        encodeURIComponent(MAP_SITE.name) + ',' + MAP_SITE.lat + ',' + MAP_SITE.lng;
+      window.open(url, '_blank', 'noopener,noreferrer');
+      closeMapModal();
+    }
+    document.getElementById('mapModal').addEventListener('click', function(e) {
+      if (e.target === this || e.target.classList.contains('map-modal-overlay')) closeMapModal();
+    });
   </script>
 </body>
 

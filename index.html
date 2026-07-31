@@ -76,9 +76,6 @@
   <!-- Pretendard Variable — 회사 기본 웹 DS 표준 폰트 -->
   <link rel="stylesheet"
     href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@latest/dist/web/variable/pretendardvariable.css">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 
   <style>
     /* ══════════════════════════════════════════════════
@@ -107,7 +104,6 @@
 
       --font: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont,
         "Apple SD Gothic Neo", "Segoe UI", Roboto, sans-serif;
-      --mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
 
       --radius: 3px;
       --radius-md: 6px;
@@ -149,7 +145,7 @@
     .nav-logo-text { display: flex; flex-direction: column; line-height: 1.2; }
     .nav-logo-text b { font-size: 16px; font-weight: 800; letter-spacing: -0.03em; }
     .nav-logo-text small {
-      font-family: var(--mono); font-size: 9.5px; letter-spacing: .14em; color: var(--brand-on-dim);
+      font-family: var(--font); font-weight: 600; font-size: 9.5px; letter-spacing: .14em; color: var(--brand-on-dim);
     }
     .nav-links { display: flex; gap: 26px; font-size: 14px; color: var(--brand-on); }
     .nav-links a { padding: 4px 0; border-bottom: 1px solid transparent; transition: color .15s, border-color .15s; }
@@ -185,14 +181,14 @@
     }
     .hero-l::after {
       content: "1985"; position: absolute; right: -20px; bottom: -40px;
-      font-family: var(--mono); font-size: 170px; font-weight: 600;
+      font-family: var(--font); font-size: 170px; font-weight: 600;
       color: rgba(255, 255, 255, .055); letter-spacing: -0.05em; pointer-events: none;
       user-select: none;
     }
     .hero-l > * { position: relative; }
     .hero-eyebrow {
       display: inline-flex; align-items: center; gap: 8px; align-self: flex-start;
-      font-family: var(--mono); font-size: 10.5px; letter-spacing: .13em;
+      font-family: var(--font); font-weight: 600; font-size: 10.5px; letter-spacing: .13em;
       color: var(--brand-on-dim); border: 1px solid rgba(255, 255, 255, .22);
       padding: 6px 12px; border-radius: 999px; margin-bottom: 24px;
     }
@@ -225,7 +221,7 @@
     .stat-tile:last-child { border-bottom: 0; }
     .stat-tile.accent { background: var(--brand-tint); }
     .stat-num {
-      font-family: var(--mono); font-size: 44px; font-weight: 600; line-height: 1;
+      font-family: var(--font); font-size: 44px; font-weight: 600; line-height: 1;
       letter-spacing: -0.05em; color: var(--brand); font-variant-numeric: tabular-nums;
     }
     .stat-name { font-weight: 700; font-size: 15.5px; margin-top: 11px; letter-spacing: -0.025em; }
@@ -240,8 +236,9 @@
     }
     #callband .l { font-size: 15.5px; color: var(--brand-on-dim); }
     #callband .p {
-      font-family: var(--mono); font-size: 30px; font-weight: 600; letter-spacing: -0.025em;
+      font-family: var(--font); font-size: 30px; font-weight: 600; letter-spacing: -0.025em;
       transition: color .15s;
+      font-variant-numeric: tabular-nums;
     }
     #callband .p:hover { color: var(--brand-on); }
     #callband .r { font-size: 13.5px; color: #7F89AE; }
@@ -250,7 +247,7 @@
     #metaband {
       display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap;
       padding: 11px var(--pad-x); border-bottom: 1px solid var(--line);
-      font-family: var(--mono); font-size: 10.5px; letter-spacing: .1em; color: var(--muted);
+      font-family: var(--font); font-weight: 600; font-size: 10.5px; letter-spacing: .1em; color: var(--muted);
     }
 
 
@@ -258,7 +255,7 @@
     .section { padding: 58px var(--pad-x); }
     .section.tint { background: var(--paper-2); }
     .sec-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 14px; flex-wrap: wrap; margin-bottom: 26px; }
-    .sec-eyebrow { font-family: var(--mono); font-size: 11px; letter-spacing: .16em; color: var(--brand); }
+    .sec-eyebrow { font-family: var(--font); font-weight: 600; font-size: 11px; letter-spacing: .16em; color: var(--brand); }
     .sec-title { font-size: 34px; font-weight: 800; letter-spacing: -0.04em; margin-top: 9px; }
     .sec-lead { font-size: 16.5px; color: var(--sub); margin-top: 10px; max-width: 560px; word-break: keep-all; }
     .sec-more { font-size: 13px; color: var(--sub); border-bottom: 1px solid var(--line-strong); padding-bottom: 3px; }
@@ -271,7 +268,7 @@
     }
     #strengths .strength:first-child { padding-left: var(--pad-x); }
     .strength:last-child { border-right: 0; }
-    .strength .n { font-family: var(--mono); font-size: 11px; letter-spacing: .12em; color: var(--brand); }
+    .strength .n { font-family: var(--font); font-weight: 600; font-size: 11px; letter-spacing: .12em; color: var(--brand); }
     .strength .t { font-weight: 700; font-size: 17.5px; margin: 9px 0 6px; letter-spacing: -0.03em; }
     .strength .d { font-size: 14px; color: var(--sub); word-break: keep-all; line-height: 1.65; }
 
@@ -281,14 +278,15 @@
     .pcard { background: var(--paper); padding: 26px; display: flex; gap: 22px; transition: background .18s; }
     .pcard:hover { background: #FAFBFE; }
     .pcard .idx {
-      font-family: var(--mono); font-size: 54px; font-weight: 600; line-height: .88;
+      font-family: var(--font); font-size: 54px; font-weight: 600; line-height: .88;
       color: var(--brand); opacity: .2; letter-spacing: -0.055em; flex-shrink: 0;
+      font-variant-numeric: tabular-nums;
     }
     .pcard h3 { font-size: 22px; font-weight: 700; letter-spacing: -0.035em; }
     .pcard p { font-size: 15.5px; color: var(--sub); margin-top: 9px; word-break: keep-all; line-height: 1.72; }
     .chips { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 15px; }
     .chips span {
-      font-family: var(--mono); font-size: 10.5px; color: var(--brand);
+      font-family: var(--font); font-weight: 600; font-size: 10.5px; color: var(--brand);
       border: 1px solid var(--brand-line); padding: 3px 8px; border-radius: var(--radius);
     }
 
@@ -301,8 +299,9 @@
     }
     .cert:last-child { border-right: 0; padding-right: 0; }
     .cert .mark {
-      font-family: var(--mono); font-size: 31px; font-weight: 600;
+      font-family: var(--font); font-size: 31px; font-weight: 600;
       letter-spacing: -0.03em; color: var(--brand); line-height: 1.1;
+      font-variant-numeric: tabular-nums;
     }
     .cert .nm { font-weight: 700; font-size: 16.5px; margin: 11px 0 5px; letter-spacing: -0.03em; }
     .cert .ds { font-size: 14px; color: var(--sub); word-break: keep-all; line-height: 1.65; }
@@ -321,7 +320,7 @@
     .logo-fallback { font-size: 13px; font-weight: 700; color: var(--sub); }
     .cell-hint {
       position: absolute; bottom: 7px; right: 10px;
-      font-family: var(--mono); font-size: 9px; letter-spacing: .06em; color: var(--muted);
+      font-family: var(--font); font-weight: 600; font-size: 9px; letter-spacing: .06em; color: var(--muted);
       opacity: 0; transition: opacity .16s;
     }
     .logo-cell:hover .cell-hint { opacity: 1; }
@@ -331,7 +330,7 @@
     .capacity-row { display: flex; justify-content: space-between; gap: 16px; padding: 18px 22px; border-bottom: 1px solid var(--line); }
     .capacity-row:last-child { border-bottom: 0; }
     .capacity-row .k { font-size: 15px; color: var(--sub); }
-    .capacity-row .v { font-family: var(--mono); font-size: 20.5px; font-weight: 600; letter-spacing: -0.03em; color: var(--brand); font-variant-numeric: tabular-nums; }
+    .capacity-row .v { font-family: var(--font); font-size: 20.5px; font-weight: 600; letter-spacing: -0.03em; color: var(--brand); font-variant-numeric: tabular-nums; }
 
 
     /* ══════════════ §8. 회사소개 + 연혁 ══════════════ */
@@ -343,7 +342,8 @@
       padding: 16px 0; border-bottom: 1px solid var(--line); align-items: baseline;
     }
     .history-item:first-child { border-top: 1px solid var(--ink); }
-    .history-year { font-family: var(--mono); font-size: 14.5px; font-weight: 600; color: var(--brand); letter-spacing: .02em; }
+    .history-year { font-family: var(--font); font-size: 14.5px; font-weight: 600; color: var(--brand); letter-spacing: .02em;   font-variant-numeric: tabular-nums;
+    }
     .history-event { font-size: 15px; color: var(--sub); word-break: keep-all; line-height: 1.7; }
 
 
@@ -352,7 +352,7 @@
     .info-strip { border: 1px solid var(--line); border-radius: var(--radius-md); overflow: hidden; }
     .info-row { display: grid; grid-template-columns: 72px 1fr; gap: 14px; padding: 15px 20px; border-bottom: 1px solid var(--line); align-items: baseline; }
     .info-row:last-child { border-bottom: 0; }
-    .info-key { font-family: var(--mono); font-size: 10.5px; letter-spacing: .12em; color: var(--muted); }
+    .info-key { font-family: var(--font); font-weight: 600; font-size: 10.5px; letter-spacing: .12em; color: var(--muted); }
     .info-val { font-size: 16.5px; font-weight: 600; letter-spacing: -0.02em; }
     .info-val a { transition: color .15s; }
     .info-val a:hover { color: var(--brand); }
@@ -401,11 +401,11 @@
     .footer-biz { font-size: 13.5px; color: #8790B2; margin-top: 12px; line-height: 1.85; }
     .footer-certs { display: flex; gap: 10px; flex-wrap: wrap; }
     .footer-cert {
-      font-family: var(--mono); font-size: 11px; letter-spacing: .06em; color: var(--brand-on-dim);
+      font-family: var(--font); font-weight: 600; font-size: 11px; letter-spacing: .06em; color: var(--brand-on-dim);
       border: 1px solid rgba(255, 255, 255, .2); padding: 6px 11px; border-radius: var(--radius);
     }
     .footer-copy {
-      font-family: var(--mono); font-size: 10.5px; letter-spacing: .08em; color: #616A8C;
+      font-family: var(--font); font-weight: 600; font-size: 10.5px; letter-spacing: .08em; color: #616A8C;
       margin-top: 34px; padding-top: 20px; border-top: 1px solid rgba(255, 255, 255, .1);
     }
 
@@ -427,7 +427,7 @@
       font-size: 22px; line-height: 1; color: var(--muted); cursor: pointer;
     }
     .cmodal-title { font-size: 19px; font-weight: 800; letter-spacing: -0.035em; }
-    .cmodal-sub { font-family: var(--mono); font-size: 10.5px; letter-spacing: .12em; color: var(--muted); margin-top: 6px; }
+    .cmodal-sub { font-family: var(--font); font-weight: 600; font-size: 10.5px; letter-spacing: .12em; color: var(--muted); margin-top: 6px; }
     .cmodal-list { margin-top: 16px; display: flex; flex-direction: column; gap: 9px; }
     .cmodal-list li { font-size: 14px; color: var(--ink); padding-left: 14px; position: relative; word-break: keep-all; }
     .cmodal-list li::before { content: ""; position: absolute; left: 0; top: 9px; width: 5px; height: 5px; border-radius: 50%; background: var(--brand); }

@@ -1,0 +1,17 @@
+{
+  // Cloudflare Workers 정적 자산 배포 설정
+  // 이 저장소는 빌드 과정이 없는 정적 사이트다. 엔트리 스크립트(main) 없이
+  // assets만 선언하는 "assets-only" Worker로 배포한다.
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "yb-eng",
+  "compatibility_date": "2026-07-01",
+  "assets": {
+    // 저장소 루트를 그대로 서빙. _headers / _redirects 는 자동 적용된다.
+    "directory": "./",
+    // 없는 경로는 404로 응답 (SPA 폴백을 쓰면 검색엔진에 soft 404가 생긴다)
+    "not_found_handling": "none"
+  },
+  "observability": {
+    "enabled": true
+  }
+}

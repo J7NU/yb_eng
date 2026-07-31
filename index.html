@@ -97,7 +97,7 @@
 
       --ink: #0B0D12;
       --sub: #5B6070;
-      --muted: #9A9FAE;
+      --muted: #6E7588;
       --line: #E4E6EC;
       --line-strong: #C9CDD8;
       --paper: #FFFFFF;
@@ -734,37 +734,37 @@
 
           <div class="logos-grid">
             <button type="button" class="logo-cell" onclick="openClient(1)" aria-label="삼성 납품 현장 보기">
-              <img src="images/client-1.png" alt="삼성" class="client-logo-img"
+              <img loading="lazy" decoding="async" src="images/client-1.svg" alt="삼성" class="client-logo-img"
                 onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
               <span class="logo-fallback" style="display:none;">삼성</span>
               <span class="cell-hint">납품 현장 ▸</span>
             </button>
             <button type="button" class="logo-cell" onclick="openClient(2)" aria-label="LG 납품 현장 보기">
-              <img src="images/client-2.png" alt="LG" class="client-logo-img"
+              <img loading="lazy" decoding="async" src="images/client-2.svg" alt="LG" class="client-logo-img"
                 onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
               <span class="logo-fallback" style="display:none;">LG</span>
               <span class="cell-hint">납품 현장 ▸</span>
             </button>
             <button type="button" class="logo-cell" onclick="openClient(3)" aria-label="포스코 납품 현장 보기">
-              <img src="images/client-3.png" alt="포스코 POSCO" class="client-logo-img"
+              <img loading="lazy" decoding="async" src="images/client-3.svg" alt="포스코 POSCO" class="client-logo-img"
                 onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
               <span class="logo-fallback" style="display:none;">POSCO</span>
               <span class="cell-hint">납품 현장 ▸</span>
             </button>
             <button type="button" class="logo-cell" onclick="openClient(4)" aria-label="현대 납품 현장 보기">
-              <img src="images/client-4.png" alt="현대 HYUNDAI" class="client-logo-img"
+              <img loading="lazy" decoding="async" src="images/client-4.svg" alt="현대 HYUNDAI" class="client-logo-img"
                 onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
               <span class="logo-fallback" style="display:none;">현대</span>
               <span class="cell-hint">납품 현장 ▸</span>
             </button>
             <button type="button" class="logo-cell" onclick="openClient(5)" aria-label="롯데 납품 현장 보기">
-              <img src="images/client-5.png" alt="롯데 LOTTE" class="client-logo-img"
+              <img loading="lazy" decoding="async" src="images/client-5.svg" alt="롯데 LOTTE" class="client-logo-img"
                 onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
               <span class="logo-fallback" style="display:none;">롯데</span>
               <span class="cell-hint">납품 현장 ▸</span>
             </button>
             <button type="button" class="logo-cell" onclick="openClient(6)" aria-label="한국전력공사 납품 현장 보기">
-              <img src="images/client-6.png" alt="한국전력공사 KEPCO" class="client-logo-img"
+              <img loading="lazy" decoding="async" src="images/client-6.svg" alt="한국전력공사 KEPCO" class="client-logo-img"
                 onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
               <span class="logo-fallback" style="display:none;">한국전력공사</span>
               <span class="cell-hint">납품 현장 ▸</span>
@@ -894,6 +894,12 @@
             </div>
 
             <div class="form-group">
+              <label class="form-label" for="email">담당자 이메일 <span style="color:var(--brand);">*</span></label>
+              <input type="email" id="email" name="email" class="form-input" placeholder="name@company.co.kr" required>
+              <div class="file-hint">견적서·도면 회신을 받으실 주소입니다.</div>
+            </div>
+
+            <div class="form-group">
               <label class="form-label" for="inquiry">문의 내용 <span style="color:var(--brand);">*</span></label>
               <textarea id="inquiry" name="inquiry" class="form-textarea"
                 placeholder="제품명, 용량, 규격, 수량, 설치 환경, 납기 요구사항 등을 작성해 주세요." required></textarea>
@@ -913,7 +919,7 @@
             <div class="consent">
               <div class="consent-head">개인정보 수집·이용 동의 <span style="color:var(--brand);">(필수)</span></div>
               <table class="consent-table">
-                <tr><th>수집 항목</th><td>회사명, 담당자 연락처, 문의 내용, 첨부파일(선택)</td></tr>
+                <tr><th>수집 항목</th><td>회사명, 담당자 연락처, 이메일, 문의 내용, 첨부파일(선택)</td></tr>
                 <tr><th>이용 목적</th><td>견적·기술 문의 접수 및 회신, 상담 이력 관리</td></tr>
                 <tr><th>보유 기간</th><td>수집일부터 5년 (기간 경과 시 지체 없이 파기)</td></tr>
               </table>

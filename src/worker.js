@@ -35,6 +35,19 @@ function unauthorized() {
 
 export default {
   async fetch(request, env) {
+    // 잠금 스위치 — 시크릿 SITE_LOCK 이 'off' 일 때만 공개된다.
+    // 값이 없으면 잠긴 상태로 동작한다(설정 실수로 사이트가 열리지 않도록).
+    // 잠금을 풀어도 공사 중이므로 색인 차단(X-Robots-Tag)은 그대로 유지한다.
+    if ((env.SITE_LOCK || 'on').toLowerCase() === 'off') {
+      const res = await env.ASSETS.fetch(request);
+      const out = new Response(res.body, res);
+      // 공사 중에는 잠금이 풀린 상태에서도 공용 캐시를 막는다.
+      // 수정이 잦아 엣지에 옛 사본이 남으면 확인할 때마다 헷갈린다.
+      out.headers.set('Cache-Control', 'private, no-store, max-age=0');
+      out.headers.set('X-Robots-Tag', 'noindex, nofollow');
+      return out;
+    }
+
     const header = request.headers.get('Authorization') || '';
     if (!header.startsWith('Basic ')) return unauthorized();
 

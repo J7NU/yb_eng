@@ -17,3 +17,6 @@ wrangler.jsonc
 
 # 구버전 사본 — 색인되면 index.html 과 중복 콘텐츠가 된다
 renewal.html
+
+# Worker 소스 — 공개 자산 아님
+src/

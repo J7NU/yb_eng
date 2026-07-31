@@ -10,6 +10,12 @@
   <meta name="keywords" content="팽창탱크, 밀폐형 팽창탱크, 열교환기, 온수 가열탱크, STS 물탱크, 스테인리스 물탱크, 압력용기, 영보이엔지, 영보종합탱크, 곤지암 탱크 제작">
   <link rel="canonical" href="https://youngboeng.co.kr/">
 
+  <!-- 파비콘 · 앱 아이콘 -->
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="/images/favicon-32.png" sizes="32x32" type="image/png">
+  <link rel="apple-touch-icon" href="/images/apple-touch-icon.png">
+  <meta name="theme-color" content="#1F2E66">
+
   <!-- 소유확인 코드 — 발급받으면 주석 풀고 값 채울 것
   <meta name="naver-site-verification" content="네이버_발급_코드">
   <meta name="google-site-verification" content="구글_발급_코드">
@@ -137,7 +143,9 @@
       gap: 20px; height: var(--nav-h); padding: 0 var(--pad-x);
       background: var(--brand-deep); color: #fff;
     }
-    .nav-logo { display: flex; align-items: center; gap: 11px; }
+    .nav-logo { display: flex; align-items: center; gap: 12px; }
+    .nav-logo-mark { height: 36px; width: auto; }
+    .footer-logo-mark { height: 44px; width: auto; margin-bottom: 14px; opacity: .9; }
     .nav-logo-text { display: flex; flex-direction: column; line-height: 1.2; }
     .nav-logo-text b { font-size: 16px; font-weight: 800; letter-spacing: -0.03em; }
     .nav-logo-text small {
@@ -171,7 +179,7 @@
 
     .hero-l {
       background: var(--brand); color: #fff;
-      padding: 68px var(--pad-x) 60px;
+      padding: 58px var(--pad-x) 52px;
       display: flex; flex-direction: column; justify-content: center;
       position: relative; overflow: hidden;
     }
@@ -190,11 +198,11 @@
     }
     .hero-eyebrow i { width: 5px; height: 5px; border-radius: 50%; background: #7E8CC4; display: block; }
     .hero-l h1 {
-      font-size: clamp(30px, 3.6vw, 50px); line-height: 1.14;
+      font-size: clamp(34px, 4vw, 58px); line-height: 1.13;
       letter-spacing: -0.05em; font-weight: 800; word-break: keep-all;
     }
     .hero-l p.lead {
-      margin-top: 20px; font-size: 15.5px; color: var(--brand-on);
+      margin-top: 22px; font-size: 17px; color: var(--brand-on);
       max-width: 480px; word-break: keep-all; line-height: 1.8;
     }
     .hero-btns { display: flex; gap: 10px; margin-top: 32px; flex-wrap: wrap; }
@@ -211,17 +219,17 @@
 
     .hero-r { display: grid; grid-template-rows: repeat(3, 1fr); border-left: 1px solid var(--line); }
     .stat-tile {
-      padding: 26px 30px; border-bottom: 1px solid var(--line);
+      padding: 22px 28px; border-bottom: 1px solid var(--line);
       display: flex; flex-direction: column; justify-content: center;
     }
     .stat-tile:last-child { border-bottom: 0; }
     .stat-tile.accent { background: var(--brand-tint); }
     .stat-num {
-      font-family: var(--mono); font-size: 38px; font-weight: 600; line-height: 1;
+      font-family: var(--mono); font-size: 44px; font-weight: 600; line-height: 1;
       letter-spacing: -0.05em; color: var(--brand); font-variant-numeric: tabular-nums;
     }
-    .stat-name { font-weight: 700; font-size: 14px; margin-top: 11px; letter-spacing: -0.025em; }
-    .stat-note { font-size: 12px; color: var(--sub); margin-top: 3px; word-break: keep-all; }
+    .stat-name { font-weight: 700; font-size: 15.5px; margin-top: 11px; letter-spacing: -0.025em; }
+    .stat-note { font-size: 13.5px; color: var(--sub); margin-top: 3px; word-break: keep-all; }
 
 
     /* ══════════════ §3. 전화 띠 ══════════════ */
@@ -230,13 +238,13 @@
       flex-wrap: wrap; gap: 14px;
       background: var(--brand-darkest); color: #fff; padding: 18px var(--pad-x);
     }
-    #callband .l { font-size: 14px; color: var(--brand-on-dim); }
+    #callband .l { font-size: 15.5px; color: var(--brand-on-dim); }
     #callband .p {
-      font-family: var(--mono); font-size: 26px; font-weight: 600; letter-spacing: -0.025em;
+      font-family: var(--mono); font-size: 30px; font-weight: 600; letter-spacing: -0.025em;
       transition: color .15s;
     }
     #callband .p:hover { color: var(--brand-on); }
-    #callband .r { font-size: 12.5px; color: #7F89AE; }
+    #callband .r { font-size: 13.5px; color: #7F89AE; }
 
     /* 회사 영문 메타 띠 */
     #metaband {
@@ -247,37 +255,37 @@
 
 
     /* ══════════════ 섹션 공통 ══════════════ */
-    .section { padding: 76px var(--pad-x); }
+    .section { padding: 58px var(--pad-x); }
     .section.tint { background: var(--paper-2); }
-    .sec-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 14px; flex-wrap: wrap; margin-bottom: 32px; }
+    .sec-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 14px; flex-wrap: wrap; margin-bottom: 26px; }
     .sec-eyebrow { font-family: var(--mono); font-size: 11px; letter-spacing: .16em; color: var(--brand); }
-    .sec-title { font-size: 30px; font-weight: 800; letter-spacing: -0.04em; margin-top: 9px; }
-    .sec-lead { font-size: 14.5px; color: var(--sub); margin-top: 10px; max-width: 560px; word-break: keep-all; }
+    .sec-title { font-size: 34px; font-weight: 800; letter-spacing: -0.04em; margin-top: 9px; }
+    .sec-lead { font-size: 16.5px; color: var(--sub); margin-top: 10px; max-width: 560px; word-break: keep-all; }
     .sec-more { font-size: 13px; color: var(--sub); border-bottom: 1px solid var(--line-strong); padding-bottom: 3px; }
 
 
     /* ══════════════ §4. 강점 4 ══════════════ */
     #strengths { display: grid; grid-template-columns: repeat(4, 1fr); border-bottom: 1px solid var(--line); }
     .strength {
-      padding: 30px var(--pad-x); border-right: 1px solid var(--line);
+      padding: 26px var(--pad-x); border-right: 1px solid var(--line);
     }
     #strengths .strength:first-child { padding-left: var(--pad-x); }
     .strength:last-child { border-right: 0; }
     .strength .n { font-family: var(--mono); font-size: 11px; letter-spacing: .12em; color: var(--brand); }
-    .strength .t { font-weight: 700; font-size: 15.5px; margin: 9px 0 6px; letter-spacing: -0.03em; }
-    .strength .d { font-size: 12.5px; color: var(--sub); word-break: keep-all; line-height: 1.65; }
+    .strength .t { font-weight: 700; font-size: 17.5px; margin: 9px 0 6px; letter-spacing: -0.03em; }
+    .strength .d { font-size: 14px; color: var(--sub); word-break: keep-all; line-height: 1.65; }
 
 
     /* ══════════════ §5. 제품 ══════════════ */
     .products { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1px; background: var(--line); border: 1px solid var(--line); }
-    .pcard { background: var(--paper); padding: 30px; display: flex; gap: 22px; transition: background .18s; }
+    .pcard { background: var(--paper); padding: 26px; display: flex; gap: 22px; transition: background .18s; }
     .pcard:hover { background: #FAFBFE; }
     .pcard .idx {
-      font-family: var(--mono); font-size: 46px; font-weight: 600; line-height: .88;
+      font-family: var(--mono); font-size: 54px; font-weight: 600; line-height: .88;
       color: var(--brand); opacity: .2; letter-spacing: -0.055em; flex-shrink: 0;
     }
-    .pcard h3 { font-size: 19.5px; font-weight: 700; letter-spacing: -0.035em; }
-    .pcard p { font-size: 13.5px; color: var(--sub); margin-top: 9px; word-break: keep-all; line-height: 1.72; }
+    .pcard h3 { font-size: 22px; font-weight: 700; letter-spacing: -0.035em; }
+    .pcard p { font-size: 15.5px; color: var(--sub); margin-top: 9px; word-break: keep-all; line-height: 1.72; }
     .chips { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 15px; }
     .chips span {
       font-family: var(--mono); font-size: 10.5px; color: var(--brand);
@@ -293,11 +301,11 @@
     }
     .cert:last-child { border-right: 0; padding-right: 0; }
     .cert .mark {
-      font-family: var(--mono); font-size: 27px; font-weight: 600;
+      font-family: var(--mono); font-size: 31px; font-weight: 600;
       letter-spacing: -0.03em; color: var(--brand); line-height: 1.1;
     }
-    .cert .nm { font-weight: 700; font-size: 15px; margin: 11px 0 5px; letter-spacing: -0.03em; }
-    .cert .ds { font-size: 12.5px; color: var(--sub); word-break: keep-all; line-height: 1.65; }
+    .cert .nm { font-weight: 700; font-size: 16.5px; margin: 11px 0 5px; letter-spacing: -0.03em; }
+    .cert .ds { font-size: 14px; color: var(--sub); word-break: keep-all; line-height: 1.65; }
 
 
     /* ══════════════ §7. 거래처 ══════════════ */
@@ -317,26 +325,26 @@
       opacity: 0; transition: opacity .16s;
     }
     .logo-cell:hover .cell-hint { opacity: 1; }
-    .logos-note { font-size: 11.5px; color: var(--muted); margin-top: 12px; word-break: keep-all; line-height: 1.6; }
+    .logos-note { font-size: 12.5px; color: var(--muted); margin-top: 12px; word-break: keep-all; line-height: 1.6; }
 
     .capacity-box { border: 1px solid var(--line); border-radius: var(--radius-md); overflow: hidden; }
     .capacity-row { display: flex; justify-content: space-between; gap: 16px; padding: 18px 22px; border-bottom: 1px solid var(--line); }
     .capacity-row:last-child { border-bottom: 0; }
-    .capacity-row .k { font-size: 13.5px; color: var(--sub); }
-    .capacity-row .v { font-family: var(--mono); font-size: 18px; font-weight: 600; letter-spacing: -0.03em; color: var(--brand); font-variant-numeric: tabular-nums; }
+    .capacity-row .k { font-size: 15px; color: var(--sub); }
+    .capacity-row .v { font-family: var(--mono); font-size: 20.5px; font-weight: 600; letter-spacing: -0.03em; color: var(--brand); font-variant-numeric: tabular-nums; }
 
 
     /* ══════════════ §8. 회사소개 + 연혁 ══════════════ */
     .about-grid { display: grid; grid-template-columns: 1fr 1.15fr; gap: 56px; align-items: start; }
-    .about-intro { font-size: 14.5px; color: var(--sub); word-break: keep-all; line-height: 1.85; }
+    .about-intro { font-size: 16.5px; color: var(--sub); word-break: keep-all; line-height: 1.85; }
     .history { margin-top: 8px; }
     .history-item {
       display: grid; grid-template-columns: 88px 1fr; gap: 20px;
       padding: 16px 0; border-bottom: 1px solid var(--line); align-items: baseline;
     }
     .history-item:first-child { border-top: 1px solid var(--ink); }
-    .history-year { font-family: var(--mono); font-size: 13px; font-weight: 600; color: var(--brand); letter-spacing: .02em; }
-    .history-event { font-size: 13.5px; color: var(--sub); word-break: keep-all; line-height: 1.7; }
+    .history-year { font-family: var(--mono); font-size: 14.5px; font-weight: 600; color: var(--brand); letter-spacing: .02em; }
+    .history-event { font-size: 15px; color: var(--sub); word-break: keep-all; line-height: 1.7; }
 
 
     /* ══════════════ §9. 문의 ══════════════ */
@@ -345,7 +353,7 @@
     .info-row { display: grid; grid-template-columns: 72px 1fr; gap: 14px; padding: 15px 20px; border-bottom: 1px solid var(--line); align-items: baseline; }
     .info-row:last-child { border-bottom: 0; }
     .info-key { font-family: var(--mono); font-size: 10.5px; letter-spacing: .12em; color: var(--muted); }
-    .info-val { font-size: 15px; font-weight: 600; letter-spacing: -0.02em; }
+    .info-val { font-size: 16.5px; font-weight: 600; letter-spacing: -0.02em; }
     .info-val a { transition: color .15s; }
     .info-val a:hover { color: var(--brand); }
     .info-sub { font-size: 12px; color: var(--sub); margin-top: 2px; }
@@ -390,7 +398,7 @@
     footer { background: var(--brand-darkest); color: #fff; padding: 46px var(--pad-x) 34px; }
     .footer-grid { display: grid; grid-template-columns: 1.4fr 1fr; gap: 40px; align-items: start; }
     .footer-logo-text { font-size: 15px; font-weight: 700; letter-spacing: -0.03em; }
-    .footer-biz { font-size: 12.5px; color: #8790B2; margin-top: 12px; line-height: 1.85; }
+    .footer-biz { font-size: 13.5px; color: #8790B2; margin-top: 12px; line-height: 1.85; }
     .footer-certs { display: flex; gap: 10px; flex-wrap: wrap; }
     .footer-cert {
       font-family: var(--mono); font-size: 11px; letter-spacing: .06em; color: var(--brand-on-dim);
@@ -474,7 +482,7 @@
       .hero-r { border-left: 0; border-top: 1px solid var(--line); }
       .hero-l { padding: 52px var(--pad-x) 46px; }
       .products { grid-template-columns: 1fr; }
-      .section { padding: 56px var(--pad-x); }
+      .section { padding: 44px var(--pad-x); }
       .footer-grid { grid-template-columns: 1fr; gap: 26px; }
       #metaband { font-size: 9.5px; }
     }
@@ -500,8 +508,7 @@
   <!-- ══ §1. 네비게이션 ══ -->
   <nav id="mainNav">
     <a href="#hero" class="nav-logo">
-      <img src="images/logo-symmetric.png" alt="영보이엔지 로고" style="height:32px; width:auto;"
-        onerror="this.style.display='none';">
+      <img src="images/logo-mark-white.svg" alt="영보이엔지 로고" class="nav-logo-mark">
       <span class="nav-logo-text">
         <b>(주)영보이엔지</b>
         <small>TANK &amp; HEAT EXCHANGER</small>
@@ -888,6 +895,7 @@
     <div class="inner">
       <div class="footer-grid">
         <div>
+          <img src="images/logo-mark-white.svg" alt="" class="footer-logo-mark">
           <div class="footer-logo-text">(주)영보이엔지 · 영보종합탱크</div>
           <div class="footer-biz">
             사업자등록번호 126-81-88893<br>

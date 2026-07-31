@@ -41,6 +41,9 @@ export default {
     if ((env.SITE_LOCK || 'on').toLowerCase() === 'off') {
       const res = await env.ASSETS.fetch(request);
       const out = new Response(res.body, res);
+      // 공사 중에는 잠금이 풀린 상태에서도 공용 캐시를 막는다.
+      // 수정이 잦아 엣지에 옛 사본이 남으면 확인할 때마다 헷갈린다.
+      out.headers.set('Cache-Control', 'private, no-store, max-age=0');
       out.headers.set('X-Robots-Tag', 'noindex, nofollow');
       return out;
     }

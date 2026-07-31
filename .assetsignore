@@ -1,0 +1,11 @@
+# 공개하면 안 되거나 공개할 필요 없는 파일 — 배포 자산에서 제외
+CLAUDE.md
+HANDOFF.md
+install.cmd
+wrangler.jsonc
+.assetsignore
+.devcontainer/
+.gitignore
+
+# 구버전 사본 — 색인되면 중복 콘텐츠가 된다
+renewal.html

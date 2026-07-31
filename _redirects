@@ -1,5 +1,7 @@
-# www → 루트 도메인 (검색엔진 중복 색인 방지)
-https://www.youngboeng.co.kr/*  https://youngboeng.co.kr/:splat  301
-
-# 옛 도메인 회복 시 여기에 추가:
-# https://ybtank.co.kr/*  https://youngboeng.co.kr/:splat  301
+# Workers 정적 자산의 _redirects 는 상대 경로만 허용한다 (절대 URL은 배포 거부).
+# 따라서 www → 루트 도메인 리다이렉트는 여기서 처리할 수 없고,
+# Cloudflare 대시보드의 Rules → Redirect Rules 로 처리한다.
+#
+# 현재는 www 와 루트가 같은 내용을 서빙하지만, index.html 의
+# <link rel="canonical" href="https://youngboeng.co.kr/"> 이 대표 주소를
+# 지정하므로 검색엔진 중복 색인 문제는 방지된다.

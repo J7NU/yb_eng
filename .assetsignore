@@ -1,11 +1,19 @@
-# 공개하면 안 되거나 공개할 필요 없는 파일 — 배포 자산에서 제외
+# 버전 관리·빌드 산출물 — 절대 공개 금지
+.git/
+.github/
+.wrangler/
+node_modules/
+
+# 내부 문서·개발 도구
 CLAUDE.md
 HANDOFF.md
 install.cmd
-wrangler.jsonc
-.assetsignore
 .devcontainer/
 .gitignore
 
-# 구버전 사본 — 색인되면 중복 콘텐츠가 된다
+# Worker 설정 자체
+wrangler.jsonc
+.assetsignore
+
+# 구버전 사본 — 색인되면 index.html 과 중복 콘텐츠가 된다
 renewal.html

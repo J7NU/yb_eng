@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>페이지를 찾을 수 없습니다 — (주)영보이엔지</title>
+  <meta name="robots" content="noindex">
+
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="/images/favicon-32.png" sizes="32x32" type="image/png">
+  <meta name="theme-color" content="#1F2E66">
+
+  <link rel="stylesheet"
+    href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@latest/dist/web/variable/pretendardvariable.css">
+
+  <style>
+    :root {
+      --brand: #1F2E66;
+      --brand-deep: #16214A;
+      --brand-on: #C6CCE4;
+      --ink: #0B0D12;
+      --sub: #5B6070;
+      --muted: #6E7588;
+      --line: #E4E6EC;
+      --font: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont,
+        "Apple SD Gothic Neo", "Segoe UI", Roboto, sans-serif;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: var(--font); font-feature-settings: "ss10" 1;
+      color: var(--ink); background: #fff; line-height: 1.7;
+      min-height: 100vh; display: flex; flex-direction: column;
+      -webkit-font-smoothing: antialiased;
+    }
+    a { color: inherit; text-decoration: none; }
+    img { display: block; }
+    :focus-visible { outline: 2px solid var(--brand); outline-offset: 3px; }
+
+    nav {
+      display: flex; align-items: center; height: 70px; padding: 0 42px;
+      border-bottom: 3px solid var(--brand);
+    }
+    nav a { display: flex; align-items: center; gap: 12px; }
+    nav img { height: 40px; width: auto; }
+    nav b { font-size: 19px; font-weight: 800; letter-spacing: -0.03em; }
+
+    main {
+      flex: 1; display: flex; flex-direction: column; justify-content: center;
+      max-width: 720px; width: 100%; margin: 0 auto; padding: 64px 24px;
+    }
+    .code {
+      font-size: 15px; font-weight: 700; letter-spacing: .16em; color: var(--brand);
+    }
+    h1 {
+      font-size: clamp(30px, 5vw, 44px); font-weight: 800;
+      letter-spacing: -0.045em; margin: 12px 0 16px; word-break: keep-all;
+    }
+    p { font-size: 17px; color: var(--sub); word-break: keep-all; }
+    .links { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 32px; }
+    .b1 {
+      background: var(--brand); color: #fff; font-size: 15px; font-weight: 700;
+      padding: 14px 24px; border-radius: 3px; transition: background .15s;
+    }
+    .b1:hover { background: var(--brand-deep); }
+    .b2 {
+      border: 1px solid #C9CDD8; font-size: 15px; font-weight: 600;
+      padding: 14px 22px; border-radius: 3px; transition: border-color .15s, color .15s;
+    }
+    .b2:hover { border-color: var(--brand); color: var(--brand); }
+    .help {
+      margin-top: 40px; padding-top: 24px; border-top: 1px solid var(--line);
+      font-size: 15px; color: var(--muted);
+    }
+    .help strong { color: var(--ink); font-weight: 700; letter-spacing: -0.02em; }
+
+    footer {
+      background: #0F1730; color: #8790B2; padding: 24px 42px; font-size: 13.5px;
+    }
+
+    @media (max-width: 720px) {
+      nav { padding: 0 20px; } nav b { font-size: 17px; }
+      main { padding: 48px 20px; } footer { padding: 20px; }
+    }
+  </style>
+</head>
+
+<body>
+
+  <nav>
+    <a href="/">
+      <img src="/images/logo-mark-navy.svg" alt="영보이엔지 로고">
+      <b>(주)영보이엔지</b>
+    </a>
+  </nav>
+
+  <main>
+    <div class="code">404 NOT FOUND</div>
+    <h1>찾으시는 페이지가 없습니다</h1>
+    <p>
+      주소가 바뀌었거나 잘못 입력되었을 수 있습니다.
+      아래에서 원하시는 곳으로 이동해 주세요.
+    </p>
+    <div class="links">
+      <a href="/" class="b1">홈으로 가기</a>
+      <a href="/#products" class="b2">제품 보기</a>
+      <a href="/#contact" class="b2">견적 문의</a>
+    </div>
+    <div class="help">
+      찾으시는 정보가 없으시면 전화 주십시오.<br>
+      <strong>031-764-0248</strong> &nbsp;·&nbsp; 평일 08:30 – 17:30
+    </div>
+  </main>
+
+  <footer>(주)영보이엔지 · 영보종합탱크 &nbsp;|&nbsp; 경기 광주시 곤지암읍 광여로99번길 7</footer>
+
+</body>
+
+</html>

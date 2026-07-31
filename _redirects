@@ -1,0 +1,5 @@
+# www → 루트 도메인 (검색엔진 중복 색인 방지)
+https://www.youngboeng.co.kr/*  https://youngboeng.co.kr/:splat  301
+
+# 옛 도메인 회복 시 여기에 추가:
+# https://ybtank.co.kr/*  https://youngboeng.co.kr/:splat  301

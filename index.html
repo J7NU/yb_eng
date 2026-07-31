@@ -370,7 +370,13 @@
     .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
     .form-group { display: flex; flex-direction: column; gap: 7px; }
     .form-label { font-size: 13.5px; font-weight: 600; color: var(--sub); letter-spacing: -0.01em; }
-    .form-label-opt { color: var(--muted); font-weight: 400; }
+    .form-label { display: flex; align-items: center; gap: 7px; }
+    .req, .form-label-opt {
+      font-size: 11px; font-weight: 700; letter-spacing: -0.01em;
+      padding: 2px 7px; border-radius: 3px; line-height: 1.5;
+    }
+    .req { background: var(--brand); color: #fff; }
+    .form-label-opt { background: var(--bg-opt, #EEF0F4); color: var(--sub); font-weight: 600; }
     .form-input, .form-textarea {
       font-family: var(--font); font-size: 15.5px; color: var(--ink);
       padding: 12px 14px; border: 1px solid var(--line-strong); border-radius: var(--radius);
@@ -884,29 +890,29 @@
 
             <div class="form-row">
               <div class="form-group">
-                <label class="form-label" for="company">회사명 <span style="color:var(--brand);">*</span></label>
+                <label class="form-label" for="company">회사명<span class="req">필수</span></label>
                 <input type="text" id="company" name="company" class="form-input" placeholder="(주)회사명" required>
               </div>
               <div class="form-group">
-                <label class="form-label" for="contactno">담당자 연락처 <span style="color:var(--brand);">*</span></label>
+                <label class="form-label" for="contactno">담당자 연락처<span class="req">필수</span></label>
                 <input type="tel" id="contactno" name="contact" class="form-input" placeholder="010-0000-0000" required>
               </div>
             </div>
 
             <div class="form-group">
-              <label class="form-label" for="email">담당자 이메일 <span style="color:var(--brand);">*</span></label>
+              <label class="form-label" for="email">담당자 이메일<span class="req">필수</span></label>
               <input type="email" id="email" name="email" class="form-input" placeholder="name@company.co.kr" required>
               <div class="file-hint">견적서·도면 회신을 받으실 주소입니다.</div>
             </div>
 
             <div class="form-group">
-              <label class="form-label" for="inquiry">문의 내용 <span style="color:var(--brand);">*</span></label>
+              <label class="form-label" for="inquiry">문의 내용<span class="req">필수</span></label>
               <textarea id="inquiry" name="inquiry" class="form-textarea"
                 placeholder="제품명, 용량, 규격, 수량, 설치 환경, 납기 요구사항 등을 작성해 주세요." required></textarea>
             </div>
 
             <div class="form-group">
-              <label class="form-label">도면·자료 첨부 <span class="form-label-opt">(선택)</span></label>
+              <label class="form-label">도면·자료 첨부 <span class="form-label-opt">선택</span></label>
               <label class="file-upload-label">
                 <input type="file" name="attachment" class="file-input" accept=".pdf,.dwg,.dxf,.xlsx,.jpg,.png"
                   onchange="updateFileName(this)">
@@ -917,7 +923,7 @@
             </div>
 
             <div class="consent">
-              <div class="consent-head">개인정보 수집·이용 동의 <span style="color:var(--brand);">(필수)</span></div>
+              <div class="consent-head">개인정보 수집·이용 동의 <span class="req">필수</span></div>
               <table class="consent-table">
                 <tr><th>수집 항목</th><td>회사명, 담당자 연락처, 이메일, 문의 내용, 첨부파일(선택)</td></tr>
                 <tr><th>이용 목적</th><td>견적·기술 문의 접수 및 회신, 상담 이력 관리</td></tr>

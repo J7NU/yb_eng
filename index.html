@@ -111,6 +111,13 @@
       --radius-md: 6px;
       --nav-h: 70px;
       --pad-x: 42px;
+
+      /* 섹션 밀도 3단 — 섹션마다 다른 여백을 줘서 스크롤에 강약을 만든다.
+         기준값(--sec-md)은 글씨 확대 때 줄여 둔 42px 을 그대로 쓰고,
+         큰/작은 단만 그 비율로 붙였다. */
+      --sec-lg: 58px;   /* 주역 (제품) */
+      --sec-md: 42px;   /* 표준 */
+      --sec-sm: 24px;   /* 압축 띠 (인증) */
     }
 
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -255,13 +262,42 @@
 
 
     /* ══════════════ 섹션 공통 ══════════════ */
-    .section { padding: 42px var(--pad-x); }
+    .section { padding: var(--sec-md) var(--pad-x); }
+    .section.lg { padding: var(--sec-lg) var(--pad-x); }
+    .section.sm { padding: var(--sec-sm) var(--pad-x); }
     .section.tint { background: var(--paper-2); }
+
+    /* 다크 반전 섹션 — 스크롤 중간의 숨 쉬는 지점 */
+    .section.dark { background: var(--brand); color: #fff; }
+    .section.dark .sec-eyebrow { color: var(--brand-on-dim); }
+    .section.dark .sec-lead { color: var(--brand-on); }
+    .section.dark .sec-more { color: var(--brand-on); }
+    .section.dark .sec-more::after { background: rgba(255, 255, 255, .3); }
+    .section.dark .sec-more::before { background: #fff; }
+    .section.dark .sec-more:hover { color: #fff; }
+
+    /* 상단 스크롤 진행바 */
+    #scrollProgress {
+      position: fixed; top: 0; left: 0; height: 2px; width: 100%;
+      transform: scaleX(0); transform-origin: left; z-index: 300;
+      background: var(--accent); pointer-events: none;
+    }
     .sec-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 14px; flex-wrap: wrap; margin-bottom: 20px; }
     .sec-eyebrow { font-family: var(--font); font-weight: 600; font-size: 11px; letter-spacing: .16em; color: var(--brand); }
     .sec-title { font-size: 40px; font-weight: 800; letter-spacing: -0.04em; margin-top: 9px; }
     .sec-lead { font-size: 18px; color: var(--sub); margin-top: 10px; max-width: 560px; word-break: keep-all; }
-    .sec-more { font-size: 14px; color: var(--sub); border-bottom: 1px solid var(--line-strong); padding-bottom: 3px; }
+    /* 밑줄이 왼쪽에서 오른쪽으로 그어지는 링크 */
+    .sec-more { position: relative; font-size: 14px; color: var(--sub); padding-bottom: 4px; }
+    .sec-more::after, .sec-more::before {
+      content: ""; position: absolute; left: 0; bottom: 0; height: 1px; width: 100%;
+    }
+    .sec-more::after { background: var(--line-strong); }
+    .sec-more::before {
+      background: var(--brand); transform: scaleX(0); transform-origin: left;
+      transition: transform .28s ease;
+    }
+    .sec-more:hover { color: var(--brand); }
+    .sec-more:hover::before { transform: scaleX(1); }
 
 
     /* ══════════════ §4. 강점 4 ══════════════ */
@@ -295,31 +331,46 @@
 
 
     /* ══════════════ §6. 인증 (활자 마크) ══════════════ */
+    /* 압축 띠 — 큰 섹션이 아니라 얇은 신뢰 배너로 읽히게 한다 */
     #certifications { background: var(--brand-tint); border-top: 1px solid var(--brand-line); border-bottom: 1px solid var(--brand-line); }
-    .certs { display: grid; grid-template-columns: repeat(4, 1fr); }
+    #certifications .sec-head { margin-bottom: 16px; align-items: center; }
+    #certifications .sec-title { font-size: 27px; margin-top: 6px; }
+    #certifications .sec-lead { font-size: 16.5px; margin-top: 0; }
+    .certs { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; }
     .cert {
-      padding: 4px 26px 4px 0; border-right: 1px solid var(--brand-line);
+      display: flex; align-items: baseline; gap: 12px;
+      padding: 0 22px 0 0; border-right: 1px solid var(--brand-line);
     }
     .cert:last-child { border-right: 0; padding-right: 0; }
     .cert .mark {
-      font-family: var(--font); font-size: 35px; font-weight: 600;
-      letter-spacing: -0.03em; color: var(--brand); line-height: 1.1;
-      font-variant-numeric: tabular-nums;
+      font-family: var(--font); font-size: 22px; font-weight: 700;
+      letter-spacing: -0.02em; color: var(--brand); line-height: 1.2;
+      font-variant-numeric: tabular-nums; white-space: nowrap; flex-shrink: 0;
     }
-    .cert .nm { font-weight: 700; font-size: 18px; margin: 11px 0 5px; letter-spacing: -0.03em; }
-    .cert .ds { font-size: 15.5px; color: var(--sub); word-break: keep-all; line-height: 1.65; }
+    .cert-t { min-width: 0; }
+    .cert .nm { font-weight: 700; font-size: 17.5px; letter-spacing: -0.03em; }
+    .cert .ds { font-size: 14.5px; color: var(--sub); word-break: keep-all; line-height: 1.55; margin-top: 3px; }
 
 
     /* ══════════════ §7. 거래처 ══════════════ */
-    .refs-layout { display: grid; grid-template-columns: 1.35fr 1fr; gap: 56px; align-items: start; }
-    .logos-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--line); border: 1px solid var(--line); margin-top: 4px; }
+    /* 다크 배경 위 6칸 로고 띠. 로고가 유채색이라 셀은 흰 타일로 유지한다 */
+    .logos-grid {
+      display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 1px;
+      background: rgba(255, 255, 255, .16); border: 1px solid rgba(255, 255, 255, .16);
+      margin-top: 26px;
+    }
     .logo-cell {
       position: relative; background: var(--paper); border: 0; cursor: pointer;
       aspect-ratio: 5/2; display: flex; align-items: center; justify-content: center;
-      padding: 18px; font-family: var(--font); transition: background .16s;
+      padding: 14px; font-family: var(--font); transition: background .16s;
     }
-    .logo-cell:hover { background: #FAFBFE; }
-    .client-logo-img { max-height: 34px; width: auto; object-fit: contain; }
+    .logo-cell:hover { background: var(--brand-tint); }
+    /* 로고 비율이 5:1(한전)부터 1:1(KAIST)까지 섞여 있다.
+       높이만 묶으면 정사각 로고가 너무 작아 보이고, 높이를 키우면 가로로 긴 로고가 칸을 넘는다.
+       → 높이 상한을 올리고 가로 상한을 같이 걸어 둘 다 칸 안에서 최대로 커지게 한다. */
+    .client-logo-img { max-height: 46px; max-width: 100%; width: auto; object-fit: contain; }
+    /* 정사각 인장형 로고(KAIST)는 같은 높이로 묶으면 옆 칸의 절반도 안 되게 보인다 — 칸 높이까지 키운다 */
+    .logo-cell.sq .client-logo-img { max-height: 58px; }
     .logo-fallback { font-size: 13px; font-weight: 700; color: var(--sub); }
     .cell-hint {
       position: absolute; bottom: 7px; right: 10px;
@@ -327,26 +378,51 @@
       opacity: 0; transition: opacity .16s;
     }
     .logo-cell:hover .cell-hint { opacity: 1; }
-    .logos-note { font-size: 13px; color: var(--muted); margin-top: 12px; word-break: keep-all; line-height: 1.6; }
+    .logos-note { font-size: 13px; color: #8E99C4; margin-top: 14px; word-break: keep-all; line-height: 1.6; max-width: 720px; }
 
-    .capacity-box { border: 1px solid var(--line); border-radius: var(--radius-md); overflow: hidden; }
-    .capacity-row { display: flex; justify-content: space-between; gap: 16px; padding: 18px 22px; border-bottom: 1px solid var(--line); }
-    .capacity-row:last-child { border-bottom: 0; }
-    .capacity-row .k { font-size: 16.5px; color: var(--sub); }
-    .capacity-row .v { font-family: var(--font); font-size: 23px; font-weight: 600; letter-spacing: -0.03em; color: var(--brand); font-variant-numeric: tabular-nums; }
+    /* 다크 섹션에서 빠져나왔으므로 세로 목록이 아니라 가로 칸으로 편다.
+       칸 수가 5개라 구분선은 border 대신 gap 1px + 배경색으로 낸다 — 줄바꿈돼도 선이 깨지지 않는다. */
+    .capacity-box {
+      display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 1px;
+      background: var(--line); border: 1px solid var(--line);
+      border-radius: var(--radius-md); overflow: hidden;
+    }
+    .capacity-row {
+      display: flex; flex-direction: column; gap: 8px;
+      padding: 22px 20px; background: var(--paper);
+    }
+    .capacity-row .k { font-size: 15px; color: var(--sub); order: 2; }
+    .capacity-row .v {
+      font-family: var(--font); font-size: 26px; font-weight: 600; letter-spacing: -0.04em;
+      color: var(--brand); font-variant-numeric: tabular-nums; line-height: 1.1; order: 1;
+      word-break: keep-all;
+    }
 
 
     /* ══════════════ §8. 회사소개 + 연혁 ══════════════ */
-    .about-grid { display: grid; grid-template-columns: 1fr 1.15fr; gap: 56px; align-items: start; }
+    /* 비대칭 2열 — 좌측 서술은 좁게, 우측 연혁은 넓게 */
+    .about-grid { display: grid; grid-template-columns: .78fr 1.22fr; gap: 72px; align-items: start; }
     .about-intro { font-size: 18px; color: var(--sub); word-break: keep-all; line-height: 1.85; }
-    .history { margin-top: 8px; }
+
+    /* 연혁 세로 타임라인 */
+    .history { margin-top: 8px; position: relative; padding-left: 20px; }
+    .history::before {
+      content: ""; position: absolute; left: 0; top: 6px; bottom: 6px;
+      width: 1px; background: var(--brand-line);
+    }
     .history-item {
-      display: grid; grid-template-columns: 88px 1fr; gap: 20px;
-      padding: 16px 0; border-bottom: 1px solid var(--line); align-items: baseline;
+      position: relative;
+      display: grid; grid-template-columns: 78px 1fr; gap: 20px;
+      padding: 15px 0; border-bottom: 1px solid var(--line); align-items: baseline;
     }
-    .history-item:first-child { border-top: 1px solid var(--ink); }
-    .history-year { font-family: var(--font); font-size: 16px; font-weight: 600; color: var(--brand); letter-spacing: .02em;   font-variant-numeric: tabular-nums;
+    .history-item::before {
+      content: ""; position: absolute; left: -24px; top: 22px;
+      width: 7px; height: 7px; border-radius: 50%;
+      background: var(--paper); border: 1.5px solid var(--brand-line);
     }
+    .history-item:last-child::before { background: var(--brand); border-color: var(--brand); }
+    .history-item:last-child { border-bottom: 0; }
+    .history-year { font-family: var(--font); font-size: 16px; font-weight: 700; color: var(--brand); letter-spacing: .02em; font-variant-numeric: tabular-nums; }
     .history-event { font-size: 16.5px; color: var(--sub); word-break: keep-all; line-height: 1.7; }
 
 
@@ -487,13 +563,17 @@
     @media (prefers-reduced-motion: reduce) {
       * { transition: none !important; animation: none !important; }
       .js-on .reveal { opacity: 1; transform: none; }
+      .sec-more::before { display: none; }
+      #scrollProgress { display: none; }
     }
 
 
     /* ══════════════ 반응형 ══════════════ */
     @media (max-width: 1024px) {
       :root { --pad-x: 26px; }
-      .refs-layout, .about-grid, .contact-grid { grid-template-columns: 1fr; gap: 40px; }
+      .about-grid, .contact-grid { grid-template-columns: 1fr; gap: 40px; }
+      .logos-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+      .capacity-box { grid-template-columns: repeat(3, minmax(0, 1fr)); }
       #strengths { grid-template-columns: repeat(2, 1fr); }
       .strength { border-bottom: 1px solid var(--line); }
       .strength:nth-child(2) { border-right: 0; }
@@ -518,19 +598,28 @@
       .hero-r { border-left: 0; border-top: 1px solid var(--line); }
       .hero-l { padding: 52px var(--pad-x) 46px; }
       .products { grid-template-columns: 1fr; }
-      .section { padding: 36px var(--pad-x); }
+      :root { --sec-lg: 48px; --sec-md: 36px; --sec-sm: 20px; }
       .footer-grid { grid-template-columns: 1fr; gap: 26px; }
       #metaband { font-size: 9.5px; }
     }
 
     @media (max-width: 560px) {
-      #strengths, .certs, .logos-grid { grid-template-columns: 1fr; }
+      #strengths, .certs { grid-template-columns: 1fr; }
+      .logos-grid, .capacity-box { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .capacity-row { padding: 18px 18px; }
+      .capacity-row .v { font-size: 23px; }
       .strength { border-right: 0; border-bottom: 1px solid var(--line); }
       .strength:nth-child(3) { border-bottom: 1px solid var(--line); }
       .cert { border-right: 0; padding: 0 0 20px; border-bottom: 1px solid var(--brand-line); }
       .cert:last-child { border-bottom: 0; padding-bottom: 0; }
-      .logo-cell { aspect-ratio: 3/1; }
+      /* 2칸으로 좁아진 만큼 칸을 덜 납작하게. 로고 상한도 칸 안쪽 높이에 맞춰 낮춘다
+         (안 낮추면 큰 로고가 든 줄만 키가 커져 줄 높이가 안 맞는다) */
+      .logo-cell { aspect-ratio: 2/1; padding: 10px; }
+      .client-logo-img { max-height: 38px; }
+      .logo-cell.sq .client-logo-img { max-height: 48px; }
       .form-row { grid-template-columns: 1fr; }
+      .history { padding-left: 16px; }
+      .history-item::before { left: -20px; }
       .history-item { grid-template-columns: 64px 1fr; gap: 14px; }
       #callband .p { font-size: 22px; }
       .pcard { padding: 24px 20px; gap: 16px; }
@@ -540,6 +629,8 @@
 </head>
 
 <body>
+
+  <div id="scrollProgress" aria-hidden="true"></div>
 
   <!-- ══ §1. 네비게이션 ══ -->
   <nav id="mainNav">
@@ -641,7 +732,7 @@
 
 
   <!-- ══ §5. 제품 ══ -->
-  <section id="products" class="section">
+  <section id="products" class="section lg">
     <div class="inner">
       <div class="sec-head reveal">
         <div>
@@ -693,7 +784,7 @@
 
 
   <!-- ══ §6. 인증 ══ -->
-  <section id="certifications" class="section">
+  <section id="certifications" class="section sm">
     <div class="inner">
       <div class="sec-head reveal">
         <div>
@@ -706,95 +797,111 @@
       <div class="certs reveal">
         <div class="cert">
           <div class="mark">KS</div>
-          <div class="nm">KS 인증</div>
-          <div class="ds">한국산업표준 인증<br>압력용기 KS B 6231</div>
+          <div class="cert-t">
+            <div class="nm">KS 인증</div>
+            <div class="ds">한국산업표준 · 압력용기 KS B 6231</div>
+          </div>
         </div>
         <div class="cert">
-          <div class="mark">ISO<br>9001</div>
-          <div class="nm">ISO 9001</div>
-          <div class="ds">국제 품질경영 시스템 인증<br>설계·제조·검사 전 공정</div>
+          <div class="mark">ISO 9001</div>
+          <div class="cert-t">
+            <div class="nm">품질경영 인증</div>
+            <div class="ds">설계·제조·검사 전 공정</div>
+          </div>
         </div>
         <div class="cert">
           <div class="mark">047780</div>
-          <div class="nm">압력용기 검사</div>
-          <div class="ds">한국에너지공단 지정<br>압력용기 제조업 등록</div>
+          <div class="cert-t">
+            <div class="nm">압력용기 검사</div>
+            <div class="ds">한국에너지공단 지정 제조업 등록</div>
+          </div>
         </div>
         <div class="cert">
-          <div class="mark">TIG<br>MIG</div>
-          <div class="nm">용접 인증</div>
-          <div class="ds">KS 용접 자격 보유<br>TIG·MIG·ARC 전 용접 가능</div>
+          <div class="mark">TIG·MIG</div>
+          <div class="cert-t">
+            <div class="nm">용접 인증</div>
+            <div class="ds">KS 용접 자격 · ARC 전 용접 가능</div>
+          </div>
         </div>
       </div>
     </div>
   </section>
 
 
-  <!-- ══ §7. 거래처 · 생산능력 ══ -->
-  <section id="references" class="section tint">
+  <!-- ══ §7. 거래처 ══ -->
+  <section id="references" class="section dark">
     <div class="inner">
-      <div class="refs-layout">
+      <div class="reveal">
+        <div class="sec-eyebrow">CLIENTS</div>
+        <h2 class="sec-title">주요 납품처</h2>
+        <p class="sec-lead">공공기관·연구기관·대형 제조 시설 등 다양한 고객사에 제품을 공급해 왔습니다.</p>
 
-        <div class="reveal">
-          <div class="sec-eyebrow">CLIENTS</div>
-          <h2 class="sec-title">주요 납품처</h2>
-          <p class="sec-lead">공공기관·대형 건설사·산업 시설 등 다양한 고객사에 제품을 공급해 왔습니다.</p>
-
-          <div class="logos-grid">
-            <button type="button" class="logo-cell" onclick="openClient(1)" aria-label="삼성 납품 현장 보기">
-              <img loading="lazy" decoding="async" src="images/client-1.svg" alt="삼성" class="client-logo-img"
-                onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
-              <span class="logo-fallback" style="display:none;">삼성</span>
-              <span class="cell-hint">납품 현장 ▸</span>
-            </button>
-            <button type="button" class="logo-cell" onclick="openClient(2)" aria-label="LG 납품 현장 보기">
-              <img loading="lazy" decoding="async" src="images/client-2.svg" alt="LG" class="client-logo-img"
-                onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
-              <span class="logo-fallback" style="display:none;">LG</span>
-              <span class="cell-hint">납품 현장 ▸</span>
-            </button>
-            <button type="button" class="logo-cell" onclick="openClient(3)" aria-label="포스코 납품 현장 보기">
-              <img loading="lazy" decoding="async" src="images/client-3.svg" alt="포스코 POSCO" class="client-logo-img"
-                onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
-              <span class="logo-fallback" style="display:none;">POSCO</span>
-              <span class="cell-hint">납품 현장 ▸</span>
-            </button>
-            <button type="button" class="logo-cell" onclick="openClient(4)" aria-label="현대 납품 현장 보기">
-              <img loading="lazy" decoding="async" src="images/client-4.svg" alt="현대 HYUNDAI" class="client-logo-img"
-                onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
-              <span class="logo-fallback" style="display:none;">현대</span>
-              <span class="cell-hint">납품 현장 ▸</span>
-            </button>
-            <button type="button" class="logo-cell" onclick="openClient(5)" aria-label="롯데 납품 현장 보기">
-              <img loading="lazy" decoding="async" src="images/client-5.svg" alt="롯데 LOTTE" class="client-logo-img"
-                onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
-              <span class="logo-fallback" style="display:none;">롯데</span>
-              <span class="cell-hint">납품 현장 ▸</span>
-            </button>
-            <button type="button" class="logo-cell" onclick="openClient(6)" aria-label="한국전력공사 납품 현장 보기">
-              <img loading="lazy" decoding="async" src="images/client-6.svg" alt="한국전력공사 KEPCO" class="client-logo-img"
-                onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
-              <span class="logo-fallback" style="display:none;">한국전력공사</span>
-              <span class="cell-hint">납품 현장 ▸</span>
-            </button>
-          </div>
-          <p class="logos-note">
-            * 로고를 누르면 실제 납품 현장 목록이 열립니다. 로고는 각 사의 상표이며, 표시는 납품 실적에 근거합니다. 상세 레퍼런스는 별도 문의 바랍니다.
-          </p>
+        <!-- 배치 순서 = 기관 규모 기준. 파일명 client-N 은 그대로 두고 노출 순서만 바꾼다. -->
+        <div class="logos-grid">
+          <button type="button" class="logo-cell" onclick="openClient(1)" aria-label="한국전력공사 납품 현장 보기">
+            <img loading="lazy" decoding="async" src="images/client-1.svg" alt="한국전력공사 KEPCO" class="client-logo-img"
+              onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+            <span class="logo-fallback" style="display:none;">KEPCO</span>
+            <span class="cell-hint">납품 현장 ▸</span>
+          </button>
+          <button type="button" class="logo-cell" onclick="openClient(2)" aria-label="기아 납품 현장 보기">
+            <img loading="lazy" decoding="async" src="images/client-2.svg" alt="기아 KIA" class="client-logo-img"
+              onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+            <span class="logo-fallback" style="display:none;">KIA</span>
+            <span class="cell-hint">납품 현장 ▸</span>
+          </button>
+          <button type="button" class="logo-cell" onclick="openClient(3)" aria-label="한국도로공사 납품 현장 보기">
+            <img loading="lazy" decoding="async" src="images/client-3.svg" alt="한국도로공사" class="client-logo-img"
+              onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+            <span class="logo-fallback" style="display:none;">한국도로공사</span>
+            <span class="cell-hint">납품 현장 ▸</span>
+          </button>
+          <button type="button" class="logo-cell" onclick="openClient(4)" aria-label="KT&amp;G 납품 현장 보기">
+            <img loading="lazy" decoding="async" src="images/client-4.svg" alt="KT&amp;G" class="client-logo-img"
+              onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+            <span class="logo-fallback" style="display:none;">KT&amp;G</span>
+            <span class="cell-hint">납품 현장 ▸</span>
+          </button>
+          <button type="button" class="logo-cell" onclick="openClient(5)" aria-label="한국은행 납품 현장 보기">
+            <img loading="lazy" decoding="async" src="images/client-5.svg" alt="한국은행 Bank of Korea" class="client-logo-img"
+              onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+            <span class="logo-fallback" style="display:none;">한국은행</span>
+            <span class="cell-hint">납품 현장 ▸</span>
+          </button>
+          <button type="button" class="logo-cell sq" onclick="openClient(6)" aria-label="KAIST 납품 현장 보기">
+            <img loading="lazy" decoding="async" src="images/client-6.svg" alt="KAIST 한국과학기술원" class="client-logo-img"
+              onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+            <span class="logo-fallback" style="display:none;">KAIST</span>
+            <span class="cell-hint">납품 현장 ▸</span>
+          </button>
         </div>
+        <p class="logos-note">
+          * 로고를 누르면 실제 납품 현장 목록이 열립니다. 로고는 각 사의 상표이며, 표시는 납품 실적에 근거합니다.
+          일부 현장은 협력 설비사를 통한 납품 건을 포함합니다. 상세 레퍼런스는 별도 문의 바랍니다.
+        </p>
+      </div>
+    </div>
+  </section>
 
-        <div class="reveal">
-          <div class="sec-eyebrow">CAPACITY</div>
-          <h2 class="sec-title">생산 능력</h2>
-          <p class="sec-lead">자체 공장 기준 연간 생산량과 대응 범위입니다.</p>
-          <div class="capacity-box">
-            <div class="capacity-row"><span class="k">연간 제작 대수</span><span class="v">500+</span></div>
-            <div class="capacity-row"><span class="k">최대 용량 대응</span><span class="v">20,000 ℓ</span></div>
-            <div class="capacity-row"><span class="k">판넬탱크 대응</span><span class="v">2,000 TON</span></div>
-            <div class="capacity-row"><span class="k">긴급 납품 최단</span><span class="v">3일</span></div>
-            <div class="capacity-row"><span class="k">자가 공장</span><span class="v">대지 900평</span></div>
+
+  <!-- ══ §7-2. 생산 능력 (다크 직후 밝게 — 반전 리듬) ══ -->
+  <section id="capacity" class="section">
+    <div class="inner">
+      <div class="reveal">
+        <div class="sec-head">
+          <div>
+            <div class="sec-eyebrow">CAPACITY</div>
+            <h2 class="sec-title">생산 능력</h2>
+            <p class="sec-lead">자체 공장 기준 연간 생산량과 대응 범위입니다.</p>
           </div>
         </div>
-
+        <div class="capacity-box">
+          <div class="capacity-row"><span class="k">연간 제작 대수</span><span class="v">500+</span></div>
+          <div class="capacity-row"><span class="k">최대 용량 대응</span><span class="v">20,000 ℓ</span></div>
+          <div class="capacity-row"><span class="k">판넬탱크 대응</span><span class="v">2,000 TON</span></div>
+          <div class="capacity-row"><span class="k">긴급 납품 최단</span><span class="v">3일</span></div>
+          <div class="capacity-row"><span class="k">자가 공장</span><span class="v">대지 900평</span></div>
+        </div>
       </div>
     </div>
   </section>
@@ -1065,6 +1172,60 @@
       document.querySelectorAll('section[id]').forEach(s => navIO.observe(s));
     }
 
+    /* ── 모션 감축 설정 존중 ── */
+    const reduceMotion = window.matchMedia
+      && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    /* ── 통계 숫자 카운트업 ──
+       "2,000+" 처럼 접두·접미가 붙어 있으므로 숫자 부분만 떼어 세고 원래 모양으로 되돌린다.
+       첫 타일은 업력 자동 계산용 <span data-since> 를 품고 있어서, 그 span 이 있으면
+       span 안쪽만 갱신한다 — element 통째로 덮으면 span 이 사라진다. */
+    if (!reduceMotion && 'IntersectionObserver' in window) {
+      const countIO = new IntersectionObserver(entries => {
+        entries.forEach(e => {
+          if (!e.isIntersecting) return;
+          countIO.unobserve(e.target);
+          const host = e.target.querySelector('[data-since]') || e.target;
+          const m = host.textContent.trim().match(/^(\D*)([\d,]+)(.*)$/);
+          if (!m) return;
+          const [, pre, digits, post] = m;
+          const target = parseInt(digits.replace(/,/g, ''), 10);
+          if (!isFinite(target)) return;
+          const grouped = digits.indexOf(',') !== -1;
+          const dur = 900;
+          let start = null;
+          function step(ts) {
+            if (start === null) start = ts;
+            const p = Math.min((ts - start) / dur, 1);
+            const eased = 1 - Math.pow(1 - p, 3);
+            const val = Math.round(target * eased);
+            host.textContent = pre + (grouped ? val.toLocaleString('en-US') : String(val)) + post;
+            if (p < 1) requestAnimationFrame(step);
+          }
+          requestAnimationFrame(step);
+        });
+      }, { threshold: 0.5 });
+      document.querySelectorAll('.stat-num').forEach(el => countIO.observe(el));
+    }
+
+    /* ── 상단 스크롤 진행바 ── */
+    if (!reduceMotion) {
+      const bar = document.getElementById('scrollProgress');
+      let ticking = false;
+      function drawProgress() {
+        const doc = document.documentElement;
+        const max = doc.scrollHeight - doc.clientHeight;
+        const ratio = max > 0 ? Math.min(doc.scrollTop / max, 1) : 0;
+        bar.style.transform = 'scaleX(' + ratio + ')';
+        ticking = false;
+      }
+      window.addEventListener('scroll', () => {
+        if (!ticking) { ticking = true; requestAnimationFrame(drawProgress); }
+      }, { passive: true });
+      window.addEventListener('resize', drawProgress, { passive: true });
+      drawProgress();
+    }
+
     /* ── 첨부 파일명 표시 ── */
     function updateFileName(input) {
       const el = input.parentElement.querySelector('.file-name');
@@ -1073,14 +1234,19 @@
 
     /* ── 거래처 납품 현장 ──
        출처: 기존 사이트 results.html(납품실적) 스캔표. 주요 건만 발췌.
-       ⚠️ 실사이트 게시 전 부모님께 실제 납품 사실 최종 확인 필요. */
+       ⚠️ 실사이트 게시 전 부모님께 실제 납품 사실 최종 확인 필요.
+
+       납품처 = 단일 법인·기관만 (2026-08-06)
+       계열 추론이 필요한 그룹 브랜드(삼성·현대·LG·롯데)는 전부 뺐다. 로고 원본은
+       images/retired-clients/ 에 보관. 근거는 옛 results.html 납품실적 스캔.
+       현장 목록은 한전 외에는 아직 원본 대조 전이라 비워 둔다 — 채우면 자동 표시된다. */
     const CLIENT_SITES = {
-      1: { name: '삼성', sites: ['삼성서울병원 (구 삼성제일병원)', '삼성생명 연수원', '부산 삼성생명', '삼성암센터', '삼성동 호텔', '기흥 삼성자동차'] },
-      2: { name: 'LG', sites: ['파주 LG화학', '오창 LG화학'] },
-      3: { name: '포스코 (POSCO)', sites: ['광양제철소'] },
-      4: { name: '현대', sites: ['압구정 현대백화점', '현대 아산모비스', '현대아파트 (청량리)', '압구정 현대수영장'] },
-      5: { name: '롯데', sites: ['롯데호텔 본점', '롯데 김포공항'] },
-      6: { name: '한국전력공사 (KEPCO)', sites: ['한전 충주지점'] },
+      1: { name: '한국전력공사 (KEPCO)', sites: ['한전 충주지점'] },
+      2: { name: '기아', sites: [] },
+      3: { name: '한국도로공사', sites: [] },
+      4: { name: 'KT&G', sites: [] },
+      5: { name: '한국은행', sites: [] },
+      6: { name: 'KAIST (한국과학기술원)', sites: [] },
     };
 
     function openClient(n) {
@@ -1094,8 +1260,17 @@
         li.textContent = s;
         ul.appendChild(li);
       });
-      document.getElementById('cmNote').textContent =
-        '※ 기존 납품실적 자료 기준 주요 현장입니다. 일부 현장은 협력 설비사를 통한 납품 건을 포함합니다.';
+      /* 현장 목록을 아직 원본과 대조하지 못한 곳은 빈 배열로 둔다.
+         추측해서 채우지 않고, 문의 안내로 대신한다. */
+      const hasSites = d.sites.length > 0;
+      if (!hasSites) {
+        const li = document.createElement('li');
+        li.textContent = '세부 납품 현장은 별도 문의 바랍니다.';
+        ul.appendChild(li);
+      }
+      document.getElementById('cmNote').textContent = hasSites
+        ? '※ 기존 납품실적 자료 기준 주요 현장입니다. 일부 현장은 협력 설비사를 통한 납품 건을 포함합니다.'
+        : '※ 납품 실적은 보유하고 있으나 공개 가능한 현장 정보는 확인 후 안내드립니다.';
       document.getElementById('clientModal').classList.add('open');
       document.body.style.overflow = 'hidden';
     }

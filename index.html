@@ -718,6 +718,39 @@
       color: var(--gray-400);
     }
 
+    /* 첨부가 한도를 넘었을 때 — 그냥 막지 말고 이메일 경로로 넘긴다 */
+    .file-oversize {
+      margin-top: 10px;
+      padding: 12px 14px;
+      border: 1px solid var(--navy);
+      border-radius: 8px;
+      background: #F6F7FA;
+      font-size: 12.5px;
+      line-height: 1.6;
+      color: var(--gray-600);
+    }
+
+    .file-oversize strong {
+      display: block;
+      margin-bottom: 4px;
+      color: #B03A2E;
+      font-size: 13px;
+    }
+
+    .file-oversize-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 10px;
+      padding: 10px 14px;
+      width: 100%;
+      border-radius: 8px;
+      background: var(--navy);
+      color: #fff;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
     .consent {
       margin: 16px 0 14px;
     }
@@ -1355,11 +1388,20 @@
               <label class="form-label" for="attachment">도면·자료 첨부 <span class="opt">선택</span></label>
               <label class="file-upload-label" for="attachment">
                 <input type="file" id="attachment" name="attachment" class="file-input"
-                  accept=".pdf,.dwg,.dxf,.xls,.xlsx,.jpg,.jpeg,.png" onchange="updateFileName(this)">
+                  accept=".pdf,.dwg,.dxf,.dwt,.stp,.step,.igs,.iges,.sat,.zip,.xls,.xlsx,.jpg,.jpeg,.png"
+                  onchange="updateFileName(this)">
                 <span class="file-btn">파일 선택</span>
                 <span class="file-name">첨부파일 없음</span>
               </label>
-              <div class="file-hint">PDF · DWG · DXF · Excel · 이미지 · 최대 10MB</div>
+              <div class="file-hint">캐드(DWG · DXF · STEP · IGES) · PDF · Excel · 이미지 · ZIP · 최대 10MB</div>
+              <div class="file-oversize" id="fileOversize" role="alert" hidden>
+                <strong>파일이 10MB를 넘습니다.</strong>
+                도면은 아래 주소로 메일에 첨부해 보내주시면 동일하게 접수됩니다.
+                아래 문의 내용까지 작성해 보내주시면 함께 확인하겠습니다.
+                <a class="file-oversize-btn" id="fileOversizeMail" href="mailto:ybeng@hanmail.net">
+                  ybeng@hanmail.net 으로 도면 보내기
+                </a>
+              </div>
             </div>
 
             <div class="consent">
@@ -1479,17 +1521,39 @@
     function updateFileName(input) {
       var label = input.closest('.file-upload-label');
       var nameEl = label && label.querySelector('.file-name');
+      var notice = document.getElementById('fileOversize');
       if (!nameEl) return;
       nameEl.classList.remove('has-file', 'is-error');
+      if (notice) notice.hidden = true;
+
       var file = input.files && input.files[0];
       if (!file) { nameEl.textContent = '첨부파일 없음'; return; }
+
       var maxMB = 10;
       if (file.size > maxMB * 1024 * 1024) {
+        // 첨부는 비우되 폼은 그대로 쓸 수 있게 둔다.
+        // 큰 도면은 메일로 받는 편이 실무에서 더 확실하다.
         input.value = '';
-        nameEl.textContent = '파일이 너무 큽니다 (최대 ' + maxMB + 'MB)';
+        var sizeMB = (file.size / 1024 / 1024).toFixed(1);
+        nameEl.textContent = file.name + ' (' + sizeMB + 'MB) — 첨부 한도 초과';
         nameEl.classList.add('is-error');
+        if (notice) {
+          var mail = document.getElementById('fileOversizeMail');
+          if (mail) {
+            mail.href = 'mailto:ybeng@hanmail.net'
+              + '?subject=' + encodeURIComponent('[영보이엔지 홈페이지 문의] 도면 첨부')
+              + '&body=' + encodeURIComponent(
+                '홈페이지 문의폼에서 도면 용량이 커서 메일로 보냅니다.\n\n'
+                + '· 보내려던 파일: ' + file.name + ' (' + sizeMB + 'MB)\n'
+                + '· 회사명: \n· 담당자 연락처: \n· 문의 내용(제품명·용량·규격·수량·설치 환경·납기): \n\n'
+                + '※ 이 메일에 도면 파일을 첨부해 주세요.'
+              );
+          }
+          notice.hidden = false;
+        }
         return;
       }
+
       nameEl.textContent = file.name;
       nameEl.classList.add('has-file');
     }

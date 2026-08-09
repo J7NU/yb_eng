@@ -122,14 +122,14 @@
     .topbar {
       position: sticky; top: 0; z-index: 40;
       display: flex; align-items: center; justify-content: space-between;
-      padding: 12px var(--pad-x);
+      padding: 14px var(--pad-x);
       background: rgba(255,255,255,.92);
       backdrop-filter: blur(6px);
       border-bottom: 1px solid var(--border);
     }
-    .topbar-logo { display: flex; align-items: center; gap: 8px; }
-    .topbar-logo img { height: 26px; width: auto; }
-    .topbar-logo span { font-weight: 700; font-size: 14.5px; letter-spacing: -0.02em; white-space: nowrap; }
+    .topbar-logo { display: flex; align-items: center; gap: 10px; }
+    .topbar-logo img { height: 40px; width: auto; }
+    .topbar-logo span { font-weight: 700; font-size: 18px; letter-spacing: -0.02em; white-space: nowrap; }
     .topbar-right { display: flex; align-items: center; gap: 22px; }
     .topbar-phone {
       font-weight: 700; font-size: 14.5px; color: var(--navy);
@@ -183,9 +183,9 @@
     .btn-outline { background: #fff; color: var(--navy); border-color: var(--navy); }
     .btn svg { width: 17px; height: 17px; flex-shrink: 0; }
 
-    /* 히어로 우측 신뢰 카드 (모바일: 텍스트 아래로 쌓임) */
+    /* 히어로 우측 신뢰 카드 (모바일: 텍스트 아래로 쌓임. 3장 — 대지/공장 카드는 삭제됨) */
     .hero-trust {
-      display: flex; flex-direction: column; gap: 10px;
+      display: flex; flex-direction: column; gap: 12px;
       max-width: 420px; width: 100%; margin: 0 auto;
     }
     .hero-card {
@@ -195,31 +195,6 @@
     }
     .hero-card .v { font-weight: 800; color: var(--navy); font-size: 17px; white-space: nowrap; }
     .hero-card .l { font-size: 13px; color: var(--gray-600); }
-
-    /* ── 연혁 (4단계) ── */
-    .history { padding: 40px var(--pad-x) 4px; }
-    .history-heading { text-align: center; padding: 0 0 24px; }
-    .history-heading h2 { margin: 0 0 6px; font-size: 20px; font-weight: 800; letter-spacing: -0.02em; }
-    .history-heading p { margin: 0; font-size: 13.5px; color: var(--gray-600); }
-    .timeline {
-      list-style: none; margin: 0 auto; padding: 0;
-      max-width: 560px;
-    }
-    .timeline li {
-      position: relative;
-      padding: 0 0 26px 26px;
-      border-left: 2px solid var(--border);
-    }
-    .timeline li:last-child { border-left: 2px solid transparent; padding-bottom: 0; }
-    .timeline li::before {
-      content: "";
-      position: absolute; left: -7px; top: 2px;
-      width: 12px; height: 12px; border-radius: 50%;
-      background: var(--navy);
-      box-shadow: 0 0 0 3px #fff;
-    }
-    .t-date { display: block; font-weight: 800; color: var(--navy); font-size: 14px; margin-bottom: 4px; }
-    .t-text { display: block; font-size: 13.5px; color: var(--gray-600); line-height: 1.55; }
 
     /* ── 작업 그리드 (9칸 전부 네이비 타일) ── */
     .grid-section { padding: 8px var(--pad-x) 0; }
@@ -276,28 +251,15 @@
     .blog-banner p { margin: 0 0 22px; font-size: 14.5px; color: #C7CCE2; }
     .blog-banner .btn { min-width: 220px; background: #fff; color: var(--navy); }
 
-    /* ── 주요 납품처 ── */
-    .clients-strip { padding: 40px var(--pad-x) 20px; text-align: center; }
-    .clients-heading {
-      font-size: 12px; font-weight: 700; letter-spacing: .06em; color: var(--gray-400);
-      text-transform: uppercase; margin-bottom: 16px;
-    }
-    .clients-row {
-      display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px 10px;
-      align-items: center; justify-items: center;
-      max-width: 480px; margin: 0 auto;
-    }
-    .clients-row img { height: 26px; width: auto; filter: grayscale(1); opacity: .55; }
-    .clients-row .client-kaist img { height: 38px; }
-    .clients-note { margin-top: 16px; font-size: 12px; color: var(--gray-400); }
-
     /* ── 찾아오시는 길 ── */
     .contact-section { padding: 36px var(--pad-x) 44px; background: var(--gray-100); }
     .contact-section h2 { margin: 0 0 18px; font-size: 20px; font-weight: 800; letter-spacing: -0.02em; text-align: center; }
     .contact-grid {
       max-width: 480px; margin: 0 auto;
-      display: flex; flex-direction: column; gap: 16px;
+      display: flex; flex-direction: column; gap: 24px;
     }
+    /* 모바일: 연락처+지도+길찾기(contact-left)가 DOM 순서상 문의폼보다 먼저 온다 */
+    .contact-left { display: flex; flex-direction: column; gap: 16px; }
     .contact-info {
       background: #fff; border-radius: 12px; border: 1px solid var(--border);
       padding: 22px;
@@ -314,23 +276,63 @@
       margin-top: 10px; padding-top: 10px; border-top: 1px dashed var(--border);
       font-size: 12px; color: var(--gray-400); line-height: 1.7;
     }
+    /* 카카오맵 임베드 — SDK 로드 실패 시 빈 회색 박스로만 남는다 */
+    .map-embed {
+      width: 100%; height: 220px;
+      border-radius: 12px; overflow: hidden;
+      background: var(--gray-100); border: 1px solid var(--border);
+    }
     .direction-actions { display: flex; gap: 8px; }
     .direction-actions .btn { flex: 1; height: 48px; font-size: 14px; }
+
+    /* ── 문의폼 (formsubmit.co) ── */
+    .contact-form-wrap {
+      background: #fff; border-radius: 12px; border: 1px solid var(--border);
+      padding: 22px;
+    }
+    .form-group { margin-bottom: 16px; }
+    .form-label { display: block; font-size: 13.5px; font-weight: 700; margin-bottom: 6px; color: var(--gray-900); }
+    .form-label .req { color: #B03A2E; font-size: 11px; font-weight: 700; margin-left: 6px; }
+    .form-input, .form-textarea {
+      width: 100%; font: inherit; font-size: 14.5px;
+      padding: 11px 13px; border: 1px solid var(--border); border-radius: 8px;
+      background: #fff; color: var(--gray-900);
+    }
+    .form-input:focus, .form-textarea:focus { outline: none; border-color: var(--navy); }
+    .form-textarea { min-height: 110px; resize: vertical; }
+    .consent { margin: 16px 0 14px; }
+    .consent-check { display: flex; align-items: flex-start; gap: 9px; font-size: 12.5px; color: var(--gray-600); cursor: pointer; }
+    .consent-check input { margin-top: 3px; flex: none; }
+    .consent-check a { color: var(--navy); font-weight: 600; text-decoration: underline; text-underline-offset: 2px; }
+    .form-note { font-size: 12.5px; color: var(--gray-600); margin: 0 0 14px; }
+    .btn-submit {
+      width: 100%; font: inherit; font-size: 15.5px; font-weight: 700; color: #fff;
+      background: var(--navy); border: none; border-radius: var(--radius);
+      padding: 15px; min-height: 52px; cursor: pointer;
+    }
+    .btn-submit:hover { background: var(--navy-2); }
 
     /* ── 푸터 ── */
     footer {
       background: var(--navy-6); color: #A9AFC6;
-      padding: 32px var(--pad-x) 26px; text-align: center;
+      text-align: center;
       font-size: 13px; line-height: 1.85;
     }
-    footer img { height: 30px; width: auto; margin: 0 auto 12px; opacity: .9; }
+    /* 흰 배경 브랜드 띠 — 로고 뒤 배경을 흰색으로, 남색 로고 사용 */
+    .footer-brand-band {
+      background: #fff;
+      padding: 26px var(--pad-x) 22px;
+    }
+    .footer-brand-inner { display: flex; flex-direction: column; align-items: center; gap: 10px; }
+    .footer-brand-inner img { height: 34px; width: auto; }
+    .footer-brand-name { font-size: 15px; font-weight: 800; color: var(--navy); letter-spacing: -0.01em; }
+    .footer-body { padding: 32px var(--pad-x) 26px; }
     .footer-col { margin-bottom: 22px; }
     .footer-col:last-child { margin-bottom: 0; }
     .footer-col h3 {
       margin: 0 0 8px; font-size: 11.5px; font-weight: 700; letter-spacing: .06em;
       color: #7C84A0; text-transform: uppercase;
     }
-    .footer-biz-name { font-size: 14px; font-weight: 700; color: #fff; margin-bottom: 6px; }
     footer .copy { margin-top: 12px; font-size: 12px; color: #7C84A0; }
     footer .copy a { text-decoration: underline; text-underline-offset: 2px; }
     footer a[href^="tel:"], footer a[href^="mailto:"] { color: #C7CCE2; }
@@ -366,10 +368,8 @@
       .grid-heading h2 { font-size: 26px; }
       .blog-banner h2 { font-size: 30px; }
       .blog-banner p { font-size: 16px; }
-      .clients-row { grid-template-columns: repeat(6, 1fr); max-width: 720px; gap: 24px; }
       .contact-section h2 { font-size: 26px; }
       .direction-actions .btn { height: 52px; }
-      .history-heading h2 { font-size: 26px; }
     }
 
     /* ══════════════════════════════════════════
@@ -377,7 +377,9 @@
        ══════════════════════════════════════════ */
     @media (min-width: 1024px) {
       /* 상단 바: 로고 좌 · 전화+블로그 우 */
-      .topbar { padding: 14px 40px; }
+      .topbar { padding: 18px 40px; }
+      .topbar-logo img { height: 44px; }
+      .topbar-logo span { font-size: 20px; }
       .topbar-blog {
         display: flex; align-items: center; gap: 5px;
         font-size: 14px; font-weight: 600; color: var(--gray-600);
@@ -393,24 +395,11 @@
       .hero p.lead { margin-left: 0; margin-right: 0; max-width: 480px; font-size: 18px; }
       .hero p.sub { margin-left: 0; margin-right: 0; }
       .hero-actions { flex-direction: row; max-width: none; justify-content: flex-start; margin: 0; }
-      .hero-trust { flex: 0 0 380px; max-width: 380px; margin: 0; }
-      .hero-card { padding: 16px 20px; }
-      .hero-card .v { font-size: 19px; }
-
-      /* 연혁: 가로 타임라인 */
-      .history { padding: 64px 40px 8px; }
-      .timeline {
-        max-width: var(--container);
-        display: flex; flex-direction: row; gap: 0;
-      }
-      .timeline li {
-        flex: 1;
-        padding: 24px 24px 0 0;
-        border-left: none;
-        border-top: 2px solid var(--border);
-      }
-      .timeline li::before { left: -2px; top: -7px; }
-      .timeline li:last-child { padding-right: 0; }
+      /* 카드 3장으로 줄어든 만큼 세로 간격·패딩을 키워 좌측 카피와 시각 무게를 맞춘다 */
+      .hero-trust { flex: 0 0 380px; max-width: 380px; margin: 0; gap: 18px; }
+      .hero-card { padding: 20px 22px; }
+      .hero-card .v { font-size: 21px; }
+      .hero-card .l { font-size: 14px; }
 
       /* 그리드: 3열 유지, 타일·글자 확대 */
       .grid-section { padding: 8px 40px 0; }
@@ -420,28 +409,32 @@
       .tile-title { font-size: 21px; }
       .tile-cap { font-size: 13.5px; margin-top: 12px; }
 
-      /* 찾아오시는 길: 좌우 2단 */
+      /* 찾아오시는 길: 좌측 연락처+지도 / 우측 문의폼 2단 */
       .contact-section { padding: 64px 40px 72px; }
       .contact-section h2 { text-align: left; margin-bottom: 28px; }
       .contact-grid {
         max-width: var(--container);
         flex-direction: row; align-items: stretch; gap: 32px;
       }
-      .contact-info { flex: 1 1 60%; }
-      .contact-directions {
-        flex: 0 0 260px;
-        display: flex; flex-direction: column; justify-content: center; gap: 12px;
-      }
-      .direction-actions { flex-direction: column; gap: 12px; }
+      .contact-left { flex: 1 1 50%; gap: 20px; }
+      .map-embed { height: 300px; }
+      .direction-actions { flex-direction: row; gap: 12px; }
       .direction-actions .btn { height: 56px; }
+      .contact-form-wrap { flex: 1 1 50%; padding: 30px; }
 
-      /* 푸터: 3단 */
-      footer { padding: 56px 40px 32px; text-align: left; }
+      /* 푸터: 흰 브랜드 띠 좌측 정렬 + 3단 본문 */
+      .footer-brand-band { padding: 32px 40px 28px; text-align: left; }
+      .footer-brand-inner {
+        max-width: var(--container); margin: 0 auto;
+        flex-direction: row; align-items: center; justify-content: flex-start; gap: 14px;
+      }
+      .footer-brand-inner img { height: 40px; }
+      .footer-brand-name { font-size: 17px; }
+      .footer-body { padding: 48px 40px 32px; text-align: left; }
       .footer-grid {
         max-width: var(--container); margin: 0 auto;
         display: grid; grid-template-columns: 1.1fr 1.4fr 1fr; gap: 40px;
       }
-      footer img { margin: 0 0 12px; }
       .footer-copy-row {
         max-width: var(--container); margin: 24px auto 0; padding-top: 20px;
         border-top: 1px solid rgba(255,255,255,.08);
@@ -494,23 +487,8 @@
           <div class="hero-card"><span class="v">48년</span><span class="l">1978년 창업</span></div>
           <div class="hero-card"><span class="v">ISO 9001</span><span class="l">품질경영시스템 인증</span></div>
           <div class="hero-card"><span class="v">CODE 047780</span><span class="l">에너지관리공단 압력용기 검사</span></div>
-          <div class="hero-card"><span class="v">대지 900평</span><span class="l">곤지암 자체 공장</span></div>
         </div>
       </div>
-    </section>
-
-    <!-- 연혁 (데스크톱 가로 타임라인 / 모바일 세로) -->
-    <section class="history">
-      <div class="history-heading">
-        <h2>연혁</h2>
-        <p>1978년 창업 이후 48년</p>
-      </div>
-      <ol class="timeline">
-        <li><span class="t-date">1978.02</span><span class="t-text">영보탱크 창업 (서울 성동구 화양동)</span></li>
-        <li><span class="t-date">1987.04</span><span class="t-text">영보공업사 — 금속탱크 가공저장용기, 서울 성수동 공장 등록</span></li>
-        <li><span class="t-date">1994.03</span><span class="t-text">곤지암 자가 공장 설립 — 대지 900평 · 건물 400평</span></li>
-        <li><span class="t-date">2005.07</span><span class="t-text">(주)영보이엔지 법인 설립 (2005.08 공장 확장)</span></li>
-      </ol>
     </section>
 
     <!-- 작업 그리드 (9칸 전부 네이비 타일 — 실사진 0장) -->
@@ -570,74 +548,113 @@
       <span class="btn">네이버 블로그 →</span>
     </a>
 
-    <!-- 주요 납품처 -->
-    <section class="clients-strip">
-      <div class="clients-heading">주요 납품처</div>
-      <div class="clients-row">
-        <span class="client-1"><img src="images/client-1.svg" alt="한국전력공사"></span>
-        <span class="client-2"><img src="images/client-2.svg" alt="기아"></span>
-        <span class="client-3"><img src="images/client-3.svg" alt="한국도로공사"></span>
-        <span class="client-4"><img src="images/client-4.svg" alt="KT&amp;G"></span>
-        <span class="client-5"><img src="images/client-5.svg" alt="한국은행"></span>
-        <span class="client-kaist"><img src="images/client-6.svg" alt="KAIST"></span>
-      </div>
-      <p class="clients-note">※ 일부는 협력 설비사를 통한 납품 건을 포함합니다. 세부 납품 현장은 별도 문의 바랍니다.</p>
-    </section>
-
     <!-- 찾아오시는 길 -->
     <section class="contact-section" id="contact">
       <h2>찾아오시는 길</h2>
       <div class="contact-grid">
-        <div class="contact-info">
-          <div class="contact-row"><span class="label">주소</span><span>경기도 광주시 곤지암읍 광여로99번길 7</span></div>
-          <div class="contact-row"><span class="label">전화</span><a href="tel:031-764-0248">031-764-0248</a></div>
-          <div class="contact-row"><span class="label">팩스</span><span>031-764-0249</span></div>
-          <div class="contact-row"><span class="label">이메일</span><a href="mailto:ybeng@hanmail.net">ybeng@hanmail.net</a></div>
-          <div class="contact-extra">
-            곤지암 공장 보조회선 031-763-8637 · 031-764-0255<br>
-            서울 사무실 02-461-0077 · 02-464-8637 (Fax 02-461-0078)
+        <!-- 모바일: 연락처+지도+길찾기 블록이 DOM 순서상 문의폼보다 먼저 온다 -->
+        <div class="contact-left">
+          <div class="contact-info">
+            <div class="contact-row"><span class="label">주소</span><span>경기도 광주시 곤지암읍 광여로99번길 7</span></div>
+            <div class="contact-row"><span class="label">전화</span><a href="tel:031-764-0248">031-764-0248</a></div>
+            <div class="contact-row"><span class="label">팩스</span><span>031-764-0249</span></div>
+            <div class="contact-row"><span class="label">이메일</span><a href="mailto:ybeng@hanmail.net">ybeng@hanmail.net</a></div>
+            <div class="contact-extra">
+              곤지암 공장 보조회선 031-763-8637 · 031-764-0255<br>
+              서울 사무실 02-461-0077 · 02-464-8637 (Fax 02-461-0078)
+            </div>
           </div>
-        </div>
-        <div class="contact-directions">
+
+          <!-- 카카오맵 임베드 — SDK 로드 실패 시 빈 회색 박스로만 남고 페이지는 정상 동작한다 -->
+          <div id="map" class="map-embed"></div>
+
           <div class="direction-actions">
             <a class="btn btn-primary" href="https://map.kakao.com/link/to/%28%EC%A3%BC%29%EC%98%81%EB%B3%B4%EC%9D%B4%EC%97%94%EC%A7%80,37.350160,127.356580" target="_blank" rel="noopener noreferrer">카카오맵 길찾기</a>
             <a class="btn btn-outline" href="https://map.naver.com/p/search/%EA%B2%BD%EA%B8%B0%EB%8F%84%20%EA%B4%91%EC%A3%BC%EC%8B%9C%20%EA%B3%A4%EC%A7%80%EC%95%94%EC%9D%8D%20%EA%B4%91%EC%97%AC%EB%A1%9C99%EB%B2%88%EA%B8%B8%207" target="_blank" rel="noopener noreferrer">네이버지도</a>
           </div>
+        </div>
+
+        <!-- 문의폼 (FormSubmit.co → 회사 수신 계정) -->
+        <div class="contact-form-wrap">
+          <form class="quote-form" action="https://formsubmit.co/ybeng@hanmail.net" method="POST">
+            <input type="hidden" name="_subject" value="[영보이엔지 홈페이지 문의]">
+            <input type="hidden" name="_template" value="table">
+            <input type="hidden" name="_captcha" value="true">
+
+            <div class="form-group">
+              <label class="form-label" for="company">회사명<span class="req">필수</span></label>
+              <input type="text" id="company" name="company" class="form-input" placeholder="(주)회사명" required>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="contactno">담당자 연락처<span class="req">필수</span></label>
+              <input type="tel" id="contactno" name="contact" class="form-input" placeholder="010-0000-0000" required>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="email">담당자 이메일<span class="req">필수</span></label>
+              <input type="email" id="email" name="email" class="form-input" placeholder="name@company.co.kr" required>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="inquiry">문의 내용<span class="req">필수</span></label>
+              <textarea id="inquiry" name="inquiry" class="form-textarea"
+                placeholder="제품명, 용량, 규격, 수량, 설치 환경, 납기 요구사항 등을 작성해 주세요." required></textarea>
+            </div>
+
+            <div class="consent">
+              <label class="consent-check">
+                <input type="checkbox" name="privacy_agree" value="동의함" required>
+                <span>개인정보 수집·이용에 동의합니다. 자세한 내용은
+                  <a href="/privacy" target="_blank" rel="noopener">개인정보처리방침</a>에서 확인하실 수 있습니다.</span>
+              </label>
+            </div>
+
+            <p class="form-note">문의는 담당자가 직접 확인 후 회신드립니다.</p>
+
+            <button type="submit" class="btn-submit">문의 보내기</button>
+          </form>
         </div>
       </div>
     </section>
 
   </main>
 
-  <!-- 푸터 (데스크톱 3단: 회사정보 / 사업장 2곳 / 링크) -->
+  <!-- 푸터 (상단 흰 브랜드 띠 + 남색 로고 / 하단 네이비 3단: 회사정보 / 사업장 2곳 / 링크) -->
   <footer>
-    <div class="footer-grid">
-      <div class="footer-col">
-        <img src="images/logo-mark-white.svg" alt="">
-        <div class="footer-biz-name">(주)영보이엔지 · 영보종합탱크</div>
-        <div>대표이사 박천종</div>
-      </div>
-      <div class="footer-col">
-        <h3>사업장</h3>
-        <div style="margin-bottom:10px;">
-          <strong style="color:#fff;">곤지암 공장</strong><br>
-          경기도 광주시 곤지암읍 광여로99번길 7<br>
-          Tel 031-764-0248 · 031-763-8637 · 031-764-0255 · Fax 031-764-0249
-        </div>
-        <div>
-          <strong style="color:#fff;">서울 사무실</strong><br>
-          Tel 02-461-0077 · 02-464-8637 · Fax 02-461-0078
-        </div>
-      </div>
-      <div class="footer-col">
-        <h3>링크</h3>
-        <div><a href="tel:031-764-0248">대표전화 031-764-0248</a></div>
-        <div><a href="mailto:ybeng@hanmail.net">ybeng@hanmail.net</a></div>
-        <div><a href="/privacy">개인정보처리방침</a></div>
+    <div class="footer-brand-band">
+      <div class="footer-brand-inner">
+        <img src="images/logo-mark-navy.svg" alt="(주)영보이엔지 심볼">
+        <span class="footer-brand-name">(주)영보이엔지 · 영보종합탱크</span>
       </div>
     </div>
-    <div class="copy footer-copy-row">
-      © (주)영보이엔지. All rights reserved.
+    <div class="footer-body">
+      <div class="footer-grid">
+        <div class="footer-col">
+          <div>대표이사 박천종</div>
+        </div>
+        <div class="footer-col">
+          <h3>사업장</h3>
+          <div style="margin-bottom:10px;">
+            <strong style="color:#fff;">곤지암 공장</strong><br>
+            경기도 광주시 곤지암읍 광여로99번길 7<br>
+            Tel 031-764-0248 · 031-763-8637 · 031-764-0255 · Fax 031-764-0249
+          </div>
+          <div>
+            <strong style="color:#fff;">서울 사무실</strong><br>
+            Tel 02-461-0077 · 02-464-8637 · Fax 02-461-0078
+          </div>
+        </div>
+        <div class="footer-col">
+          <h3>링크</h3>
+          <div><a href="tel:031-764-0248">대표전화 031-764-0248</a></div>
+          <div><a href="mailto:ybeng@hanmail.net">ybeng@hanmail.net</a></div>
+          <div><a href="/privacy">개인정보처리방침</a></div>
+        </div>
+      </div>
+      <div class="copy footer-copy-row">
+        © (주)영보이엔지. All rights reserved.
+      </div>
     </div>
   </footer>
 
@@ -657,6 +674,33 @@
       블로그
     </a>
   </nav>
+
+  <!-- 카카오 지도 SDK -->
+  <script src="//dapi.kakao.com/v2/maps/sdk.js?appkey=c51341751710462b11216ff297ef1c8c&autoload=false"></script>
+  <script>
+    var MAP_SITE = { name: '(주)영보이엔지', lat: 37.350160, lng: 127.356580 };
+
+    if (typeof kakao !== 'undefined' && kakao.maps) {
+      kakao.maps.load(function () {
+        var container = document.getElementById('map');
+        if (!container) return;
+        var map = new kakao.maps.Map(container, {
+          center: new kakao.maps.LatLng(MAP_SITE.lat, MAP_SITE.lng),
+          level: 4
+        });
+        var marker = new kakao.maps.Marker({ map: map, position: map.getCenter() });
+        new kakao.maps.InfoWindow({
+          content: '<div style="padding:6px 10px;font-size:13px;white-space:nowrap;">(주)영보이엔지</div>'
+        }).open(map, marker);
+        kakao.maps.event.addListener(marker, 'click', function () {
+          window.open(
+            'https://map.kakao.com/link/to/' + encodeURIComponent(MAP_SITE.name) + ',' + MAP_SITE.lat + ',' + MAP_SITE.lng,
+            '_blank', 'noopener,noreferrer'
+          );
+        });
+      });
+    }
+  </script>
 
   <!-- Cloudflare Web Analytics — 쿠키 미사용·개인 미식별 (개인정보처리방침 고지 완료) -->
   <script defer src="https://static.cloudflareinsights.com/beacon.min.js"

@@ -17,3 +17,12 @@ wrangler.jsonc
 
 # 구버전 사본 — 색인되면 index.html 과 중복 콘텐츠가 된다
 renewal.html
+
+# 리뉴얼 검토용 초안·설계 문서 — 공개 자산 아님.
+# 배포되면 index.html 과 거의 같은 페이지가 4장 더 생겨 중복 색인이 된다.
+draft-a.html
+draft-b.html
+draft-b2.html
+draft-c.html
+draft-d.html
+DESIGN-BRIEF-renewal.md

@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>(주)영보이엔지 — 탱크·열교환기 전문 제조기업</title>
+  <meta name="description"
+    content="1978년 창업. 스테인리스 판넬탱크·SMC 물탱크·온수저장탱크·열교환기·밀폐형 팽창탱크 전문 제조. ISO 9001·에너지관리공단 압력용기 검사(CODE 047780) 인증. 경기 광주 곤지암 자체 공장.">
+  <meta name="keywords" content="팽창탱크, 밀폐형 팽창탱크, 열교환기, 온수 가열탱크, STS 물탱크, 스테인리스 물탱크, 압력용기, 영보이엔지, 영보종합탱크, 곤지암 탱크 제작">
+  <link rel="canonical" href="https://youngboeng.co.kr/">
+
+  <!-- 파비콘 · 앱 아이콘 -->
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="/images/favicon-32.png" sizes="32x32" type="image/png">
+  <link rel="apple-touch-icon" href="/images/apple-touch-icon.png">
+  <meta name="theme-color" content="#1F2E66">
+
+  <!-- 검색엔진 소유확인
+       네이버: 아래 메타 태그
+       구글  : DNS TXT 레코드로 확인됨 (google-site-verification=Cf2uz...)
+              → Cloudflare DNS 의 해당 TXT 를 지우면 소유확인이 풀린다 -->
+  <meta name="naver-site-verification" content="996351b7d3531530112745ef3291e0699fa1893b">
+
+  <!-- 공유 미리보기 (카카오톡·밴드·페이스북) -->
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="(주)영보이엔지">
+  <meta property="og:title" content="(주)영보이엔지 — 탱크·열교환기 전문 제조기업">
+  <meta property="og:description" content="1978년 창업. 스테인리스 판넬탱크·SMC 물탱크·온수저장탱크·열교환기·밀폐형 팽창탱크 전문 제조. 최대 20,000ℓ 대응.">
+  <meta property="og:url" content="https://youngboeng.co.kr/">
+  <meta property="og:image" content="https://youngboeng.co.kr/images/og-cover.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="(주)영보이엔지 — 산업 현장의 압력을 48년째 책임집니다. 스테인리스 판넬탱크·온수저장탱크·열교환기·밀폐형 팽창탱크">
+  <meta property="og:locale" content="ko_KR">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <!-- 검색엔진용 사업자 정보 (구조화 데이터) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "LocalBusiness",
+    "additionalType": "https://schema.org/Manufacturer",
+    "name": "(주)영보이엔지",
+    "alternateName": ["영보종합탱크", "YOUNGBO ENGINEERING CO., LTD.", "YOUNGBO ENG."],
+    "url": "https://youngboeng.co.kr/",
+    "image": "https://youngboeng.co.kr/images/og-cover.png",
+    "description": "산업용 탱크·열교환기 전문 제조. 밀폐형 팽창탱크, 열교환기, 온수 가열탱크, STS 물탱크 맞춤 제작.",
+    "foundingDate": "1978",
+    "telephone": "+82-31-764-0248",
+    "faxNumber": "+82-31-764-0249",
+    "email": "ybeng@hanmail.net",
+    "vatID": "126-81-88893",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "곤지암읍 광여로99번길 7",
+      "addressLocality": "광주시",
+      "addressRegion": "경기도",
+      "addressCountry": "KR"
+    },
+    "geo": { "@type": "GeoCoordinates", "latitude": 37.350160, "longitude": 127.356580 },
+    "openingHoursSpecification": {
+      "@type": "OpeningHoursSpecification",
+      "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+      "opens": "08:30",
+      "closes": "17:30"
+    },
+    "areaServed": { "@type": "Country", "name": "대한민국" },
+    "makesOffer": [
+      { "@type": "Offer", "itemOffered": { "@type": "Product", "name": "밀폐형 팽창탱크" } },
+      { "@type": "Offer", "itemOffered": { "@type": "Product", "name": "열교환기" } },
+      { "@type": "Offer", "itemOffered": { "@type": "Product", "name": "온수 가열탱크" } },
+      { "@type": "Offer", "itemOffered": { "@type": "Product", "name": "STS 물탱크" } }
+    ]
+  }
+  </script>
+
+  <!-- Pretendard Variable — 회사 기본 웹 DS 표준 폰트 -->
+  <link rel="stylesheet"
+    href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@latest/dist/web/variable/pretendardvariable.css">
+
+  <style>
+    /* ══════════════════════════════════════════════════
+       draft-b2.html — 시공사진 우선 (§B) + 데스크톱 3단 브레이크포인트
+       모바일(~639) → 태블릿(640+) → 데스크톱(1024+)
+       ══════════════════════════════════════════════════ */
+    :root {
+      --navy: #1F2E66;
+      --navy-2: #1B2757;
+      --navy-3: #172047;
+      --navy-4: #141B3B;
+      --navy-5: #121933;
+      --navy-6: #0F1730;
+      --gray-900: #1C2233;
+      --gray-600: #5B6378;
+      --gray-400: #9AA1B5;
+      --gray-100: #F4F5F8;
+      --hero-bg: #F6F7FA;
+      --border: #E4E6ED;
+      --pad-x: 20px;
+      --radius: 10px;
+      --container: 1180px;
+    }
+
+    * { box-sizing: border-box; }
+    html { -webkit-text-size-adjust: 100%; }
+    body {
+      margin: 0;
+      font-family: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      color: var(--gray-900);
+      background: #fff;
+      line-height: 1.6;
+      padding-bottom: calc(64px + env(safe-area-inset-bottom));
+      overflow-x: hidden;
+    }
+    img { max-width: 100%; display: block; }
+    a { color: inherit; text-decoration: none; }
+    button { font-family: inherit; cursor: pointer; }
+    .container { max-width: var(--container); margin: 0 auto; padding: 0 var(--pad-x); }
+
+    /* ── 상단 바 ── */
+    .topbar {
+      position: sticky; top: 0; z-index: 40;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 12px var(--pad-x);
+      background: rgba(255,255,255,.92);
+      backdrop-filter: blur(6px);
+      border-bottom: 1px solid var(--border);
+    }
+    .topbar-logo { display: flex; align-items: center; gap: 8px; }
+    .topbar-logo img { height: 26px; width: auto; }
+    .topbar-logo span { font-weight: 700; font-size: 14.5px; letter-spacing: -0.02em; white-space: nowrap; }
+    .topbar-right { display: flex; align-items: center; gap: 22px; }
+    .topbar-phone {
+      font-weight: 700; font-size: 14.5px; color: var(--navy);
+      display: flex; align-items: center; gap: 5px; white-space: nowrap;
+    }
+    .topbar-phone svg { width: 15px; height: 15px; }
+    .topbar-blog { display: none; }
+
+    /* ── 히어로 (사진 없음, 로고 워터마크만) ── */
+    .hero {
+      position: relative;
+      padding: 40px 0 32px;
+      background: var(--hero-bg);
+      overflow: hidden;
+    }
+    .hero-watermark {
+      position: absolute;
+      top: 50%; right: -8%;
+      width: 480px; height: 480px;
+      transform: translateY(-50%);
+      opacity: .05;
+      pointer-events: none;
+      user-select: none;
+    }
+    .hero-inner {
+      position: relative; z-index: 1;
+      max-width: var(--container); margin: 0 auto; padding: 0 var(--pad-x);
+      display: flex; flex-direction: column; gap: 28px;
+    }
+    .hero-text { text-align: center; }
+    .hero h1 {
+      margin: 0 0 10px;
+      font-size: 27px; font-weight: 800; letter-spacing: -0.02em;
+      color: var(--gray-900);
+    }
+    .hero p.lead {
+      margin: 0 auto 6px; max-width: 460px;
+      font-size: 15.5px; color: var(--gray-600); line-height: 1.65;
+    }
+    .hero p.sub {
+      margin: 0 auto 22px; font-size: 13.5px; color: var(--gray-600);
+    }
+    .hero-actions { display: flex; flex-direction: column; gap: 10px; max-width: 320px; margin: 0 auto; }
+    .btn {
+      display: flex; align-items: center; justify-content: center; gap: 7px;
+      height: 52px; border-radius: var(--radius);
+      font-size: 15.5px; font-weight: 700; letter-spacing: -0.01em;
+      border: 1.5px solid transparent;
+    }
+    .btn-primary { background: var(--navy); color: #fff; }
+    .btn-outline { background: #fff; color: var(--navy); border-color: var(--navy); }
+    .btn svg { width: 17px; height: 17px; flex-shrink: 0; }
+
+    /* 히어로 우측 신뢰 카드 (모바일: 텍스트 아래로 쌓임) */
+    .hero-trust {
+      display: flex; flex-direction: column; gap: 10px;
+      max-width: 420px; width: 100%; margin: 0 auto;
+    }
+    .hero-card {
+      display: flex; align-items: baseline; gap: 10px;
+      background: #fff; border: 1px solid var(--border); border-radius: 12px;
+      padding: 14px 18px;
+    }
+    .hero-card .v { font-weight: 800; color: var(--navy); font-size: 17px; white-space: nowrap; }
+    .hero-card .l { font-size: 13px; color: var(--gray-600); }
+
+    /* ── 연혁 (4단계) ── */
+    .history { padding: 40px var(--pad-x) 4px; }
+    .history-heading { text-align: center; padding: 0 0 24px; }
+    .history-heading h2 { margin: 0 0 6px; font-size: 20px; font-weight: 800; letter-spacing: -0.02em; }
+    .history-heading p { margin: 0; font-size: 13.5px; color: var(--gray-600); }
+    .timeline {
+      list-style: none; margin: 0 auto; padding: 0;
+      max-width: 560px;
+    }
+    .timeline li {
+      position: relative;
+      padding: 0 0 26px 26px;
+      border-left: 2px solid var(--border);
+    }
+    .timeline li:last-child { border-left: 2px solid transparent; padding-bottom: 0; }
+    .timeline li::before {
+      content: "";
+      position: absolute; left: -7px; top: 2px;
+      width: 12px; height: 12px; border-radius: 50%;
+      background: var(--navy);
+      box-shadow: 0 0 0 3px #fff;
+    }
+    .t-date { display: block; font-weight: 800; color: var(--navy); font-size: 14px; margin-bottom: 4px; }
+    .t-text { display: block; font-size: 13.5px; color: var(--gray-600); line-height: 1.55; }
+
+    /* ── 작업 그리드 (9칸 전부 네이비 타일) ── */
+    .grid-section { padding: 8px var(--pad-x) 0; }
+    .grid-heading { text-align: center; padding: 28px 0 16px; }
+    .grid-heading h2 { margin: 0 0 6px; font-size: 20px; font-weight: 800; letter-spacing: -0.02em; }
+    .grid-heading p { margin: 0; font-size: 13.5px; color: var(--gray-600); }
+    .work-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 8px;
+      max-width: var(--container);
+      margin: 0 auto;
+    }
+    .tile {
+      position: relative;
+      aspect-ratio: 1 / 1;
+      border-radius: 8px;
+      overflow: hidden;
+      display: block;
+    }
+    /* 나중에 블로그 RSS 대표 사진이 채워질 자리. 지금은 배경 이미지가 없어 네이비 색면만 보인다 */
+    .tile-media {
+      position: absolute; inset: 0;
+      background-size: cover; background-position: center;
+    }
+    .tile::after {
+      content: "";
+      position: absolute; inset: 0;
+      background: linear-gradient(180deg, rgba(15,23,48,0) 42%, rgba(15,23,48,.6) 100%);
+      pointer-events: none;
+    }
+    .tile-body {
+      position: absolute; inset: 0; z-index: 2;
+      display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center;
+      padding: 14px;
+      color: #fff;
+    }
+    .tile-title { font-size: 15px; font-weight: 700; letter-spacing: -0.02em; line-height: 1.3; }
+    .tile-cap { display: block; margin-top: 8px; font-size: 11.5px; opacity: .8; font-weight: 500; }
+    .tile:active { opacity: .9; }
+
+    /* ── 블로그 전면 배너 ── */
+    .blog-banner {
+      margin-top: 28px;
+      background: var(--navy);
+      background-image: linear-gradient(135deg, var(--navy) 0%, var(--navy-5) 100%);
+      color: #fff;
+      padding: 44px var(--pad-x);
+      text-align: center;
+      min-height: 220px;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+    }
+    .blog-banner h2 { margin: 0 0 8px; font-size: 22px; font-weight: 800; letter-spacing: -0.02em; }
+    .blog-banner p { margin: 0 0 22px; font-size: 14.5px; color: #C7CCE2; }
+    .blog-banner .btn { min-width: 220px; background: #fff; color: var(--navy); }
+
+    /* ── 주요 납품처 ── */
+    .clients-strip { padding: 40px var(--pad-x) 20px; text-align: center; }
+    .clients-heading {
+      font-size: 12px; font-weight: 700; letter-spacing: .06em; color: var(--gray-400);
+      text-transform: uppercase; margin-bottom: 16px;
+    }
+    .clients-row {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px 10px;
+      align-items: center; justify-items: center;
+      max-width: 480px; margin: 0 auto;
+    }
+    .clients-row img { height: 26px; width: auto; filter: grayscale(1); opacity: .55; }
+    .clients-row .client-kaist img { height: 38px; }
+    .clients-note { margin-top: 16px; font-size: 12px; color: var(--gray-400); }
+
+    /* ── 찾아오시는 길 ── */
+    .contact-section { padding: 36px var(--pad-x) 44px; background: var(--gray-100); }
+    .contact-section h2 { margin: 0 0 18px; font-size: 20px; font-weight: 800; letter-spacing: -0.02em; text-align: center; }
+    .contact-grid {
+      max-width: 480px; margin: 0 auto;
+      display: flex; flex-direction: column; gap: 16px;
+    }
+    .contact-info {
+      background: #fff; border-radius: 12px; border: 1px solid var(--border);
+      padding: 22px;
+    }
+    .contact-row {
+      display: flex; gap: 10px; padding: 9px 0; font-size: 14.5px;
+      border-bottom: 1px solid var(--border);
+    }
+    .contact-row:last-of-type { border-bottom: none; }
+    .contact-row .label { flex-shrink: 0; width: 52px; color: var(--gray-400); font-weight: 600; }
+    .contact-row a { color: var(--gray-900); }
+    .contact-row a[href^="tel:"] { color: var(--navy); font-weight: 700; }
+    .contact-extra {
+      margin-top: 10px; padding-top: 10px; border-top: 1px dashed var(--border);
+      font-size: 12px; color: var(--gray-400); line-height: 1.7;
+    }
+    .direction-actions { display: flex; gap: 8px; }
+    .direction-actions .btn { flex: 1; height: 48px; font-size: 14px; }
+
+    /* ── 푸터 ── */
+    footer {
+      background: var(--navy-6); color: #A9AFC6;
+      padding: 32px var(--pad-x) 26px; text-align: center;
+      font-size: 13px; line-height: 1.85;
+    }
+    footer img { height: 30px; width: auto; margin: 0 auto 12px; opacity: .9; }
+    .footer-col { margin-bottom: 22px; }
+    .footer-col:last-child { margin-bottom: 0; }
+    .footer-col h3 {
+      margin: 0 0 8px; font-size: 11.5px; font-weight: 700; letter-spacing: .06em;
+      color: #7C84A0; text-transform: uppercase;
+    }
+    .footer-biz-name { font-size: 14px; font-weight: 700; color: #fff; margin-bottom: 6px; }
+    footer .copy { margin-top: 12px; font-size: 12px; color: #7C84A0; }
+    footer .copy a { text-decoration: underline; text-underline-offset: 2px; }
+    footer a[href^="tel:"], footer a[href^="mailto:"] { color: #C7CCE2; }
+
+    /* ── 모바일 하단 고정 바 (3분할) ── */
+    .bottom-bar {
+      position: fixed; left: 0; right: 0; bottom: 0; z-index: 50;
+      display: flex;
+      background: var(--navy);
+      padding-bottom: env(safe-area-inset-bottom);
+      box-shadow: 0 -2px 14px rgba(0,0,0,.15);
+    }
+    .bottom-bar a {
+      flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px;
+      color: #fff; font-size: 12px; font-weight: 600; padding: 10px 4px 8px;
+      border-right: 1px solid rgba(255,255,255,.14);
+    }
+    .bottom-bar a:last-child { border-right: none; }
+    .bottom-bar svg { width: 19px; height: 19px; }
+
+    /* ══════════════════════════════════════════
+       태블릿 640px+
+       ══════════════════════════════════════════ */
+    @media (min-width: 640px) {
+      .bottom-bar { display: none; }
+      body { padding-bottom: 0; }
+      .hero h1 { font-size: 40px; }
+      .hero p.lead { font-size: 17px; max-width: 560px; }
+      .hero-actions { flex-direction: row; max-width: none; justify-content: center; }
+      .btn { min-width: 200px; }
+      .work-grid { grid-template-columns: repeat(3, 1fr); gap: 10px; }
+      .tile-title { font-size: 17px; }
+      .grid-heading h2 { font-size: 26px; }
+      .blog-banner h2 { font-size: 30px; }
+      .blog-banner p { font-size: 16px; }
+      .clients-row { grid-template-columns: repeat(6, 1fr); max-width: 720px; gap: 24px; }
+      .contact-section h2 { font-size: 26px; }
+      .direction-actions .btn { height: 52px; }
+      .history-heading h2 { font-size: 26px; }
+    }
+
+    /* ══════════════════════════════════════════
+       데스크톱 1024px+ — 레이아웃 자체가 달라진다
+       ══════════════════════════════════════════ */
+    @media (min-width: 1024px) {
+      /* 상단 바: 로고 좌 · 전화+블로그 우 */
+      .topbar { padding: 14px 40px; }
+      .topbar-blog {
+        display: flex; align-items: center; gap: 5px;
+        font-size: 14px; font-weight: 600; color: var(--gray-600);
+      }
+      .topbar-blog:hover { color: var(--navy); }
+
+      /* 히어로: 좌우 2단 */
+      .hero { padding: 76px 0 72px; }
+      .hero-watermark { width: 640px; height: 640px; right: -4%; }
+      .hero-inner { flex-direction: row; align-items: center; gap: 64px; padding: 0 40px; }
+      .hero-text { flex: 1 1 56%; text-align: left; }
+      .hero h1 { font-size: 48px; }
+      .hero p.lead { margin-left: 0; margin-right: 0; max-width: 480px; font-size: 18px; }
+      .hero p.sub { margin-left: 0; margin-right: 0; }
+      .hero-actions { flex-direction: row; max-width: none; justify-content: flex-start; margin: 0; }
+      .hero-trust { flex: 0 0 380px; max-width: 380px; margin: 0; }
+      .hero-card { padding: 16px 20px; }
+      .hero-card .v { font-size: 19px; }
+
+      /* 연혁: 가로 타임라인 */
+      .history { padding: 64px 40px 8px; }
+      .timeline {
+        max-width: var(--container);
+        display: flex; flex-direction: row; gap: 0;
+      }
+      .timeline li {
+        flex: 1;
+        padding: 24px 24px 0 0;
+        border-left: none;
+        border-top: 2px solid var(--border);
+      }
+      .timeline li::before { left: -2px; top: -7px; }
+      .timeline li:last-child { padding-right: 0; }
+
+      /* 그리드: 3열 유지, 타일·글자 확대 */
+      .grid-section { padding: 8px 40px 0; }
+      .grid-heading { padding: 40px 0 20px; }
+      .work-grid { gap: 14px; }
+      .tile-body { padding: 26px; }
+      .tile-title { font-size: 21px; }
+      .tile-cap { font-size: 13.5px; margin-top: 12px; }
+
+      /* 찾아오시는 길: 좌우 2단 */
+      .contact-section { padding: 64px 40px 72px; }
+      .contact-section h2 { text-align: left; margin-bottom: 28px; }
+      .contact-grid {
+        max-width: var(--container);
+        flex-direction: row; align-items: stretch; gap: 32px;
+      }
+      .contact-info { flex: 1 1 60%; }
+      .contact-directions {
+        flex: 0 0 260px;
+        display: flex; flex-direction: column; justify-content: center; gap: 12px;
+      }
+      .direction-actions { flex-direction: column; gap: 12px; }
+      .direction-actions .btn { height: 56px; }
+
+      /* 푸터: 3단 */
+      footer { padding: 56px 40px 32px; text-align: left; }
+      .footer-grid {
+        max-width: var(--container); margin: 0 auto;
+        display: grid; grid-template-columns: 1.1fr 1.4fr 1fr; gap: 40px;
+      }
+      footer img { margin: 0 0 12px; }
+      .footer-copy-row {
+        max-width: var(--container); margin: 24px auto 0; padding-top: 20px;
+        border-top: 1px solid rgba(255,255,255,.08);
+      }
+
+      /* 본문 최대 폭 컨테이너 여백 자동 확대 (max-width로 자연히 처리) */
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- 상단 바 -->
+  <header class="topbar">
+    <a href="#top" class="topbar-logo">
+      <img src="images/logo-mark-navy.svg" alt="(주)영보이엔지 심볼">
+      <span>(주)영보이엔지</span>
+    </a>
+    <div class="topbar-right">
+      <!-- TODO: 실제 네이버 블로그 주소 확보 후 교체 -->
+      <a class="topbar-blog" href="https://blog.naver.com/____" target="_blank" rel="noopener noreferrer">
+        블로그 ↗
+      </a>
+      <a class="topbar-phone" href="tel:031-764-0248">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+        031-764-0248
+      </a>
+    </div>
+  </header>
+
+  <main id="top">
+
+    <!-- 히어로 (사진 없음 — 타이포+여백. 로고 워터마크만 저불투명 배경) -->
+    <section class="hero">
+      <img class="hero-watermark" src="images/logo-mark-navy.svg" alt="" aria-hidden="true">
+      <div class="hero-inner">
+        <div class="hero-text">
+          <h1>만든 것으로 말합니다</h1>
+          <p class="lead">1978년부터 48년, 산업 현장에 탱크와 열교환기를 납품해 왔습니다.</p>
+          <p class="sub">현장 시공사진은 블로그에 계속 올리고 있습니다.</p>
+          <div class="hero-actions">
+            <!-- TODO: 실제 네이버 블로그 주소 확보 후 교체 -->
+            <a class="btn btn-primary" href="https://blog.naver.com/____" target="_blank" rel="noopener noreferrer">
+              시공사진 전체 보기
+            </a>
+            <a class="btn btn-outline" href="tel:031-764-0248">전화 031-764-0248</a>
+          </div>
+        </div>
+        <div class="hero-trust">
+          <div class="hero-card"><span class="v">48년</span><span class="l">1978년 창업</span></div>
+          <div class="hero-card"><span class="v">ISO 9001</span><span class="l">품질경영시스템 인증</span></div>
+          <div class="hero-card"><span class="v">CODE 047780</span><span class="l">에너지관리공단 압력용기 검사</span></div>
+          <div class="hero-card"><span class="v">대지 900평</span><span class="l">곤지암 자체 공장</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 연혁 (데스크톱 가로 타임라인 / 모바일 세로) -->
+    <section class="history">
+      <div class="history-heading">
+        <h2>연혁</h2>
+        <p>1978년 창업 이후 48년</p>
+      </div>
+      <ol class="timeline">
+        <li><span class="t-date">1978.02</span><span class="t-text">영보탱크 창업 (서울 성동구 화양동)</span></li>
+        <li><span class="t-date">1987.04</span><span class="t-text">영보공업사 — 금속탱크 가공저장용기, 서울 성수동 공장 등록</span></li>
+        <li><span class="t-date">1994.03</span><span class="t-text">곤지암 자가 공장 설립 — 대지 900평 · 건물 400평</span></li>
+        <li><span class="t-date">2005.07</span><span class="t-text">(주)영보이엔지 법인 설립 (2005.08 공장 확장)</span></li>
+      </ol>
+    </section>
+
+    <!-- 작업 그리드 (9칸 전부 네이비 타일 — 실사진 0장) -->
+    <!-- 블로그 RSS 연동 시 .tile-media 에 background-image, .tile-title 에 글 제목을 주입한다 -->
+    <section class="grid-section">
+      <div class="grid-heading">
+        <h2>만든 것들</h2>
+        <p>칸을 누르면 블로그의 시공사진으로 이동합니다</p>
+      </div>
+      <!-- 아래 9칸 전부 동일한 블로그 링크(플레이스홀더)로 연결됩니다 -->
+      <!-- TODO: 실제 네이버 블로그 주소 확보 후 9칸 전부 교체 -->
+      <div class="work-grid">
+        <a class="tile" data-blog-slot="1" style="background:var(--navy);" href="https://blog.naver.com/____" target="_blank" rel="noopener noreferrer">
+          <span class="tile-media" aria-hidden="true"></span>
+          <span class="tile-body"><span class="tile-title">밀폐형<br>팽창탱크</span><span class="tile-cap">블로그에서 보기 →</span></span>
+        </a>
+        <a class="tile" data-blog-slot="2" style="background:var(--navy-2);" href="https://blog.naver.com/____" target="_blank" rel="noopener noreferrer">
+          <span class="tile-media" aria-hidden="true"></span>
+          <span class="tile-body"><span class="tile-title">열교환기</span><span class="tile-cap">블로그에서 보기 →</span></span>
+        </a>
+        <a class="tile" data-blog-slot="3" style="background:var(--navy-3);" href="https://blog.naver.com/____" target="_blank" rel="noopener noreferrer">
+          <span class="tile-media" aria-hidden="true"></span>
+          <span class="tile-body"><span class="tile-title">온수<br>가열탱크</span><span class="tile-cap">블로그에서 보기 →</span></span>
+        </a>
+        <a class="tile" data-blog-slot="4" style="background:var(--navy-4);" href="https://blog.naver.com/____" target="_blank" rel="noopener noreferrer">
+          <span class="tile-media" aria-hidden="true"></span>
+          <span class="tile-body"><span class="tile-title">STS<br>물탱크</span><span class="tile-cap">블로그에서 보기 →</span></span>
+        </a>
+        <a class="tile" data-blog-slot="5" style="background:var(--navy-5);" href="https://blog.naver.com/____" target="_blank" rel="noopener noreferrer">
+          <span class="tile-media" aria-hidden="true"></span>
+          <span class="tile-body"><span class="tile-title">스테인리스<br>판넬탱크</span><span class="tile-cap">블로그에서 보기 →</span></span>
+        </a>
+        <a class="tile" data-blog-slot="6" style="background:var(--navy-6);" href="https://blog.naver.com/____" target="_blank" rel="noopener noreferrer">
+          <span class="tile-media" aria-hidden="true"></span>
+          <span class="tile-body"><span class="tile-title">SMC<br>물탱크</span><span class="tile-cap">블로그에서 보기 →</span></span>
+        </a>
+        <a class="tile" data-blog-slot="7" style="background:var(--navy-2);" href="https://blog.naver.com/____" target="_blank" rel="noopener noreferrer">
+          <span class="tile-media" aria-hidden="true"></span>
+          <span class="tile-body"><span class="tile-title">압력용기</span><span class="tile-cap">블로그에서 보기 →</span></span>
+        </a>
+        <a class="tile" data-blog-slot="8" style="background:var(--navy-4);" href="https://blog.naver.com/____" target="_blank" rel="noopener noreferrer">
+          <span class="tile-media" aria-hidden="true"></span>
+          <span class="tile-body"><span class="tile-title">태양열<br>축열탱크</span><span class="tile-cap">블로그에서 보기 →</span></span>
+        </a>
+        <a class="tile" data-blog-slot="9" style="background:var(--navy);" href="https://blog.naver.com/____" target="_blank" rel="noopener noreferrer">
+          <span class="tile-media" aria-hidden="true"></span>
+          <span class="tile-body"><span class="tile-title">저유조·<br>유류탱크</span><span class="tile-cap">블로그에서 보기 →</span></span>
+        </a>
+      </div>
+    </section>
+
+    <!-- 블로그 전면 배너 -->
+    <!-- TODO: 실제 네이버 블로그 주소 확보 후 교체 -->
+    <a class="blog-banner" href="https://blog.naver.com/____" target="_blank" rel="noopener noreferrer">
+      <h2>시공사진 더 보기</h2>
+      <p>현장별 제작·설치 사진 전체는 네이버 블로그에 있습니다.</p>
+      <span class="btn">네이버 블로그 →</span>
+    </a>
+
+    <!-- 주요 납품처 -->
+    <section class="clients-strip">
+      <div class="clients-heading">주요 납품처</div>
+      <div class="clients-row">
+        <span class="client-1"><img src="images/client-1.svg" alt="한국전력공사"></span>
+        <span class="client-2"><img src="images/client-2.svg" alt="기아"></span>
+        <span class="client-3"><img src="images/client-3.svg" alt="한국도로공사"></span>
+        <span class="client-4"><img src="images/client-4.svg" alt="KT&amp;G"></span>
+        <span class="client-5"><img src="images/client-5.svg" alt="한국은행"></span>
+        <span class="client-kaist"><img src="images/client-6.svg" alt="KAIST"></span>
+      </div>
+      <p class="clients-note">※ 일부는 협력 설비사를 통한 납품 건을 포함합니다. 세부 납품 현장은 별도 문의 바랍니다.</p>
+    </section>
+
+    <!-- 찾아오시는 길 -->
+    <section class="contact-section" id="contact">
+      <h2>찾아오시는 길</h2>
+      <div class="contact-grid">
+        <div class="contact-info">
+          <div class="contact-row"><span class="label">주소</span><span>경기도 광주시 곤지암읍 광여로99번길 7</span></div>
+          <div class="contact-row"><span class="label">전화</span><a href="tel:031-764-0248">031-764-0248</a></div>
+          <div class="contact-row"><span class="label">팩스</span><span>031-764-0249</span></div>
+          <div class="contact-row"><span class="label">이메일</span><a href="mailto:ybeng@hanmail.net">ybeng@hanmail.net</a></div>
+          <div class="contact-extra">
+            곤지암 공장 보조회선 031-763-8637 · 031-764-0255<br>
+            서울 사무실 02-461-0077 · 02-464-8637 (Fax 02-461-0078)
+          </div>
+        </div>
+        <div class="contact-directions">
+          <div class="direction-actions">
+            <a class="btn btn-primary" href="https://map.kakao.com/link/to/%28%EC%A3%BC%29%EC%98%81%EB%B3%B4%EC%9D%B4%EC%97%94%EC%A7%80,37.350160,127.356580" target="_blank" rel="noopener noreferrer">카카오맵 길찾기</a>
+            <a class="btn btn-outline" href="https://map.naver.com/p/search/%EA%B2%BD%EA%B8%B0%EB%8F%84%20%EA%B4%91%EC%A3%BC%EC%8B%9C%20%EA%B3%A4%EC%A7%80%EC%95%94%EC%9D%8D%20%EA%B4%91%EC%97%AC%EB%A1%9C99%EB%B2%88%EA%B8%B8%207" target="_blank" rel="noopener noreferrer">네이버지도</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- 푸터 (데스크톱 3단: 회사정보 / 사업장 2곳 / 링크) -->
+  <footer>
+    <div class="footer-grid">
+      <div class="footer-col">
+        <img src="images/logo-mark-white.svg" alt="">
+        <div class="footer-biz-name">(주)영보이엔지 · 영보종합탱크</div>
+        <div>대표이사 박천종</div>
+      </div>
+      <div class="footer-col">
+        <h3>사업장</h3>
+        <div style="margin-bottom:10px;">
+          <strong style="color:#fff;">곤지암 공장</strong><br>
+          경기도 광주시 곤지암읍 광여로99번길 7<br>
+          Tel 031-764-0248 · 031-763-8637 · 031-764-0255 · Fax 031-764-0249
+        </div>
+        <div>
+          <strong style="color:#fff;">서울 사무실</strong><br>
+          Tel 02-461-0077 · 02-464-8637 · Fax 02-461-0078
+        </div>
+      </div>
+      <div class="footer-col">
+        <h3>링크</h3>
+        <div><a href="tel:031-764-0248">대표전화 031-764-0248</a></div>
+        <div><a href="mailto:ybeng@hanmail.net">ybeng@hanmail.net</a></div>
+        <div><a href="/privacy">개인정보처리방침</a></div>
+      </div>
+    </div>
+    <div class="copy footer-copy-row">
+      © (주)영보이엔지. All rights reserved.
+    </div>
+  </footer>
+
+  <!-- 모바일 하단 고정 전화 바 (3분할: 전화 / 길찾기 / 블로그) -->
+  <nav class="bottom-bar">
+    <a href="tel:031-764-0248">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+      전화
+    </a>
+    <a href="https://map.kakao.com/link/to/%28%EC%A3%BC%29%EC%98%81%EB%B3%B4%EC%9D%B4%EC%97%94%EC%A7%80,37.350160,127.356580" target="_blank" rel="noopener noreferrer">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+      길찾기
+    </a>
+    <!-- TODO: 실제 네이버 블로그 주소 확보 후 교체 -->
+    <a href="https://blog.naver.com/____" target="_blank" rel="noopener noreferrer">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 8h6M9 12h6M9 16h3"/></svg>
+      블로그
+    </a>
+  </nav>
+
+  <!-- Cloudflare Web Analytics — 쿠키 미사용·개인 미식별 (개인정보처리방침 고지 완료) -->
+  <script defer src="https://static.cloudflareinsights.com/beacon.min.js"
+    data-cf-beacon='{"token": "082c37d9b8b946a79e0a27c671b7ddde"}'></script>
+</body>
+
+</html>

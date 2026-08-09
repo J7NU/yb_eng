@@ -637,6 +637,13 @@
       margin-left: 6px;
     }
 
+    .form-label .opt {
+      color: var(--gray-400);
+      font-size: 11px;
+      font-weight: 600;
+      margin-left: 6px;
+    }
+
     .form-input,
     .form-textarea {
       width: 100%;
@@ -658,6 +665,57 @@
     .form-textarea {
       min-height: 110px;
       resize: vertical;
+    }
+
+    /* ── 도면·자료 첨부 ── */
+    .file-upload-label {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      cursor: pointer;
+    }
+
+    .file-input {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      opacity: 0;
+      overflow: hidden;
+    }
+
+    .file-btn {
+      flex: none;
+      padding: 9px 16px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--gray-600);
+      background: #fff;
+      transition: border-color .15s, color .15s;
+    }
+
+    .file-upload-label:hover .file-btn,
+    .file-input:focus-visible + .file-btn {
+      border-color: var(--navy);
+      color: var(--navy);
+    }
+
+    .file-name {
+      font-size: 12.5px;
+      color: var(--gray-600);
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .file-name.has-file { color: var(--navy); font-weight: 600; }
+    .file-name.is-error { color: #B03A2E; font-weight: 600; }
+
+    .file-hint {
+      margin-top: 6px;
+      font-size: 11.5px;
+      color: var(--gray-400);
     }
 
     .consent {
@@ -1266,7 +1324,8 @@
 
         <!-- 문의폼 (FormSubmit.co → 회사 수신 계정) -->
         <div class="contact-form-wrap">
-          <form class="quote-form" action="https://formsubmit.co/ybeng@hanmail.net" method="POST">
+          <form class="quote-form" action="https://formsubmit.co/ybeng@hanmail.net" method="POST"
+            enctype="multipart/form-data">
             <input type="hidden" name="_subject" value="[영보이엔지 홈페이지 문의]">
             <input type="hidden" name="_template" value="table">
             <input type="hidden" name="_captcha" value="true">
@@ -1292,10 +1351,21 @@
                 placeholder="제품명, 용량, 규격, 수량, 설치 환경, 납기 요구사항 등을 작성해 주세요." required></textarea>
             </div>
 
+            <div class="form-group">
+              <label class="form-label" for="attachment">도면·자료 첨부 <span class="opt">선택</span></label>
+              <label class="file-upload-label" for="attachment">
+                <input type="file" id="attachment" name="attachment" class="file-input"
+                  accept=".pdf,.dwg,.dxf,.xls,.xlsx,.jpg,.jpeg,.png" onchange="updateFileName(this)">
+                <span class="file-btn">파일 선택</span>
+                <span class="file-name">첨부파일 없음</span>
+              </label>
+              <div class="file-hint">PDF · DWG · DXF · Excel · 이미지 · 최대 10MB</div>
+            </div>
+
             <div class="consent">
               <label class="consent-check">
                 <input type="checkbox" name="privacy_agree" value="동의함" required>
-                <span>개인정보 수집·이용에 동의합니다. 자세한 내용은
+                <span>개인정보(회사명·연락처·이메일·문의 내용·첨부파일) 수집·이용에 동의합니다. 자세한 내용은
                   <a href="/privacy" target="_blank" rel="noopener">개인정보처리방침</a>에서 확인하실 수 있습니다.</span>
               </label>
             </div>
@@ -1401,6 +1471,27 @@
           );
         });
       });
+    }
+
+    /* ── 첨부 파일명 표시 · 용량 검증 ──
+       FormSubmit 은 첨부 합계 10MB 까지 받는다. 넘으면 전송이 조용히 실패하므로
+       고르는 시점에 걸러낸다. */
+    function updateFileName(input) {
+      var label = input.closest('.file-upload-label');
+      var nameEl = label && label.querySelector('.file-name');
+      if (!nameEl) return;
+      nameEl.classList.remove('has-file', 'is-error');
+      var file = input.files && input.files[0];
+      if (!file) { nameEl.textContent = '첨부파일 없음'; return; }
+      var maxMB = 10;
+      if (file.size > maxMB * 1024 * 1024) {
+        input.value = '';
+        nameEl.textContent = '파일이 너무 큽니다 (최대 ' + maxMB + 'MB)';
+        nameEl.classList.add('is-error');
+        return;
+      }
+      nameEl.textContent = file.name;
+      nameEl.classList.add('has-file');
     }
   </script>
 

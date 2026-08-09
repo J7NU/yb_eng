@@ -737,18 +737,14 @@
       font-size: 13px;
     }
 
-    .file-oversize-btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      margin-top: 10px;
-      padding: 10px 14px;
-      width: 100%;
-      border-radius: 8px;
-      background: var(--navy);
-      color: #fff;
-      font-size: 13px;
+    .file-oversize-mail {
+      display: block;
+      margin-top: 8px;
+      font-size: 15px;
       font-weight: 700;
+      color: var(--navy);
+      letter-spacing: -0.01em;
+      user-select: all;
     }
 
     .consent {
@@ -1397,10 +1393,8 @@
               <div class="file-oversize" id="fileOversize" role="alert" hidden>
                 <strong>파일이 10MB를 넘습니다.</strong>
                 도면은 아래 주소로 메일에 첨부해 보내주시면 동일하게 접수됩니다.
-                아래 문의 내용까지 작성해 보내주시면 함께 확인하겠습니다.
-                <a class="file-oversize-btn" id="fileOversizeMail" href="mailto:ybeng@hanmail.net">
-                  ybeng@hanmail.net 으로 도면 보내기
-                </a>
+                문의 내용은 이 폼으로 그대로 보내주셔도 됩니다.
+                <span class="file-oversize-mail">ybeng@hanmail.net</span>
               </div>
             </div>
 
@@ -1537,20 +1531,7 @@
         var sizeMB = (file.size / 1024 / 1024).toFixed(1);
         nameEl.textContent = file.name + ' (' + sizeMB + 'MB) — 첨부 한도 초과';
         nameEl.classList.add('is-error');
-        if (notice) {
-          var mail = document.getElementById('fileOversizeMail');
-          if (mail) {
-            mail.href = 'mailto:ybeng@hanmail.net'
-              + '?subject=' + encodeURIComponent('[영보이엔지 홈페이지 문의] 도면 첨부')
-              + '&body=' + encodeURIComponent(
-                '홈페이지 문의폼에서 도면 용량이 커서 메일로 보냅니다.\n\n'
-                + '· 보내려던 파일: ' + file.name + ' (' + sizeMB + 'MB)\n'
-                + '· 회사명: \n· 담당자 연락처: \n· 문의 내용(제품명·용량·규격·수량·설치 환경·납기): \n\n'
-                + '※ 이 메일에 도면 파일을 첨부해 주세요.'
-              );
-          }
-          notice.hidden = false;
-        }
+        if (notice) notice.hidden = false;
         return;
       }
 

@@ -7,7 +7,7 @@
   <title>(주)영보이엔지 — 탱크·열교환기 전문 제조기업</title>
   <meta name="description"
     content="밀폐형 팽창탱크·열교환기·온수저장탱크·스테인리스 물탱크 전문 제조. 1978년 창업, ISO 9001 인증. 경기 광주 곤지암 자체 공장.">
-  <meta name="keywords" content="팽창탱크, 밀폐형 팽창탱크, 열교환기, 스파이럴 열교환기, 온수 가열탱크, 온수가열기, 온수저장탱크, STS 물탱크, 스테인리스 물탱크, 스테인리스 판넬탱크, SMC 물탱크, 태양열 축열탱크, 저유조, 유류탱크, 압력용기, 영보이엔지, 영보종합탱크, 곤지암 탱크 제작">
+  <meta name="keywords" content="팽창탱크, 밀폐형 팽창탱크, 열교환기, 스파이럴 열교환기, 스파이랄 열교환기, 온수 가열탱크, 온수가열기, 온수저장탱크, STS 물탱크, 스테인리스 물탱크, 스테인리스 판넬탱크, SMC 물탱크, 태양열 축열탱크, 저유조, 유류탱크, 압력용기, 영보이엔지, 영보종합탱크, 곤지암 탱크 제작">
   <link rel="canonical" href="https://youngboeng.co.kr/">
 
   <!-- 파비콘 · 앱 아이콘 -->
@@ -71,14 +71,14 @@
     "areaServed": { "@type": "Country", "name": "대한민국" },
     "makesOffer": [
       { "@type": "Offer", "itemOffered": { "@type": "Product", "name": "밀폐형 팽창탱크", "description": "냉난방·급탕·급수용 밀폐형 팽창탱크. 200~10,000ℓ 산업안전 검사품, 최고사용온도 115℃ · 최고사용압력 7.0kg/㎠." } },
-      { "@type": "Offer", "itemOffered": { "@type": "Product", "name": "스파이럴 열교환기", "description": "스팀용 스파이럴 튜브형 열교환기. 10만~200만 kcal/h 용량 제작." } },
+      { "@type": "Offer", "itemOffered": { "@type": "Product", "name": "열교환기", "alternateName": ["스파이럴 열교환기", "스파이랄 열교환기"], "description": "스팀용 스파이럴 튜브형 열교환기. 10만~200만 kcal/h 용량 제작." } },
       { "@type": "Offer", "itemOffered": { "@type": "Product", "name": "온수 가열탱크", "description": "열교환기 일체형·분리형(OBS) 온수가열기. 급탕용량 800~30,000ℓ/h, 수직형·수평형." } },
-      { "@type": "Offer", "itemOffered": { "@type": "Product", "name": "스테인리스 온수저장탱크", "description": "온수저장탱크·버퍼탱크 200~20,000ℓ. STS304 또는 STS316L 재질, 입형·횡형." } },
+      { "@type": "Offer", "itemOffered": { "@type": "Product", "name": "STS 물탱크", "alternateName": ["스테인리스 온수저장탱크", "버퍼탱크"], "description": "온수저장탱크·버퍼탱크 200~20,000ℓ. STS304 또는 STS316L 재질, 입형·횡형." } },
       { "@type": "Offer", "itemOffered": { "@type": "Product", "name": "스테인리스 판넬탱크", "description": "현장 조립식 스테인리스 판넬탱크. 950·475 규격 판넬로 0.5~2,000톤 용량 설계·시공." } },
       { "@type": "Offer", "itemOffered": { "@type": "Product", "name": "SMC 물탱크", "description": "SMC 판넬 조립식 물탱크. 내부보강·외부보강 방식, 우레탄 25mm 보온 판넬." } },
-      { "@type": "Offer", "itemOffered": { "@type": "Product", "name": "압력용기", "description": "에너지관리공단 압력용기 검사품 제작 전문업체(CODE 047780). KS B 6231 기준 제작·설치." } },
+      { "@type": "Offer", "itemOffered": { "@type": "Product", "name": "압력용기", "description": "에너지관리공단 압력용기 검사품 제작 전문업체(CODE 047780). 압력용기 제조검사·설치기준에 따른 제작·설치." } },
       { "@type": "Offer", "itemOffered": { "@type": "Product", "name": "태양열 축열탱크", "description": "태양열 시스템용 축열탱크. 입형·횡형 200~20,000ℓ 주문 제작." } },
-      { "@type": "Offer", "itemOffered": { "@type": "Product", "name": "저유조·유류탱크", "description": "옥외형·지하 매설형 저유조 4,000~30,000ℓ. 경유저장탱크·헤더 제작." } }
+      { "@type": "Offer", "itemOffered": { "@type": "Product", "name": "저유조·유류탱크", "description": "옥외형 저유조 4,000~30,000ℓ, 지하 매설형 5,000~30,000ℓ. 경유저장탱크·헤더 제작." } }
     ]
   }
   </script>
@@ -429,8 +429,9 @@
     .tile-spec {
       display: block;
       margin-top: 6px;
-      font-size: 11px;
-      line-height: 1.45;
+      /* 320px 폭에서 3줄이 되는 타일이 있어 소형 화면은 10.5px (640+ 에서 12px 로 복귀) */
+      font-size: 10.5px;
+      line-height: 1.4;
       font-weight: 500;
       opacity: .62;
       word-break: keep-all;
@@ -1287,7 +1288,7 @@
         <a class="tile" data-blog-slot="1" style="background:var(--navy);" href="https://blog.naver.com/ybtank1978"
           target="_blank" rel="noopener noreferrer" aria-disabled="true" tabindex="-1">
           <span class="tile-media" aria-hidden="true"></span>
-          <span class="tile-body"><span class="tile-title">밀폐형<br>팽창탱크</span><span class="tile-spec">200~10,000ℓ 산업안전 검사품<br>최고 115℃ · 7.0kg/㎠</span><span class="tile-cap"><span
+          <span class="tile-body"><span class="tile-title">밀폐형<br>팽창탱크</span><span class="tile-spec">산업안전 검사품 200~10,000ℓ<br>115℃ · 7.0kg/㎠</span><span class="tile-cap"><span
                 class="cap-ready">블로그에서 보기 →</span><span class="cap-soon">시공사진 준비 중</span></span></span>
         </a>
         <a class="tile" data-blog-slot="2" style="background:var(--navy-2);" href="https://blog.naver.com/ybtank1978"
@@ -1305,7 +1306,7 @@
         <a class="tile" data-blog-slot="4" style="background:var(--navy-4);" href="https://blog.naver.com/ybtank1978"
           target="_blank" rel="noopener noreferrer" aria-disabled="true" tabindex="-1">
           <span class="tile-media" aria-hidden="true"></span>
-          <span class="tile-body"><span class="tile-title">STS<br>물탱크</span><span class="tile-spec">온수저장·버퍼 200~20,000ℓ<br>STS304 · STS316L</span><span class="tile-cap"><span
+          <span class="tile-body"><span class="tile-title">STS<br>물탱크</span><span class="tile-spec">온수저장·버퍼 200~20,000ℓ<br>STS304 · 316L</span><span class="tile-cap"><span
                 class="cap-ready">블로그에서 보기 →</span><span class="cap-soon">시공사진 준비 중</span></span></span>
         </a>
         <a class="tile" data-blog-slot="5" style="background:var(--navy-5);" href="https://blog.naver.com/ybtank1978"
@@ -1317,13 +1318,13 @@
         <a class="tile" data-blog-slot="6" style="background:var(--navy-6);" href="https://blog.naver.com/ybtank1978"
           target="_blank" rel="noopener noreferrer" aria-disabled="true" tabindex="-1">
           <span class="tile-media" aria-hidden="true"></span>
-          <span class="tile-body"><span class="tile-title">SMC<br>물탱크</span><span class="tile-spec">조립식 판넬 · 내부/외부 보강<br>우레탄 25mm 보온</span><span class="tile-cap"><span
+          <span class="tile-body"><span class="tile-title">SMC<br>물탱크</span><span class="tile-spec">조립식 판넬 · 내외부 보강<br>우레탄 25mm 보온</span><span class="tile-cap"><span
                 class="cap-ready">블로그에서 보기 →</span><span class="cap-soon">시공사진 준비 중</span></span></span>
         </a>
         <a class="tile" data-blog-slot="7" style="background:var(--navy-2);" href="https://blog.naver.com/ybtank1978"
           target="_blank" rel="noopener noreferrer" aria-disabled="true" tabindex="-1">
           <span class="tile-media" aria-hidden="true"></span>
-          <span class="tile-body"><span class="tile-title">압력용기</span><span class="tile-spec">에너지관리공단 검사품 제작<br>CODE 047780</span><span class="tile-cap"><span
+          <span class="tile-body"><span class="tile-title">압력용기</span><span class="tile-spec">에너지관리공단 검사품<br>CODE 047780</span><span class="tile-cap"><span
                 class="cap-ready">블로그에서 보기 →</span><span class="cap-soon">시공사진 준비 중</span></span></span>
         </a>
         <a class="tile" data-blog-slot="8" style="background:var(--navy-4);" href="https://blog.naver.com/ybtank1978"
@@ -1335,7 +1336,7 @@
         <a class="tile" data-blog-slot="9" style="background:var(--navy);" href="https://blog.naver.com/ybtank1978"
           target="_blank" rel="noopener noreferrer" aria-disabled="true" tabindex="-1">
           <span class="tile-media" aria-hidden="true"></span>
-          <span class="tile-body"><span class="tile-title">저유조·<br>유류탱크</span><span class="tile-spec">옥외·지하 매설형<br>4,000~30,000ℓ</span><span class="tile-cap"><span
+          <span class="tile-body"><span class="tile-title">저유조·<br>유류탱크</span><span class="tile-spec">옥외·지하 매설형<br>최대 30,000ℓ</span><span class="tile-cap"><span
                 class="cap-ready">블로그에서 보기 →</span><span class="cap-soon">시공사진 준비 중</span></span></span>
         </a>
       </div>

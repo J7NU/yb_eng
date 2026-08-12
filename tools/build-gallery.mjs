@@ -83,20 +83,58 @@ const unquote = (v) => v.replace(/^['"]/, '').replace(/['"]$/, '').trim();
 // ── 마크다운 (문단·굵게·목록·링크만. CMS 본문이 이 이상 복잡할 일이 없다) ──
 
 function renderMarkdown(md) {
-  const blocks = esc(md)
-    .split(/\n{2,}/)
-    .map((block) => {
-      const lines = block.split('\n');
-      if (lines.every((l) => /^\s*[-*]\s+/.test(l))) {
-        const items = lines.map((l) => `<li>${inline(l.replace(/^\s*[-*]\s+/, ''))}</li>`).join('');
-        return `<ul>${items}</ul>`;
-      }
-      const h = block.match(/^(#{2,3})\s+(.*)$/);
-      if (h) return `<h${h[1].length}>${inline(h[2])}</h${h[1].length}>`;
-      return `<p>${lines.map(inline).join('<br>')}</p>`;
-    });
-  return blocks.join('\n');
+  // 블록 단위로만 판정하면 '## 제목' 다음 줄에 본문이 이어질 때 통째로 문단이 된다.
+  // 줄 단위로 훑으면서 소제목·목록·문단을 각각 닫는다.
+  const out = [];
+  let para = [];
+  let list = [];
+  const flushPara = () => {
+    if (para.length) out.push(`<p>${para.map(inline).join('<br>')}</p>`);
+    para = [];
+  };
+  const flushList = () => {
+    if (list.length) out.push(`<ul>${list.map((l) => `<li>${inline(l)}</li>`).join('')}</ul>`);
+    list = [];
+  };
+
+  for (const raw of esc(md).split(/\r?\n/)) {
+    const line = raw.trimEnd();
+    if (!line.trim()) {
+      flushList();
+      flushPara();
+      continue;
+    }
+    const h = line.match(/^(#{2,3})\s+(.*)$/);
+    if (h) {
+      flushList();
+      flushPara();
+      out.push(`<h${h[1].length}>${inline(h[2])}</h${h[1].length}>`);
+      continue;
+    }
+    const li = line.match(/^\s*[-*]\s+(.*)$/);
+    if (li) {
+      flushPara();
+      list.push(li[1]);
+      continue;
+    }
+    flushList();
+    para.push(line);
+  }
+  flushList();
+  flushPara();
+  return out.join('\n');
 }
+
+/** 검색 스니펫·공유 미리보기용 순수 텍스트. 마크다운 기호가 그대로 나가면 안 된다 */
+const plainText = (md) =>
+  md
+    .replace(/!\[[^\]]*\]\([^)]*\)/g, ' ')
+    .replace(/\[([^\]]*)\]\([^)]*\)/g, '$1')
+    .replace(/^#{1,6}\s+/gm, '')
+    .replace(/^\s*[-*]\s+/gm, '')
+    .replace(/[*_`>#]/g, '')
+    .replace(/\s+/g, ' ')
+    .trim();
 
 const inline = (s) =>
   s
@@ -263,14 +301,14 @@ function loadPosts() {
 
 // ── 페이지 템플릿 (사이트 톤 유지: Pretendard · 네이비 · 흰 배경 카드) ──
 
-const HEAD = (title, description, canonical) => `<!DOCTYPE html>
+const HEAD = (title, description, canonical, { image = '/images/og-cover-2026.png', noindex = false } = {}) => `<!DOCTYPE html>
 <html lang="ko">
 
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>${esc(title)}</title>
-  <meta name="description" content="${esc(description)}">
+  <meta name="description" content="${esc(description)}">${noindex ? '\n  <meta name="robots" content="noindex, follow">' : ''}
   <link rel="canonical" href="https://youngboeng.co.kr${canonical}">
   <link rel="icon" href="/favicon.svg" type="image/svg+xml">
   <link rel="icon" href="/images/favicon-32.png" sizes="32x32" type="image/png">
@@ -280,6 +318,8 @@ const HEAD = (title, description, canonical) => `<!DOCTYPE html>
   <meta property="og:title" content="${esc(title)}">
   <meta property="og:description" content="${esc(description)}">
   <meta property="og:url" content="https://youngboeng.co.kr${canonical}">
+  <meta property="og:image" content="https://youngboeng.co.kr${encPath(image)}">
+  <meta name="twitter:card" content="summary_large_image">
   <link rel="stylesheet"
     href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@latest/dist/web/variable/pretendardvariable.css">
   <style>
@@ -369,11 +409,15 @@ const card = (post) => `        <a class="card" href="/gallery/${encPath(post.id
         </a>`;
 
 function listPage({ title, description, canonical, current, posts, lead }) {
+  const head = HEAD(title, description, canonical, {
+    image: posts[0]?.cover || '/images/og-cover-2026.png',
+    noindex: posts.length === 0,
+  });
   const body = posts.length
     ? `      <div class="cards">\n${posts.map(card).join('\n')}\n      </div>`
     : `      <p class="empty">아직 등록된 시공사례가 없습니다. 준비되는 대로 올리겠습니다.<br>
         문의는 <a href="tel:031-764-0248" style="color:var(--navy);font-weight:600">031-764-0248</a> 로 주십시오.</p>`;
-  return `${HEAD(title, description, canonical)}  <main class="wrap">
+  return `${head}  <main class="wrap">
     <div class="page-head">
       <div class="crumb"><a href="/">홈</a> › <a href="/gallery/">납품실적</a></div>
       <h1>${esc(lead || title)}</h1>
@@ -391,8 +435,10 @@ function postPage(post) {
     .map((src) => `      <img src="${encPath(src)}" alt="${esc(post.title)}" loading="lazy">`)
     .join('\n');
   const meta = [labelOf(post.category), post.site, post.date].filter(Boolean).join(' · ');
-  const summary = post.body.replace(/\s+/g, ' ').slice(0, 110) || meta;
-  return `${HEAD(`${post.title} — (주)영보이엔지`, summary, `/gallery/${post.id}/`)}  <main class="wrap">
+  const summary = plainText(post.body).slice(0, 110) || meta;
+  return `${HEAD(`${post.title} — (주)영보이엔지`, summary, `/gallery/${post.id}/`, {
+    image: post.cover || '/images/og-cover-2026.png',
+  })}  <main class="wrap">
     <div class="page-head">
       <div class="crumb"><a href="/">홈</a> › <a href="/gallery/">납품실적</a> ›
         <a href="/gallery/${encPath(post.category)}/">${esc(labelOf(post.category))}</a></div>
@@ -440,7 +486,9 @@ function injectTiles(html, countBySlug, total) {
       .replace(/\shref="[^"]*"/, () => ` href="${href}"`)
       .replace(/\s(?:aria-disabled="true"|tabindex="-1"|target="_blank"|rel="noopener noreferrer")/g, '');
 
-    const caption = slot === 8 ? CAP_DEFAULT.more : n === 0 ? CAP_DEFAULT.product : `시공사례 ${n}건 →`;
+    // 잠금이 풀리면 cap-soon 이 숨으므로, 0건 칸의 cap-ready 에 '준비 중' 을 넣어야
+    // 눌리지도 않는 칸이 '시공사례 보기 →' 로 클릭을 유도하지 않는다
+    const caption = n === 0 ? '준비 중' : slot === 8 ? CAP_DEFAULT.more : `시공사례 ${n}건 →`;
     tile = tile.replace(CAP_READY_RE, (_, o, __, c) => `${o}${caption}${c}`);
 
     if (n === 0) {
@@ -544,6 +592,18 @@ if (existsSync(GALLERY_DIR)) {
     if (!DRY) rmSync(dir, { recursive: true, force: true });
     console.log(`  삭제된 글 정리: gallery/${name}/`);
     changed += 1;
+  }
+}
+
+// 글에서 안 쓰는 업로드 사진은 알려만 준다. 자동 삭제하면 CMS 가 글 저장 전에 먼저 올린
+// 사진을 지워버릴 수 있다 (글 작성 중 이탈 시 복구 불가)
+if (existsSync(IMG_DIR)) {
+  const used = new Set(posts.flatMap((p) => p.images.map((i) => basename(i))));
+  const orphans = readdirSync(IMG_DIR).filter(
+    (f) => IMAGE_RE.test(f) && statSync(join(IMG_DIR, f)).isFile() && !used.has(f)
+  );
+  if (orphans.length) {
+    console.log(`  글에서 안 쓰는 사진 ${orphans.length}장 (지우려면 직접): ${orphans.slice(0, 5).join(', ')}`);
   }
 }
 

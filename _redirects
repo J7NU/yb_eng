@@ -5,3 +5,7 @@
 # 현재는 www 와 루트가 같은 내용을 서빙하지만, index.html 의
 # <link rel="canonical" href="https://youngboeng.co.kr/"> 이 대표 주소를
 # 지정하므로 검색엔진 중복 색인 문제는 방지된다.
+
+# 2026-08-12 에 og-cover.png → og-cover-2026.png 로 갈아끼웠다.
+# 카카오톡·페이스북 캐시가 구 절대 URL 을 물고 있어 그대로 두면 미리보기가 깨진다.
+/images/og-cover.png  /images/og-cover-2026.png  301

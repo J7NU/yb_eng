@@ -18,6 +18,7 @@ concurrency:
 jobs:
   sync:
     runs-on: ubuntu-latest
+    timeout-minutes: 5
     steps:
       - uses: actions/checkout@v4
 
@@ -38,4 +39,6 @@ jobs:
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add index.html
           git commit -m 'chore(blog): 네이버 블로그 글 반영 (자동)'
+          # 체크아웃과 푸시 사이에 사람이 main 을 밀면 non-fast-forward 로 죽는다
+          git pull --rebase origin "${GITHUB_REF_NAME}"
           git push

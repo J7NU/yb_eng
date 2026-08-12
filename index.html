@@ -408,8 +408,9 @@
       opacity: .28;
     }
 
-    /* 블로그 글이 붙은 칸은 제품 스펙 줄을 감춘다 (제품명 + 스펙 + 글 제목 3단은 모바일에서 넘친다) */
-    .tile[data-has-post] .tile-spec {
+    /* 블로그 글이 붙은 칸은 제품 스펙 줄을 감춘다 (제품명 + 스펙 + 글 제목 3단은 모바일에서 넘친다).
+       잠금 상태에서는 글 제목이 안 보이므로 스펙 줄을 그대로 남긴다 */
+    body[data-blog-ready="true"] .tile[data-has-post] .tile-spec {
       display: none;
     }
 
@@ -466,6 +467,7 @@
     body[data-blog-ready="true"] .tile[data-has-post] .cap-ready {
       display: -webkit-box;
       -webkit-line-clamp: 2;
+      line-clamp: 2;
       -webkit-box-orient: vertical;
       overflow: hidden;
       text-align: center;
@@ -1310,7 +1312,8 @@
         <p>칸을 누르면 블로그의 시공사진으로 이동합니다</p>
       </div>
       <!-- 아래 9칸 전부 동일한 블로그 주소로 연결됩니다 (data-blog-ready="false" 동안은 클릭 비활성) -->
-      <!-- data-blog-ready 를 true 로 풀 때: 아래 9개 타일 <a> 에서 aria-disabled="true" tabindex="-1" 속성을 지운다 (정적 HTML이라 자동으로 안 풀림) -->
+      <!-- 잠금 해제(data-blog-ready="true" + 타일의 aria-disabled·tabindex 제거)는 이제 sync-blog.mjs 가 자동으로 한다.
+           블로그에 글이 올라오면 다음 동기화에서 풀린다 — 손으로 고칠 일 없음 -->
       <div class="work-grid">
         <a class="tile" data-blog-slot="1" style="background:var(--navy);" href="https://blog.naver.com/ybtank1978"
           target="_blank" rel="noopener noreferrer" aria-disabled="true" tabindex="-1">

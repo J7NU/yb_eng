@@ -18,7 +18,8 @@
 | `tools/sync-blog.mjs` | 네이버 블로그 RSS → 9칸 타일 자동 주입 (아래 참조) |
 | `.github/workflows/blog-sync.yml` | 위 스크립트를 6시간마다 실행 |
 | `wrangler.jsonc` · `_headers` · `_redirects` · `.assetsignore` | Cloudflare Workers 정적 배포 설정 |
-| `images/` | 실제 쓰는 자산 4개만 (`images/README.md` 참조) |
+| `sitemap.xml` · `robots.txt` | 색인용. **본문을 실질적으로 고치면 `sitemap.xml` 의 `lastmod` 를 같이 올린다** |
+| `favicon.svg` (루트) · `images/` | 파비콘 원본 · 실제 쓰는 자산 4개 (`images/README.md` 참조) |
 
 ## 배포
 
@@ -46,7 +47,7 @@ RSS_URL=... node tools/sync-blog.mjs  # 다른 피드로 테스트
 ## 외부 의존성
 
 - 카카오 Maps SDK (JS 앱키는 공개되는 값 — 도메인 제한 설정으로 방어)
-- Formspree (견적 문의폼, 도면 첨부)
+- **FormSubmit** (`formsubmit.co`, 견적 문의폼·도면 첨부 → `ybeng@hanmail.net`). Formspree 아니다 — `privacy.html` 위탁 고지도 FormSubmit 으로 적혀 있다
 - Pretendard Variable (jsDelivr CDN)
 - Cloudflare Web Analytics 비콘
 

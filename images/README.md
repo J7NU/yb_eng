@@ -20,3 +20,14 @@
 - 블로그 썸네일은 네이버 CDN 에서 직접 불러온다(`referrerpolicy="no-referrer"` 필수 — Referer 가 붙으면 403).
   즉 이 폴더에 사진을 복사할 필요가 없다.
 - 로고 원본(ai/psd)·카탈로그 PDF 같은 원본 파일은 이 레포가 아니라 jinu-co `projects/yb_eng/` 에 둔다.
+
+## 지운 자산을 되살리려면
+
+2026-08-12 정리로 지운 30개(거래처 로고·구버전 로고 변형·제품 사진·PWA 아이콘)는 두 군데에 남아 있다.
+
+```bash
+git show a1a2021:images/logo-mark-white.svg > images/logo-mark-white.svg   # 삭제 직전 커밋
+```
+
+사본은 jinu-co `projects/yb_eng/images/retired-2026-08-12/` 에도 복사해 뒀다.
+특히 `logo-mark-white.svg`(네이비 배경용 흰 심볼)는 푸터가 네이비라 재디자인 때 다시 찾게 될 가능성이 높다.

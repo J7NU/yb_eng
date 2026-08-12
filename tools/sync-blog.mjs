@@ -34,17 +34,17 @@ const ALLOWED_HOSTS = [/(^|\.)naver\.com$/, /(^|\.)pstatic\.net$/, /(^|\.)naver\
  * 남의 글을 채가지 않는다. 슬롯 번호 순서와 다른 이유가 이것이다.
  */
 const SLOT_KEYWORDS = {
-  1: ['팽창탱크', '팽창 탱크', '팽창수조'],
-  2: ['열교환기', '스파이럴', '스파이랄'],
-  3: ['온수가열', '온수 가열', '가열기', '급탕'],
-  4: ['온수저장', '버퍼탱크', '버퍼 탱크', '축열조'],
-  5: ['판넬탱크', '판넬 탱크', '패널탱크', '패널 탱크'],
-  6: ['SMC'],
-  7: ['압력용기'],
-  8: ['태양열', '축열탱크'],
-  9: ['저유조', '유류탱크', '경유탱크', '기름탱크'],
+  1: ['온수저장', '온수 저장', '버퍼탱크', '축열'],
+  2: ['온수가열', '온수 가열', '가열기', '급탕'],
+  3: ['열교환기', '스파이럴', '스파이랄', '코일'],
+  4: ['헤더', '분배기'],
+  5: ['경유', '유류탱크', '기름탱크', '저유조'],
+  6: ['물탱크', '판넬탱크', '패널탱크'],
+  7: ['팽창탱크', '압력용기', '밀폐형'],
 };
-const SLOT_ORDER = [1, 2, 5, 6, 8, 9, 7, 4, 3];
+// 8번 칸은 "더보기"라 글을 붙이지 않는다
+const TILE_COUNT = 8;
+const SLOT_ORDER = [4, 5, 3, 7, 2, 6, 1];
 
 const CAP_DEFAULT = '블로그에서 보기 →';
 // 제목은 HTML 에 되도록 통째로 남긴다 (검색엔진이 읽는 게 이 연동의 목적).
@@ -106,7 +106,7 @@ function parseFeed(xml) {
     .filter((p) => p.title && p.link);
 }
 
-/** 슬롯 → 글 배정. 한 글이 여러 칸에 겹치지 않도록 이미 쓴 링크는 건너뛴다 */
+/** 슬롯 → 글 배정. 한 글이 여러 칸에 겹치지 않도록 이미 쓴 링크는 건너뛴다 (8번 더보기 칸 제외) */
 function assign(posts) {
   const used = new Set();
   const bySlot = {};
@@ -186,7 +186,7 @@ function inject(html, bySlot, hasAnyPost) {
     (_, open, close) => `${open}${hasAnyPost ? 'true' : 'false'}${close}`
   );
 
-  for (let slot = 1; slot <= 9; slot += 1) {
+  for (let slot = 1; slot <= TILE_COUNT; slot += 1) {
     const re = tileRe(slot);
     const found = out.match(re);
     if (!found) throw new Error(`타일 슬롯 ${slot} 을 index.html 에서 못 찾았다`);

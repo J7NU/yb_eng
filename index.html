@@ -397,6 +397,22 @@
       background-position: center;
     }
 
+    /* 블로그 글 썸네일 (tools/sync-blog.mjs 가 주입). 네이버 CDN 이 죽어도 네이비 타일이 그대로 남는다.
+       사진 위에 글자가 얹히므로 불투명도를 낮게 잡는다 — 글씨가 먼저 읽혀야 한다 */
+    .tile-thumb {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: .28;
+    }
+
+    /* 블로그 글이 붙은 칸은 제품 스펙 줄을 감춘다 (제품명 + 스펙 + 글 제목 3단은 모바일에서 넘친다) */
+    .tile[data-has-post] .tile-spec {
+      display: none;
+    }
+
     .tile::after {
       content: "";
       position: absolute;
@@ -443,6 +459,16 @@
       font-size: 11.5px;
       opacity: .8;
       font-weight: 500;
+    }
+
+    /* 글 제목은 HTML 에 전문이 남고(색인용) 화면에서만 2줄로 자른다.
+       잠금 상태에서 튀어나오지 않도록 body[data-blog-ready="true"] 아래로 묶는다 */
+    body[data-blog-ready="true"] .tile[data-has-post] .cap-ready {
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      text-align: center;
     }
 
     /* 블로그 잠금(data-blog-ready) 상태 — 기본값(false)이 잠금, [data-blog-ready="true"] 가 해제 오버라이드 */
@@ -1276,7 +1302,8 @@
     </section>
 
     <!-- 작업 그리드 (9칸 전부 네이비 타일 — 실사진 0장) -->
-    <!-- 블로그 RSS 연동 시 .tile-media 에 background-image, .tile-title 에 글 제목을 주입한다 -->
+    <!-- 아래 9칸은 tools/sync-blog.mjs 가 6시간마다 다시 쓴다 (썸네일 img·글 제목·href·잠금 속성).
+         손으로 고칠 땐 data-blog-slot 속성과 cap-ready/cap-soon 구조를 유지할 것 — 스크립트가 그걸로 칸을 찾는다 -->
     <section class="grid-section">
       <div class="grid-heading">
         <h2>납품 실적</h2>

@@ -7,9 +7,8 @@ backend:
   name: github
   repo: J7NU/yb_eng
   branch: main
-  # ⚠️ Cloudflare 에 sveltia-cms-auth Worker 를 배포한 뒤 그 주소로 바꿀 것.
-  # 이 값이 비어 있으면 로그인 단계에서 실패한다.
-  base_url: https://REPLACE-ME.workers.dev
+  # 로그인 중개 Worker (Cloudflare, 진우 계정). 이 주소가 죽어 있으면 로그인만 실패한다
+  base_url: https://sveltia-cms-auth.ybeng.workers.dev
 
 # CMS 가 올린 사진이 저장되는 곳 / 사이트에서 불리는 경로
 media_folder: images/posts

@@ -1,0 +1,82 @@
+# yaml-language-server: $schema=https://unpkg.com/@sveltia/cms/schema/sveltia-cms.json
+#
+# /admin 글쓰기 화면 설정.
+# 카테고리 목록은 tools/categories.mjs 와 반드시 같아야 한다 (한쪽만 고치면 갤러리에서 글이 사라진다).
+
+backend:
+  name: github
+  repo: J7NU/yb_eng
+  branch: main
+  # ⚠️ Cloudflare 에 sveltia-cms-auth Worker 를 배포한 뒤 그 주소로 바꿀 것.
+  # 이 값이 비어 있으면 로그인 단계에서 실패한다.
+  base_url: https://REPLACE-ME.workers.dev
+
+# CMS 가 올린 사진이 저장되는 곳 / 사이트에서 불리는 경로
+media_folder: images/posts
+public_folder: /images/posts
+
+# 미리보기는 끈다 — 실제 화면은 갤러리 빌드가 만든다
+editor:
+  preview: false
+
+collections:
+  - name: posts
+    label: 시공사례
+    label_singular: 시공사례
+    folder: content/posts
+    create: true
+    slug: '{{year}}-{{month}}-{{day}}-{{slug}}'
+    summary: '{{title}} — {{category}}'
+    sortable_fields: [date, title]
+    fields:
+      - label: 제목
+        name: title
+        widget: string
+        hint: 예) 강남 주민편익시설 열교환기 교체공사
+
+      - label: 분류
+        name: category
+        widget: select
+        hint: 제품이면 품목을, 공장·자재 사진이면 아래쪽 회사 항목을 고른다
+        options:
+          - { label: 온수저장탱크, value: hot-water-storage }
+          - { label: 온수가열탱크, value: hot-water-heater }
+          - { label: 열교환기, value: heat-exchanger }
+          - { label: 헤더, value: header }
+          - { label: 경유저장탱크, value: diesel-tank }
+          - { label: 스테인리스 물탱크, value: sts-water-tank }
+          - { label: 밀폐형 압력용기, value: expansion-vessel }
+          - { label: '공장 전경 (회사)', value: factory }
+          - { label: '자재·재고 (회사)', value: material }
+          - { label: '제작 공정 (회사)', value: process }
+          - { label: '인증·허가 (회사)', value: certificate }
+
+      - label: 현장·규격
+        name: site
+        widget: string
+        required: false
+        hint: 예) 서울 강남구 주민편익시설 / STS304 5,000ℓ
+
+      - label: 날짜
+        name: date
+        widget: datetime
+        date_format: 'YYYY-MM-DD'
+        time_format: false
+        picker_utc: false
+
+      - label: 대표 사진
+        name: cover
+        widget: image
+        hint: 홈 타일과 목록 카드에 이 사진이 뜬다
+
+      - label: 사진 더 넣기
+        name: gallery
+        widget: list
+        required: false
+        field: { label: 사진, name: image, widget: image }
+
+      - label: 내용
+        name: body
+        widget: markdown
+        required: false
+        hint: 어떤 작업이었는지, 규격·재질·현장 조건 등을 적는다

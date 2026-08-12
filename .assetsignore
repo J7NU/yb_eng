@@ -9,6 +9,8 @@ CLAUDE.md
 HANDOFF.md
 install.cmd
 tools/
+# 글 원본(md). 사이트가 서빙하는 건 빌드가 만든 gallery/*.html 뿐이다
+content/
 .devcontainer/
 .gitignore
 .worktrees/

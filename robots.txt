@@ -1,4 +1,6 @@
 User-agent: *
+# 글쓰기 화면 — 색인 대상 아님 (로그인해야 아무것도 할 수 있다)
+Disallow: /admin
 Allow: /
 
 # 네이버

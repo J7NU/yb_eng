@@ -45,9 +45,6 @@
     "alternateName": ["영보종합탱크", "YOUNGBO ENGINEERING CO., LTD.", "YOUNGBO ENG."],
     "url": "https://youngboeng.co.kr/",
     "image": "https://youngboeng.co.kr/images/og-cover-2026.png",
-    "sameAs": [
-      "https://blog.naver.com/ybtank1978"
-    ],
     "description": "산업용 탱크·열교환기 전문 제조. 스테인리스 온수저장탱크, 온수 가열탱크, 스파이럴 열교환기, 헤더, 경유 저장탱크, 스테인리스 물탱크, 밀폐형 압력용기를 용량·형상에 맞춰 제작한다. 에너지관리공단 압력용기 검사품 제작 전문업체(CODE 047780).",
     "foundingDate": "1981",
     "telephone": "+82-31-764-0248",
@@ -529,62 +526,33 @@
       opacity: .9;
     }
 
-    /* ── 블로그 전면 배너 ── */
-    .blog-banner {
-      margin-top: 28px;
-      background: var(--navy);
-      background-image: linear-gradient(135deg, var(--navy) 0%, var(--navy-5) 100%);
-      color: #fff;
-      padding: 44px var(--pad-x);
-      text-align: center;
-      min-height: 220px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      pointer-events: none;
+    /* ── 섹션 구분 (시안 C: 경계 남색 헤어라인 + 제목 위 강조바)
+       배경이 흰색으로 이어지는 구간(자재 띠 → 납품 실적)이 있어 선만으로는 경계가 약하다 ── */
+    .stock-band {
+      border-top-color: rgba(31, 46, 102, .22);
+      border-bottom-color: rgba(31, 46, 102, .22);
     }
 
-    body[data-gallery-ready="true"] .blog-banner {
-      pointer-events: auto;
+    /* 배너가 있던 자리가 비었으므로 아래 여백을 배너가 주던 만큼 돌려준다.
+       구분선은 바로 아래 .contact-section 의 위 테두리 하나로 충분하다 (2겹으로 보였다) */
+    .grid-section {
+      padding-bottom: 30px;
     }
 
-    .blog-banner h2 {
-      margin: 0 0 8px;
-      font-size: 22px;
-      font-weight: 800;
-      letter-spacing: -0.02em;
+    .contact-section {
+      border-top: 1px solid rgba(31, 46, 102, .22);
     }
 
-    .blog-banner p {
-      margin: 0 0 22px;
-      font-size: 14.5px;
-      color: #C7CCE2;
-    }
-
-    /* 배너 부제·버튼도 잠금/해제 두 벌 마크업 + CSS 전환 (기본값 = 잠금) */
-    .banner-sub-ready,
-    .banner-btn-ready {
-      display: none;
-    }
-
-    body[data-gallery-ready="true"] .banner-sub-ready {
+    .grid-heading h2::before,
+    .contact-section h2::before,
+    .stock-head::before {
+      content: "";
       display: block;
-    }
-
-    body[data-gallery-ready="true"] .banner-btn-ready {
-      display: flex;
-    }
-
-    body[data-gallery-ready="true"] .banner-sub-soon,
-    body[data-gallery-ready="true"] .banner-btn-soon {
-      display: none;
-    }
-
-    .blog-banner .btn {
-      min-width: 220px;
-      background: #fff;
-      color: var(--navy);
+      width: 34px;
+      height: 3px;
+      background: var(--navy);
+      border-radius: 2px;
+      margin: 0 auto 12px;
     }
 
     /* ── 찾아오시는 길 ── */
@@ -1051,14 +1019,6 @@
         font-size: 26px;
       }
 
-      .blog-banner h2 {
-        font-size: 30px;
-      }
-
-      .blog-banner p {
-        font-size: 16px;
-      }
-
       .contact-section h2 {
         font-size: 26px;
       }
@@ -1168,7 +1128,7 @@
 
       /* 그리드: 4열 유지, 타일·글자 확대 */
       .grid-section {
-        padding: 8px 40px 0;
+        padding: 8px 40px 44px;
       }
 
       .grid-heading {
@@ -1219,6 +1179,10 @@
       .contact-section h2 {
         text-align: left;
         margin-bottom: 28px;
+      }
+
+      .contact-section h2::before {
+        margin-left: 0;
       }
 
       .contact-grid {
@@ -1300,7 +1264,7 @@
 </head>
 
 <!-- 갤러리 공개 스위치 — /admin 에 시공사례가 올라가면 빌드가 data-gallery-ready 를 "true" 로 바꾼다.
-     타일 8칸·히어로 버튼·배너·상단바·하단바 링크가 전부 한꺼번에 살아난다. -->
+     타일 8칸·히어로 버튼·상단바·하단바 링크가 전부 한꺼번에 살아난다. -->
 
 <body data-gallery-ready="false">
 
@@ -1354,7 +1318,7 @@
     <section class="stock-band">
       <div class="stock-inner">
         <p class="stock-head">모든 자재를 상시 보유합니다</p>
-        <p class="stock-sub">주문 즉시 제작에 들어가고, 소형 탱크부터 2,000톤급 현장 조립까지 대응합니다.</p>
+        <p class="stock-sub">소형 탱크부터 대형 탱크까지 모두 제작 가능합니다.</p>
       </div>
     </section>
 
@@ -1421,15 +1385,6 @@
         </a>
       </div>
     </section>
-
-    <!-- 시공사례 전면 배너 -->
-    <a class="blog-banner" href="/gallery/">
-      <h2>시공사진 더 보기</h2>
-      <p class="banner-sub-ready">현장별 제작·설치 사진을 품목별로 모아뒀습니다.</p>
-      <p class="banner-sub-soon">시공사진을 준비하고 있습니다. 곧 공개합니다.</p>
-      <span class="btn banner-btn-ready">납품실적 전체 보기 →</span>
-      <span class="btn banner-btn-soon">준비 중</span>
-    </a>
 
     <!-- 찾아오시는 길 -->
     <section class="contact-section" id="contact">

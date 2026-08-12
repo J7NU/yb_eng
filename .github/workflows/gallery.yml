@@ -12,6 +12,7 @@ on:
     paths:
       - 'content/**'
       - 'images/posts/**'
+      - 'index.html'
       - 'tools/build-gallery.mjs'
       - 'tools/categories.mjs'
       - '.github/workflows/gallery.yml'
@@ -38,10 +39,15 @@ jobs:
         with:
           node-version: '20'
 
-      - name: 이미지 도구 확인
+      - name: 이미지 도구 설치·확인
         run: |
-          # 있으면 축소하고 없으면 원본을 쓴다 — 빌드는 어느 쪽이든 성립한다
-          which magick || which convert || which ffmpeg || echo "이미지 축소 도구 없음 (원본 사용)"
+          # GitHub 러너에는 magick/convert/ffmpeg 가 셋 다 없다 (실제 잡 로그로 확인).
+          # 없으면 폰 원본 수 MB 가 그대로 레포에 쌓이고 방문자에게도 그대로 나가므로 설치한다.
+          if ! command -v magick && ! command -v convert && ! command -v ffmpeg; then
+            sudo apt-get update -qq && sudo apt-get install -y -qq imagemagick
+          fi
+          # 설치까지 실패하면 조용히 열화되게 두지 않고 여기서 멈춘다
+          command -v magick || command -v convert || command -v ffmpeg
 
       - name: 갤러리 생성
         run: node tools/build-gallery.mjs

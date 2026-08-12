@@ -22,6 +22,7 @@ import {
   readFileSync, writeFileSync, readdirSync, mkdirSync, existsSync, statSync, renameSync, rmSync,
 } from 'node:fs';
 import { execFileSync } from 'node:child_process';
+import { createHash } from 'node:crypto';
 import { fileURLToPath } from 'node:url';
 import { join, dirname, basename, extname } from 'node:path';
 import { PRODUCT_CATEGORIES, COMPANY_CATEGORIES, ALL_CATEGORIES, labelOf, isKnownCategory } from './categories.mjs';
@@ -142,11 +143,24 @@ function resize(tool, src, dest, width) {
 
 const IMAGE_RE = /\.(jpe?g|png|webp)$/i;
 
+/**
+ * 썸네일 파일명에 원본 내용 해시를 박는다.
+ * 같은 파일명으로 사진을 갈아끼워도 URL 이 바뀌므로 _headers 의 1년 immutable 캐시에 물리지 않고,
+ * mtime 비교(CI 체크아웃에서 무의미하다)에 의존하지 않는다.
+ */
+const thumbName = (src) => {
+  const h = createHash('sha1').update(readFileSync(src)).digest('hex').slice(0, 8);
+  const name = basename(src);
+  const ext = extname(name);
+  return `${basename(name, ext)}.${h}${ext}`;
+};
+
 function prepareImages(tool) {
   if (!existsSync(IMG_DIR)) return { thumbs: 0, shrunk: 0 };
   mkdirSync(THUMB_DIR, { recursive: true });
   let thumbs = 0;
   let shrunk = 0;
+  const keepThumbs = new Set();
   for (const name of readdirSync(IMG_DIR)) {
     const src = join(IMG_DIR, name);
     if (!IMAGE_RE.test(name) || !statSync(src).isFile()) continue;
@@ -160,21 +174,57 @@ function prepareImages(tool) {
       } else if (existsSync(tmp)) rmSync(tmp, { force: true });
     }
 
-    const thumb = join(THUMB_DIR, name);
-    // 같은 파일명으로 사진을 교체하면 썸네일도 다시 만들어야 한다 (캐시가 1년이라 더 그렇다)
-    const stale = !existsSync(thumb) || statSync(thumb).mtimeMs < statSync(src).mtimeMs;
-    if (stale) {
+    const thumb = join(THUMB_DIR, thumbName(src));
+    keepThumbs.add(basename(thumb));
+    if (!existsSync(thumb)) {
       if (DRY) thumbs += 1;
       else if (resize(tool, src, thumb, THUMB_W)) thumbs += 1;
     }
   }
-  return { thumbs, shrunk };
+
+  // 내용이 바뀌면 옛 해시 썸네일은 아무도 안 쓴다 → 쌓이지 않게 지운다
+  let pruned = 0;
+  for (const f of readdirSync(THUMB_DIR)) {
+    if (!IMAGE_RE.test(f) || keepThumbs.has(f)) continue;
+    if (!DRY) rmSync(join(THUMB_DIR, f), { force: true });
+    pruned += 1;
+  }
+  return { thumbs, shrunk, pruned };
 }
 
 const thumbFor = (publicPath) => {
-  const name = basename(publicPath);
+  const src = join(ROOT, publicPath.replace(/^\//, ''));
+  if (!existsSync(src)) return publicPath;
+  const name = thumbName(src);
   return existsSync(join(THUMB_DIR, name)) ? `/images/posts/thumb/${name}` : publicPath;
 };
+
+// ── 카테고리 정합 검사 ──
+
+/**
+ * categories.mjs 와 admin/config.yml 이 어긋나면 그 분류의 글이 갤러리에서 조용히 사라진다.
+ * 조용한 유실 대신 빌드를 실패시킨다.
+ */
+function assertCategoriesInSync() {
+  const cfgPath = join(ROOT, 'admin/config.yml');
+  if (!existsSync(cfgPath)) return;
+  const cfg = readFileSync(cfgPath, 'utf8');
+  const block = cfg.match(/name:\s*category[\s\S]*?options:\n([\s\S]*?)(?=\n {6}- label:|\n {4}- name:|$)/);
+  if (!block) {
+    console.warn('  admin/config.yml 에서 category options 를 못 찾았다 — 정합 검사 건너뜀');
+    return;
+  }
+  const inConfig = [...block[1].matchAll(/value:\s*([A-Za-z0-9-]+)/g)].map((m) => m[1]);
+  const inCode = ALL_CATEGORIES.map((c) => c.slug);
+  const onlyCode = inCode.filter((v) => !inConfig.includes(v));
+  const onlyCfg = inConfig.filter((v) => !inCode.includes(v));
+  if (onlyCode.length || onlyCfg.length) {
+    throw new Error(
+      '카테고리 불일치 — categories.mjs 와 admin/config.yml 을 맞춰라\n' +
+        `  코드에만: ${onlyCode.join(', ') || '없음'}\n  설정에만: ${onlyCfg.join(', ') || '없음'}`
+    );
+  }
+}
 
 // ── 글 읽기 ──
 
@@ -200,8 +250,11 @@ function loadPosts() {
     })
     .filter((p) => {
       if (!isKnownCategory(p.category)) {
-        console.warn(`  건너뜀 — 카테고리 '${p.category}' 는 categories.mjs 에 없다: ${p.id}`);
-        return false;
+        // 조용히 빠지면 글이 사라진 걸 아무도 모른다. 빌드를 세운다
+        throw new Error(
+          `글 '${p.id}' 의 분류 '${p.category}' 가 categories.mjs 에 없다. ` +
+            `허용값: ${ALL_CATEGORIES.map((c) => c.slug).join(', ')}`
+        );
       }
       return true;
     })
@@ -363,10 +416,15 @@ const CAP_READY_RE = /(<span\s+class="cap-ready"\s*>)([\s\S]*?)(<\/span>)/;
 const CAP_DEFAULT = { product: '시공사례 보기 →', more: '전체 보기 →' };
 
 function injectTiles(html, countBySlug, total) {
+  const flag = total > 0 ? 'true' : 'false';
   let out = html.replace(
-    /(<body[^>]*\sdata-blog-ready=")[^"]*(")/,
-    (_, open, close) => `${open}${total > 0 ? 'true' : 'false'}${close}`
+    /(<body[^>]*\sdata-gallery-ready=")[^"]*(")/,
+    (_, open, close) => `${open}${flag}${close}`
   );
+  // 타일과 똑같이 검증한다 — replace 는 정규식이 안 맞아도 조용히 원본을 돌려준다
+  if (!new RegExp(`<body[^>]*\\sdata-gallery-ready="${flag}"`).test(out)) {
+    throw new Error(`data-gallery-ready="${flag}" 주입 실패 — <body> 태그 형태가 바뀐 것 같다`);
+  }
 
   const targets = [
     ...PRODUCT_CATEGORIES.map((c) => ({ slot: c.slot, href: `/gallery/${c.slug}/`, n: countBySlug[c.slug] || 0 })),
@@ -409,7 +467,8 @@ function injectTiles(html, countBySlug, total) {
 const tool = detectResizer();
 console.log(tool ? `이미지 축소: ${tool}` : '이미지 축소 도구 없음 — 원본을 그대로 쓴다');
 
-const { thumbs, shrunk } = prepareImages(tool);
+assertCategoriesInSync();
+const { thumbs, shrunk, pruned } = prepareImages(tool);
 const posts = loadPosts();
 const countBySlug = Object.fromEntries(
   ALL_CATEGORIES.map((c) => [c.slug, posts.filter((p) => p.category === c.slug).length])
@@ -496,7 +555,7 @@ if (before !== after) {
 }
 
 console.log(
-  `글 ${posts.length}건 · 원본 축소 ${shrunk}장 · 썸네일 ${thumbs}장 · 페이지 ${1 + ALL_CATEGORIES.length + posts.length}개 · 변경 ${changed}건${
+  `글 ${posts.length}건 · 원본 축소 ${shrunk}장 · 썸네일 ${thumbs}장(정리 ${pruned}) · 페이지 ${1 + ALL_CATEGORIES.length + posts.length}개 · 변경 ${changed}건${
     DRY ? ' (--dry, 저장 안 함)' : ''
   }`
 );

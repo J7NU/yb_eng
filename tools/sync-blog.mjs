@@ -8,7 +8,7 @@
  *
  * 동작:
  *   1. RSS 를 읽어 item 을 뽑는다.
- *   2. 타일 9칸의 제품군 키워드로 글을 배정한다 (한 글은 한 칸에만).
+ *   2. 타일 8칸 중 제품 7칸에 제품군 키워드로 글을 배정한다 (한 글은 한 칸에만, 8번 더보기 제외).
  *   3. index.html 을 정규화(이전 주입 제거)한 뒤 새 상태를 다시 주입한다 → 몇 번 돌려도 결과 동일.
  *   4. 글이 1건이라도 있으면 body[data-blog-ready] 를 true 로 올려 잠금을 푼다.
  *
@@ -40,10 +40,12 @@ const SLOT_KEYWORDS = {
   4: ['헤더', '분배기'],
   5: ['경유', '유류탱크', '기름탱크', '저유조'],
   6: ['물탱크', '판넬탱크', '패널탱크'],
-  7: ['팽창탱크', '압력용기', '밀폐형'],
+  // '압력용기' 는 넣지 않는다 — 온수가열탱크·열교환기도 압력용기 검사품이라 그 글을 채간다
+  7: ['팽창탱크', '밀폐형'],
 };
-// 8번 칸은 "더보기"라 글을 붙이지 않는다
-const TILE_COUNT = 8;
+// 8번 칸은 "더보기"라 글도 안 붙고 스크립트가 아예 손대지 않는다.
+// (문구·링크 주인이 달라서 건드리면 사람이 쓴 카피를 덮어쓴다)
+const TILE_COUNT = 7;
 const SLOT_ORDER = [4, 5, 3, 7, 2, 6, 1];
 
 const CAP_DEFAULT = '블로그에서 보기 →';
@@ -196,7 +198,7 @@ function inject(html, bySlot, hasAnyPost) {
       if (!tile.includes(esc(bySlot[slot].link))) throw new Error(`슬롯 ${slot}: 링크 주입 실패`);
       if (tile.includes(CAP_DEFAULT)) throw new Error(`슬롯 ${slot}: 글 제목 주입 실패`);
     }
-    // 글이 하나도 없으면 9칸 전부 다시 잠근다
+    // 글이 하나도 없으면 8칸 전부 다시 잠근다
     if (!hasAnyPost) {
       tile = tile.replace(
         /(<a\s+class="tile"[^>]*?)(\s*>)/,

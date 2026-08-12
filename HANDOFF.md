@@ -13,9 +13,9 @@
 
 | 파일 | 역할 |
 |---|---|
-| `index.html` | 사이트 전체 (CSS·JS 인라인). 상단바 / 히어로 / 납품실적 9칸 타일 / 찾아오시는 길·문의폼 |
+| `index.html` | 사이트 전체 (CSS·JS 인라인). 상단바 / 히어로 / 납품실적 8칸 타일 / 찾아오시는 길·문의폼 |
 | `404.html` · `privacy.html` | 없는 페이지 · 개인정보처리방침 |
-| `tools/sync-blog.mjs` | 네이버 블로그 RSS → 9칸 타일 자동 주입 (아래 참조) |
+| `tools/sync-blog.mjs` | 네이버 블로그 RSS → 8칸 타일 자동 주입 (아래 참조) |
 | `.github/workflows/blog-sync.yml` | 위 스크립트를 6시간마다 실행 |
 | `wrangler.jsonc` · `_headers` · `_redirects` · `.assetsignore` | Cloudflare Workers 정적 배포 설정 |
 | `sitemap.xml` · `robots.txt` | 색인용. **본문을 실질적으로 고치면 `sitemap.xml` 의 `lastmod` 를 같이 올린다** |
@@ -33,7 +33,7 @@
 
 - `rss.blog.naver.com` 은 CORS 를 안 열어줘 브라우저에서 못 읽는다 → **빌드 시점에 `index.html` 자체를 고친다.**
   글 제목이 정적 HTML에 박히므로 검색엔진이 시공 글을 읽는다.
-- 글이 0건이면 9칸은 "시공사진 준비 중" 잠금(`<body data-blog-ready="false">`). 글이 생기면 자동 해제된다 — **손댈 필요 없다.**
+- 글이 0건이면 8칸은 "시공사진 준비 중" 잠금(`<body data-blog-ready="false">`). 글이 생기면 자동 해제된다 — **손댈 필요 없다.**
 - 피드가 빈 응답을 줘도 이미 해제된 사이트를 되잠그지 않는다(가드). 진짜로 글을 다 내렸으면 `ALLOW_RELOCK=1` 로 실행.
 - 타일을 손으로 고칠 땐 `data-blog-slot` 속성과 `cap-ready`/`cap-soon` 구조를 유지할 것. 스크립트가 그걸로 칸을 찾는다.
 - 제품군 배정 키워드는 `SLOT_KEYWORDS`, 매칭 순서는 `SLOT_ORDER`(좁은 말 먼저).

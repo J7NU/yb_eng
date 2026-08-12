@@ -28,10 +28,10 @@
   <meta property="og:title" content="(주)영보이엔지 — 탱크·열교환기 전문 제조기업">
   <meta property="og:description" content="1981년 창업. 스테인리스 온수저장·가열탱크, 열교환기, 헤더, 경유저장탱크, 스테인리스 물탱크 전문 제조. 용량·형상 주문 제작, 현장 조립 시공.">
   <meta property="og:url" content="https://youngboeng.co.kr/">
-  <meta property="og:image" content="https://youngboeng.co.kr/images/og-cover.png">
+  <meta property="og:image" content="https://youngboeng.co.kr/images/og-cover-2026.png">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
-  <meta property="og:image:alt" content="(주)영보이엔지 — 산업 현장의 압력을 45년째 책임집니다. 스테인리스 판넬탱크·온수저장탱크·열교환기·밀폐형 팽창탱크">
+  <meta property="og:image:alt" content="(주)영보이엔지 — 산업 현장의 압력을 45년째 책임집니다. 온수저장·가열탱크·열교환기·헤더·스테인리스 물탱크">
   <meta property="og:locale" content="ko_KR">
   <meta name="twitter:card" content="summary_large_image">
 
@@ -44,7 +44,7 @@
     "name": "(주)영보이엔지",
     "alternateName": ["영보종합탱크", "YOUNGBO ENGINEERING CO., LTD.", "YOUNGBO ENG."],
     "url": "https://youngboeng.co.kr/",
-    "image": "https://youngboeng.co.kr/images/og-cover.png",
+    "image": "https://youngboeng.co.kr/images/og-cover-2026.png",
     "sameAs": [
       "https://blog.naver.com/ybtank1978"
     ],
@@ -349,7 +349,7 @@
       color: var(--gray-600);
     }
 
-    /* ── 작업 그리드 (9칸 전부 네이비 타일) ── */
+    /* ── 작업 그리드 (8칸 = 4열 × 2줄, 마지막은 더보기) ── */
     .grid-section {
       padding: 8px var(--pad-x) 0;
     }
@@ -1130,7 +1130,7 @@
         font-size: 14px;
       }
 
-      /* 그리드: 3열 유지, 타일·글자 확대 */
+      /* 그리드: 4열 유지, 타일·글자 확대 */
       .grid-section {
         padding: 8px 40px 0;
       }
@@ -1250,7 +1250,7 @@
 </head>
 
 <!-- 블로그 공개 스위치 — 글이 올라가면 data-blog-ready 를 "true" 로 바꾸면
-     타일 9칸·히어로 버튼·배너·상단바·하단바 링크가 전부 한꺼번에 살아난다. -->
+     타일 8칸·히어로 버튼·배너·상단바·하단바 링크가 전부 한꺼번에 살아난다. -->
 
 <body data-blog-ready="false">
 
@@ -1303,15 +1303,16 @@
       </div>
     </section>
 
-    <!-- 작업 그리드 (9칸 전부 네이비 타일 — 실사진 0장) -->
-    <!-- 아래 9칸은 tools/sync-blog.mjs 가 6시간마다 다시 쓴다 (썸네일 img·글 제목·href·잠금 속성).
-         손으로 고칠 땐 data-blog-slot 속성과 cap-ready/cap-soon 구조를 유지할 것 — 스크립트가 그걸로 칸을 찾는다 -->
+    <!-- 작업 그리드 (8칸 = 4열 × 2줄. 마지막 칸은 더보기) -->
+    <!-- 아래 8칸은 tools/sync-blog.mjs 가 6시간마다 다시 쓴다 (썸네일 img·글 제목·href·잠금 속성).
+         손으로 고칠 땐 data-blog-slot 속성과 cap-ready/cap-soon 구조를 유지할 것 — 스크립트가 그걸로 칸을 찾는다.
+         8번 칸은 "더보기"라 글이 붙지 않는다 -->
     <section class="grid-section">
       <div class="grid-heading">
         <h2>납품 실적</h2>
         <p>칸을 누르면 블로그의 시공사진으로 이동합니다</p>
       </div>
-      <!-- 아래 9칸 전부 동일한 블로그 주소로 연결됩니다 (data-blog-ready="false" 동안은 클릭 비활성) -->
+      <!-- 잠금(data-blog-ready="false") 동안은 8칸 전부 클릭 비활성 -->
       <!-- 잠금 해제(data-blog-ready="true" + 타일의 aria-disabled·tabindex 제거)는 이제 sync-blog.mjs 가 자동으로 한다.
            블로그에 글이 올라오면 다음 동기화에서 풀린다 — 손으로 고칠 일 없음 -->
       <div class="work-grid">
@@ -1351,17 +1352,17 @@
           <span class="tile-body"><span class="tile-title">스테인리스<br>물탱크</span><span class="tile-spec">현장 조립 판넬탱크<br>0.5~2,000톤</span><span class="tile-cap"><span
                 class="cap-ready">블로그에서 보기 →</span><span class="cap-soon">시공사진 준비 중</span></span></span>
         </a>
-        <a class="tile" data-blog-slot="7" style="background:var(--navy-2);" href="https://blog.naver.com/ybtank1978"
+        <a class="tile" data-blog-slot="7" style="background:var(--navy);" href="https://blog.naver.com/ybtank1978"
           target="_blank" rel="noopener noreferrer" aria-disabled="true" tabindex="-1">
           <span class="tile-media" aria-hidden="true"></span>
           <span class="tile-body"><span class="tile-title">밀폐형<br>압력용기</span><span class="tile-spec">산업안전 검사품<br>200~10,000ℓ</span><span class="tile-cap"><span
                 class="cap-ready">블로그에서 보기 →</span><span class="cap-soon">시공사진 준비 중</span></span></span>
         </a>
-        <a class="tile" data-blog-slot="8" style="background:var(--navy-4);" href="https://blog.naver.com/ybtank1978"
+        <a class="tile" data-blog-slot="8" style="background:var(--navy-3);" href="https://blog.naver.com/ybtank1978"
           target="_blank" rel="noopener noreferrer" aria-disabled="true" tabindex="-1">
           <span class="tile-media" aria-hidden="true"></span>
-          <span class="tile-body"><span class="tile-title">더보기</span><span class="tile-spec">납품실적 전체<br>보기</span><span class="tile-cap"><span
-                class="cap-ready">블로그에서 보기 →</span><span class="cap-soon">시공사진 준비 중</span></span></span>
+          <span class="tile-body"><span class="tile-title">더보기</span><span class="tile-spec">지금까지 납품한<br>현장 모두 보기</span><span class="tile-cap"><span
+                class="cap-ready">전체 보기 →</span><span class="cap-soon">준비 중</span></span></span>
         </a>
       </div>
     </section>

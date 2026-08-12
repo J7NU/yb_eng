@@ -396,7 +396,7 @@
       background-position: center;
     }
 
-    /* 블로그 글 썸네일 (tools/sync-blog.mjs 가 주입). 네이버 CDN 이 죽어도 네이비 타일이 그대로 남는다.
+    /* (미사용) 예전 블로그 RSS 썸네일용. 갤러리 전환 후 주입하는 코드가 없다.
        사진 위에 글자가 얹히므로 불투명도를 낮게 잡는다 — 글씨가 먼저 읽혀야 한다 */
     .tile-thumb {
       position: absolute;
@@ -405,12 +405,6 @@
       height: 100%;
       object-fit: cover;
       opacity: .28;
-    }
-
-    /* 블로그 글이 붙은 칸은 제품 스펙 줄을 감춘다 (제품명 + 스펙 + 글 제목 3단은 모바일에서 넘친다).
-       잠금 상태에서는 글 제목이 안 보이므로 스펙 줄을 그대로 남긴다 */
-    body[data-blog-ready="true"] .tile[data-has-post] .tile-spec {
-      display: none;
     }
 
     .tile::after {
@@ -461,17 +455,6 @@
       font-weight: 500;
     }
 
-    /* 글 제목은 HTML 에 전문이 남고(색인용) 화면에서만 2줄로 자른다.
-       잠금 상태에서 튀어나오지 않도록 body[data-blog-ready="true"] 아래로 묶는다 */
-    body[data-blog-ready="true"] .tile[data-has-post] .cap-ready {
-      display: -webkit-box;
-      -webkit-line-clamp: 2;
-      line-clamp: 2;
-      -webkit-box-orient: vertical;
-      overflow: hidden;
-      text-align: center;
-    }
-
     /* 블로그 잠금(data-blog-ready) 상태 — 기본값(false)이 잠금, [data-blog-ready="true"] 가 해제 오버라이드 */
     .cap-ready {
       display: none;
@@ -499,6 +482,14 @@
       pointer-events: auto;
       cursor: pointer;
       opacity: 1;
+    }
+
+    /* 해제 상태여도 아직 글이 없는 칸은 잠근 채로 둔다.
+       aria-disabled 는 스크린리더용 표시일 뿐 <a href> 의 클릭을 막지 못한다 */
+    body[data-blog-ready="true"] .tile[aria-disabled="true"] {
+      pointer-events: none;
+      cursor: default;
+      opacity: .94;
     }
 
     body[data-blog-ready="true"] .tile:active {
@@ -1304,62 +1295,62 @@
     </section>
 
     <!-- 작업 그리드 (8칸 = 4열 × 2줄. 마지막 칸은 더보기) -->
-    <!-- 아래 8칸은 tools/sync-blog.mjs 가 6시간마다 다시 쓴다 (썸네일 img·글 제목·href·잠금 속성).
-         손으로 고칠 땐 data-blog-slot 속성과 cap-ready/cap-soon 구조를 유지할 것 — 스크립트가 그걸로 칸을 찾는다.
-         8번 칸은 "더보기"라 글이 붙지 않는다 -->
+    <!-- 아래 8칸의 링크·잠금 상태는 tools/build-gallery.mjs 가 쓴다 (/admin 에 글이 올라오면 자동).
+         손으로 고칠 땐 data-blog-slot 속성과 cap-ready/cap-soon 구조를 유지할 것 — 빌드가 그걸로 칸을 찾는다.
+         1~7번은 품목 갤러리로, 8번(더보기)은 갤러리 전체로 연결된다 -->
     <section class="grid-section">
       <div class="grid-heading">
         <h2>납품 실적</h2>
-        <p>칸을 누르면 블로그의 시공사진으로 이동합니다</p>
+        <p>칸을 누르면 해당 품목의 시공사례를 볼 수 있습니다</p>
       </div>
       <!-- 잠금(data-blog-ready="false") 동안은 8칸 전부 클릭 비활성 -->
-      <!-- 잠금 해제(data-blog-ready="true" + 타일의 aria-disabled·tabindex 제거)는 이제 sync-blog.mjs 가 자동으로 한다.
-           블로그에 글이 올라오면 다음 동기화에서 풀린다 — 손으로 고칠 일 없음 -->
+      <!-- 잠금 해제(data-blog-ready="true" + 타일의 aria-disabled·tabindex 제거)는 갤러리 빌드가 자동으로 한다.
+           /admin 에서 시공사례를 저장하면 다음 빌드에서 풀린다 — 손으로 고칠 일 없음 -->
       <div class="work-grid">
-        <a class="tile" data-blog-slot="1" style="background:var(--navy);" href="https://blog.naver.com/ybtank1978"
-          target="_blank" rel="noopener noreferrer" aria-disabled="true" tabindex="-1">
+        <a class="tile" data-blog-slot="1" style="background:var(--navy);" href="/gallery/hot-water-storage/" aria-disabled="true" tabindex="-1"
+         >
           <span class="tile-media" aria-hidden="true"></span>
           <span class="tile-body"><span class="tile-title">온수<br>저장탱크</span><span class="tile-spec">200~20,000ℓ<br>STS304 · 316L</span><span class="tile-cap"><span
-                class="cap-ready">블로그에서 보기 →</span><span class="cap-soon">시공사진 준비 중</span></span></span>
+                class="cap-ready">시공사례 보기 →</span><span class="cap-soon">시공사진 준비 중</span></span></span>
         </a>
-        <a class="tile" data-blog-slot="2" style="background:var(--navy-2);" href="https://blog.naver.com/ybtank1978"
-          target="_blank" rel="noopener noreferrer" aria-disabled="true" tabindex="-1">
+        <a class="tile" data-blog-slot="2" style="background:var(--navy-2);" href="/gallery/hot-water-heater/" aria-disabled="true" tabindex="-1"
+         >
           <span class="tile-media" aria-hidden="true"></span>
           <span class="tile-body"><span class="tile-title">온수<br>가열탱크</span><span class="tile-spec">일체형·분리형 (OBS)<br>급탕 800~30,000ℓ/h</span><span class="tile-cap"><span
-                class="cap-ready">블로그에서 보기 →</span><span class="cap-soon">시공사진 준비 중</span></span></span>
+                class="cap-ready">시공사례 보기 →</span><span class="cap-soon">시공사진 준비 중</span></span></span>
         </a>
-        <a class="tile" data-blog-slot="3" style="background:var(--navy-3);" href="https://blog.naver.com/ybtank1978"
-          target="_blank" rel="noopener noreferrer" aria-disabled="true" tabindex="-1">
+        <a class="tile" data-blog-slot="3" style="background:var(--navy-3);" href="/gallery/heat-exchanger/" aria-disabled="true" tabindex="-1"
+         >
           <span class="tile-media" aria-hidden="true"></span>
           <span class="tile-body"><span class="tile-title">열교환기</span><span class="tile-spec">스파이럴 튜브형<br>10만~200만 kcal/h</span><span class="tile-cap"><span
-                class="cap-ready">블로그에서 보기 →</span><span class="cap-soon">시공사진 준비 중</span></span></span>
+                class="cap-ready">시공사례 보기 →</span><span class="cap-soon">시공사진 준비 중</span></span></span>
         </a>
-        <a class="tile" data-blog-slot="4" style="background:var(--navy-4);" href="https://blog.naver.com/ybtank1978"
-          target="_blank" rel="noopener noreferrer" aria-disabled="true" tabindex="-1">
+        <a class="tile" data-blog-slot="4" style="background:var(--navy-4);" href="/gallery/header/" aria-disabled="true" tabindex="-1"
+         >
           <span class="tile-media" aria-hidden="true"></span>
           <span class="tile-body"><span class="tile-title">헤더</span><span class="tile-spec">스팀·급수·난방 분배<br>현장 규격 제작</span><span class="tile-cap"><span
-                class="cap-ready">블로그에서 보기 →</span><span class="cap-soon">시공사진 준비 중</span></span></span>
+                class="cap-ready">시공사례 보기 →</span><span class="cap-soon">시공사진 준비 중</span></span></span>
         </a>
-        <a class="tile" data-blog-slot="5" style="background:var(--navy-5);" href="https://blog.naver.com/ybtank1978"
-          target="_blank" rel="noopener noreferrer" aria-disabled="true" tabindex="-1">
+        <a class="tile" data-blog-slot="5" style="background:var(--navy-5);" href="/gallery/diesel-tank/" aria-disabled="true" tabindex="-1"
+         >
           <span class="tile-media" aria-hidden="true"></span>
           <span class="tile-body"><span class="tile-title">경유<br>저장탱크</span><span class="tile-spec">옥외·지하 매설형<br>최대 30,000ℓ</span><span class="tile-cap"><span
-                class="cap-ready">블로그에서 보기 →</span><span class="cap-soon">시공사진 준비 중</span></span></span>
+                class="cap-ready">시공사례 보기 →</span><span class="cap-soon">시공사진 준비 중</span></span></span>
         </a>
-        <a class="tile" data-blog-slot="6" style="background:var(--navy-6);" href="https://blog.naver.com/ybtank1978"
-          target="_blank" rel="noopener noreferrer" aria-disabled="true" tabindex="-1">
+        <a class="tile" data-blog-slot="6" style="background:var(--navy-6);" href="/gallery/sts-water-tank/" aria-disabled="true" tabindex="-1"
+         >
           <span class="tile-media" aria-hidden="true"></span>
           <span class="tile-body"><span class="tile-title">스테인리스<br>물탱크</span><span class="tile-spec">현장 조립 판넬탱크<br>0.5~2,000톤</span><span class="tile-cap"><span
-                class="cap-ready">블로그에서 보기 →</span><span class="cap-soon">시공사진 준비 중</span></span></span>
+                class="cap-ready">시공사례 보기 →</span><span class="cap-soon">시공사진 준비 중</span></span></span>
         </a>
-        <a class="tile" data-blog-slot="7" style="background:var(--navy);" href="https://blog.naver.com/ybtank1978"
-          target="_blank" rel="noopener noreferrer" aria-disabled="true" tabindex="-1">
+        <a class="tile" data-blog-slot="7" style="background:var(--navy);" href="/gallery/expansion-vessel/" aria-disabled="true" tabindex="-1"
+         >
           <span class="tile-media" aria-hidden="true"></span>
           <span class="tile-body"><span class="tile-title">밀폐형<br>압력용기</span><span class="tile-spec">산업안전 검사품<br>200~10,000ℓ</span><span class="tile-cap"><span
-                class="cap-ready">블로그에서 보기 →</span><span class="cap-soon">시공사진 준비 중</span></span></span>
+                class="cap-ready">시공사례 보기 →</span><span class="cap-soon">시공사진 준비 중</span></span></span>
         </a>
-        <a class="tile" data-blog-slot="8" style="background:var(--navy-3);" href="https://blog.naver.com/ybtank1978"
-          target="_blank" rel="noopener noreferrer" aria-disabled="true" tabindex="-1">
+        <a class="tile" data-blog-slot="8" style="background:var(--navy-3);" href="/gallery/" aria-disabled="true" tabindex="-1"
+         >
           <span class="tile-media" aria-hidden="true"></span>
           <span class="tile-body"><span class="tile-title">더보기</span><span class="tile-spec">지금까지 납품한<br>현장 모두 보기</span><span class="tile-cap"><span
                 class="cap-ready">전체 보기 →</span><span class="cap-soon">준비 중</span></span></span>

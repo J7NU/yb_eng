@@ -1,0 +1,61 @@
+name: 갤러리 빌드
+
+# /admin 에서 글을 저장하면 CMS 가 content/posts 와 images/posts 에 커밋한다.
+# 그 커밋을 받아 갤러리 페이지를 다시 만들고 홈 8칸 타일 링크·잠금 상태를 갱신한다.
+#
+# 루프가 안 도는 이유: CMS 커밋은 진우의 OAuth 토큰이라 이 워크플로를 트리거하지만,
+# 이 워크플로가 GITHUB_TOKEN 으로 만든 커밋은 다시 워크플로를 트리거하지 않는다 (GitHub 기본 동작).
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'content/**'
+      - 'images/posts/**'
+      - 'tools/build-gallery.mjs'
+      - 'tools/categories.mjs'
+      - '.github/workflows/gallery.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: gallery-build
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          # shallow 로 받으면 아래 pull --rebase 가 merge base 를 못 찾는다
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: 이미지 도구 확인
+        run: |
+          # 있으면 축소하고 없으면 원본을 쓴다 — 빌드는 어느 쪽이든 성립한다
+          which magick || which convert || which ffmpeg || echo "이미지 축소 도구 없음 (원본 사용)"
+
+      - name: 갤러리 생성
+        run: node tools/build-gallery.mjs
+
+      - name: 변경분 커밋
+        run: |
+          if [ -z "$(git status --porcelain)" ]; then
+            echo "변경 없음 — 커밋 생략"
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add gallery images/posts index.html sitemap.xml
+          git commit -m 'chore(gallery): 시공사례 반영 (자동)'
+          # 체크아웃과 푸시 사이에 사람이 main 을 밀면 non-fast-forward 로 죽는다
+          git pull --rebase origin "${GITHUB_REF_NAME}"
+          git push

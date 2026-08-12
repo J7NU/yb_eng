@@ -9,6 +9,15 @@ CLAUDE.md
 HANDOFF.md
 install.cmd
 tools/
+# 글 원본(md). 사이트가 서빙하는 건 빌드가 만든 gallery/*.html 뿐이다
+content/
+# 폴더 설명서 — 내부 문서다
+**/README.md
+
+# ⚠️ /admin 은 sveltia-cms-auth Worker 주소를 admin/config.yml 의 base_url 에 넣기 전까지 공개 보류.
+# 자리표시자 도메인이 공개되면 그 주소를 남이 선점해 로그인 흐름을 가로챌 수 있다.
+# Worker 배포 + base_url 교체가 끝나면 아래 한 줄을 지운다.
+admin/
 .devcontainer/
 .gitignore
 .worktrees/

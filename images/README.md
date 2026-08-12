@@ -15,10 +15,9 @@
 
 ## 새 이미지를 넣기 전에
 
-- **시공사진은 여기 넣지 않는다.** 현장 사진은 네이버 블로그(`blog.naver.com/ybtank1978`)에 올리고,
-  `tools/sync-blog.mjs` 가 6시간마다 RSS를 읽어 납품실적 8칸 타일에 썸네일·제목을 자동으로 꽂는다.
-- 블로그 썸네일은 네이버 CDN 에서 직접 불러온다(`referrerpolicy="no-referrer"` 필수 — Referer 가 붙으면 403).
-  즉 이 폴더에 사진을 복사할 필요가 없다.
+- **시공사진은 이 폴더(`images/`) 말고 `images/posts/` 로 간다.** `/admin` 에서 올리면 CMS 가 거기에 넣고,
+  빌드(`tools/build-gallery.mjs`)가 썸네일(`images/posts/thumb/`)을 만든다. 손으로 복사하지 않는다.
+- 여기 남는 건 사이트 뼈대에 쓰는 로고·파비콘·공유 카드 4개뿐이다.
 - 로고 원본(ai/psd)·카탈로그 PDF 같은 원본 파일은 이 레포가 아니라 jinu-co `projects/yb_eng/` 에 둔다.
 
 ## 지운 자산을 되살리려면

@@ -1,12 +1,16 @@
 User-agent: *
+# 글쓰기 화면 — 색인 대상 아님 (로그인해야 아무것도 할 수 있다)
+Disallow: /admin
 Allow: /
 
-# 네이버
+# 네이버 — robots 그룹은 배타적이라 이 그룹에도 Disallow 를 따로 써야 한다
 User-agent: Yeti
+Disallow: /admin
 Allow: /
 
 # 다음
 User-agent: Daum
+Disallow: /admin
 Allow: /
 
 Sitemap: https://youngboeng.co.kr/sitemap.xml

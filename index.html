@@ -533,9 +533,10 @@
       border-bottom-color: rgba(31, 46, 102, .22);
     }
 
+    /* 배너가 있던 자리가 비었으므로 아래 여백을 배너가 주던 만큼 돌려준다.
+       구분선은 바로 아래 .contact-section 의 위 테두리 하나로 충분하다 (2겹으로 보였다) */
     .grid-section {
-      border-bottom: 1px solid rgba(31, 46, 102, .14);
-      padding-bottom: 8px;
+      padding-bottom: 30px;
     }
 
     .contact-section {
@@ -1127,7 +1128,7 @@
 
       /* 그리드: 4열 유지, 타일·글자 확대 */
       .grid-section {
-        padding: 8px 40px 0;
+        padding: 8px 40px 44px;
       }
 
       .grid-heading {
@@ -1263,7 +1264,7 @@
 </head>
 
 <!-- 갤러리 공개 스위치 — /admin 에 시공사례가 올라가면 빌드가 data-gallery-ready 를 "true" 로 바꾼다.
-     타일 8칸·히어로 버튼·배너·상단바·하단바 링크가 전부 한꺼번에 살아난다. -->
+     타일 8칸·히어로 버튼·상단바·하단바 링크가 전부 한꺼번에 살아난다. -->
 
 <body data-gallery-ready="false">
 

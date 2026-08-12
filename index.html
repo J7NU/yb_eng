@@ -349,6 +349,39 @@
       color: var(--gray-600);
     }
 
+    /* ── 자재 보유 띠 (히어로 ↔ 납품실적 사이)
+       사장님 요구: "자재를 이만큼 갖추고 일한다는 걸 보여줘야 회사구나 한다".
+       공장·자재 사진이 생기면 이 자리가 그대로 사진 띠로 승격된다 ── */
+    .stock-band {
+      background: #fff;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      padding: 22px var(--pad-x);
+    }
+
+    .stock-inner {
+      max-width: var(--container);
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .stock-head {
+      margin: 0;
+      font-size: 17px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: var(--navy);
+      word-break: keep-all;
+    }
+
+    .stock-sub {
+      margin: 7px 0 0;
+      font-size: 14px;
+      line-height: 1.55;
+      color: var(--gray-600);
+      word-break: keep-all;
+    }
+
     /* ── 작업 그리드 (8칸 = 4열 × 2줄, 마지막은 더보기) ── */
     .grid-section {
       padding: 8px var(--pad-x) 0;
@@ -1002,6 +1035,18 @@
         font-size: 12px;
       }
 
+      .stock-band {
+        padding: 28px var(--pad-x);
+      }
+
+      .stock-head {
+        font-size: 20px;
+      }
+
+      .stock-sub {
+        font-size: 15px;
+      }
+
       .grid-heading h2 {
         font-size: 26px;
       }
@@ -1147,6 +1192,19 @@
         margin-top: 9px;
       }
 
+      .stock-band {
+        padding: 34px var(--pad-x);
+      }
+
+      .stock-head {
+        font-size: 23px;
+      }
+
+      .stock-sub {
+        font-size: 16px;
+        margin-top: 9px;
+      }
+
       .tile-cap {
         font-size: 13.5px;
         margin-top: 12px;
@@ -1288,6 +1346,14 @@
           <div class="hero-card"><span class="v">ISO 9001</span><span class="l">품질경영시스템 인증</span></div>
           <div class="hero-card"><span class="v">CODE 047780</span><span class="l">에너지관리공단 압력용기 검사</span></div>
         </div>
+      </div>
+    </section>
+
+    <!-- 자재 보유 띠 -->
+    <section class="stock-band">
+      <div class="stock-inner">
+        <p class="stock-head">모든 자재를 상시 보유합니다</p>
+        <p class="stock-sub">주문 즉시 제작에 들어가고, 소형 탱크부터 2,000톤급 현장 조립까지 대응합니다.</p>
       </div>
     </section>
 

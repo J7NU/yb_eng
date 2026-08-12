@@ -1,175 +1,59 @@
-# 영보이엔지 웹사이트 — 작업 인수인계 문서
+# 영보이엔지 웹사이트 — 인수인계
 
-**작성일:** 2026-04-20  
-**현재 브랜치:** main  
-**마지막 커밋:** `57e9676` — devex P1 완료  
-**저장소:** https://github.com/J7NU/yb_eng
+**갱신:** 2026-08-12 · **라이브:** https://youngboeng.co.kr · **레포:** https://github.com/J7NU/yb_eng (public)
 
----
-
-## 완료된 작업 이력
-
-### 1. 코드 리뷰 수정 (`9b60523`)
-- 이메일 평문(`ybeng@hanmail.net`) SITE 객체에서 제거 (보안)
-- 폼 6개 필드에 `for`/`id` 접근성 속성 추가
-- 팩스 번호 `<a href="tel:...">` → `<span>` 으로 변경 (팩스에 tel: 링크 부적절)
-- `.hero-accent-line`의 중복 `left: 0` CSS 속성 제거
-
-### 2. QA 수정 (`0cc8063`)
-- 카카오 SDK undefined 충돌 방지: `typeof kakao !== 'undefined'` 가드 추가
-- Reveal 애니메이션 점진적 향상: `.reveal { opacity: 0 }` → `.js-loaded .reveal { opacity: 0 }` (JS 미작동 시 콘텐츠 항상 표시)
-- `document.documentElement.classList.add('js-loaded')` JS 초기화 추가
-- 모달 오버레이 닫기 보강: `e.target === this || e.target.classList.contains('map-modal-overlay')`
-
-### 3. 성능 개선 (`f6d98e1`)
-- Google Fonts 비동기 로드: `<link rel="preload" ... onload="this.onload=null;this.rel='stylesheet'">`
-- `display=swap` → `display=optional`로 변경 (CLS 방지)
-- `<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>` 추가
-- `<noscript>` 폰트 폴백 추가
-- 카카오 SDK `<script>` `<head>` → `<body>` 말미로 이동 (LCP 개선)
-
-### 4. DevEx 리뷰 P1 수정 (`57e9676`)
-- **인라인 스타일 → CSS 클래스/변수로 이동**
-  - `hero-contact-box`: inline `background-color`, `border` → CSS (`--accent-hero` 변수)
-  - `hero-trust`, `trust-badge`, `stat-label`: inline font-size → CSS
-  - `file-name`, `info-sub`, `footer-biz`: inline 스타일 → CSS 클래스
-  - `form-label-optional`: 새 유틸리티 클래스 추가
-- **JS 매직 컬러 → CSS 변수화**
-  - `#2a8c55` → `var(--color-success)`
-  - `#c0392b` → `var(--color-error)`
-  - `:root`에 `--accent-hero`, `--color-success`, `--color-error` 추가
-- **데드코드 제거**
-  - `#tech` CSS 섹션 35줄 삭제 (HTML에 해당 섹션 없음)
-  - `tech-bar` IntersectionObserver JS 11줄 삭제
+> 이전 판(2026-04-20 기준, P1~P3 작업 목록)은 지금 코드와 무관해져서 통째로 다시 썼다. 옛 내용은 git 이력에 있다.
+> 이 레포는 **코드만** 담는다. 프로젝트 진행 상황·결정 이력은 jinu-co 레포 `projects/yb_eng/`(NEXT.md·CHECKLIST.md)가 정본.
 
 ---
 
-## 남은 작업 — P2 (다음 스프린트)
+## 구조
 
-### P2-1: 전화번호 셀렉터 개선
-**파일:** `index.html` JS 섹션  
-**현재 코드 (취약):**
-```js
-// DOMContentLoaded 핸들러 안
-document.querySelectorAll('[href="tel:031-764-0248"]').forEach(el => {
-  el.href = 'tel:' + SITE.phone.replace(/-/g, '');
-});
-```
-**문제:** SITE.phone을 바꾸면 셀렉터 문자열은 바뀌지 않아 조용히 실패.  
-**수정 방법:** HTML 전화번호 링크에 `data-phone-link` attribute 추가, JS에서 `[data-phone-link]`로 셀렉.
+단일 페이지다. 빌드 툴 없음.
 
-HTML 변경:
-```html
-<!-- 현재 -->
-<a id="hero-phone-link" href="tel:031-764-0248" class="hero-phone">031-764-0248</a>
-<a id="info-phone-link" href="tel:031-764-0248" style="color:inherit; text-decoration:none;">031-764-0248</a>
+| 파일 | 역할 |
+|---|---|
+| `index.html` | 사이트 전체 (CSS·JS 인라인). 상단바 / 히어로 / 납품실적 9칸 타일 / 찾아오시는 길·문의폼 |
+| `404.html` · `privacy.html` | 없는 페이지 · 개인정보처리방침 |
+| `tools/sync-blog.mjs` | 네이버 블로그 RSS → 9칸 타일 자동 주입 (아래 참조) |
+| `.github/workflows/blog-sync.yml` | 위 스크립트를 6시간마다 실행 |
+| `wrangler.jsonc` · `_headers` · `_redirects` · `.assetsignore` | Cloudflare Workers 정적 배포 설정 |
+| `sitemap.xml` · `robots.txt` | 색인용. **본문을 실질적으로 고치면 `sitemap.xml` 의 `lastmod` 를 같이 올린다** |
+| `favicon.svg` (루트) · `images/` | 파비콘 원본 · 실제 쓰는 자산 4개 (`images/README.md` 참조) |
 
-<!-- 변경 후 -->
-<a data-phone-link href="tel:031-764-0248" class="hero-phone">031-764-0248</a>
-<a data-phone-link href="tel:031-764-0248" style="color:inherit; text-decoration:none;">031-764-0248</a>
-```
+## 배포
 
-JS 변경:
-```js
-// DOMContentLoaded 핸들러 안
-document.querySelectorAll('[data-phone-link]').forEach(el => {
-  el.href = 'tel:' + SITE.phone.replace(/-/g, '');
-  // 표시 텍스트도 SITE.phone으로 동기화 (선택)
-  el.textContent = SITE.phone;
-});
-```
+**푸시가 곧 배포다.** main 머지뿐 아니라 브랜치 푸시도 라이브에 반영되는 것을 2026-08-12에 확인했다
+(`claude/blog-rss` 브랜치 푸시분이 아펙스에 그대로 떠 있었다). 리뷰 게이트가 사실상 없으므로,
+사이트에 바로 나가면 곤란한 변경은 푸시 자체를 미룰 것. 빌드 브랜치 제한은 Cloudflare 대시보드에서만 바꿀 수 있다.
 
----
+## 블로그 연동 (사이트를 살아있게 하는 축)
 
-### P2-2: 파일 업로드 용량 제한 + Formspree 첨부 안내
-**파일:** `index.html`  
-**문제:**
-- 현재 파일 첨부 시 크기 제한 없음 — 100MB 파일도 전송 시도
-- Formspree 무료 플랜은 파일 첨부 미지원 → 첨부 시 에러 메시지만 나오고 원인 불명
+사장님이 `blog.naver.com/ybtank1978` 에 시공사진 글을 올리면 6시간 안에 타일이 따라간다.
 
-**수정 방법:**
-
-`updateFileName` 함수에 용량 검증 추가:
-```js
-function updateFileName(input) {
-  const nameEl = input.parentElement.querySelector('.file-name');
-  const hintEl = input.parentElement.parentElement.querySelector('.file-hint');
-  if (input.files && input.files[0]) {
-    const file = input.files[0];
-    const maxMB = 10;
-    if (file.size > maxMB * 1024 * 1024) {
-      nameEl.textContent = `파일 크기 초과 (최대 ${maxMB}MB)`;
-      nameEl.style.color = 'var(--color-error)';
-      input.value = '';
-      return;
-    }
-    nameEl.textContent = file.name;
-    nameEl.classList.add('has-file');
-    nameEl.style.color = '';
-  } else {
-    nameEl.textContent = '첨부파일 없음';
-    nameEl.classList.remove('has-file');
-    nameEl.style.color = '';
-  }
-}
-```
-
-`.file-hint` 텍스트 업데이트:
-```html
-<!-- 현재 -->
-<div class="file-hint">PDF, DWG, DXF, Excel, 이미지 파일 가능</div>
-
-<!-- 변경 후 -->
-<div class="file-hint">PDF, DWG, DXF, Excel, 이미지 파일 가능 · 최대 10MB</div>
-```
-
----
-
-## 남은 작업 — P3 (나중에)
-
-### P3-1: README.md 추가
-새 개발자가 받았을 때 바로 시작할 수 있는 최소 가이드.
-포함 내용:
-- 로컬 실행 방법 (`python -m http.server` 또는 VS Code Live Server)
-- 카카오 Maps API 키 교체 방법 (SITE.kakaoMapKey + `<script>` src appkey 2곳 동시 변경)
-- Formspree 엔드포인트 교체 방법 (SITE.formspreeEndpoint)
-- Cloudflare 이메일 난독화 설명
-- 이미지 교체 가이드 (placeholder → 실제 이미지)
-- GitHub Pages / Netlify 배포 방법
-
-### P3-2: 애널리틱스 설치
-**파일:** `index.html` line 11 (현재 TODO 주석 위치)  
-선택지:
-- **Google Analytics 4**: GA4 스니펫 삽입
-- **Naver Analytics**: 네이버 웹마스터도구 통계 스크립트 삽입
-
----
-
-## 환경 정보
-
-- **파일 구조:** 단일 `index.html` (CSS + JS 모두 인라인)
-- **외부 의존성:**
-  - 카카오 Maps SDK: `//dapi.kakao.com/v2/maps/sdk.js?appkey=c51341751710462b11216ff297ef1c8c`
-  - Google Fonts: Gowun Dodum, Bebas Neue
-  - Formspree: `https://formspree.io/f/mdayddod`
-  - Cloudflare Email Protection (자동 적용)
-- **빌드 툴:** 없음 (순수 HTML/CSS/JS)
-- **배포:** GitHub → (추정) Cloudflare Pages 또는 GitHub Pages
-
----
-
-## 다음 세션 시작 방법
+- `rss.blog.naver.com` 은 CORS 를 안 열어줘 브라우저에서 못 읽는다 → **빌드 시점에 `index.html` 자체를 고친다.**
+  글 제목이 정적 HTML에 박히므로 검색엔진이 시공 글을 읽는다.
+- 글이 0건이면 9칸은 "시공사진 준비 중" 잠금(`<body data-blog-ready="false">`). 글이 생기면 자동 해제된다 — **손댈 필요 없다.**
+- 피드가 빈 응답을 줘도 이미 해제된 사이트를 되잠그지 않는다(가드). 진짜로 글을 다 내렸으면 `ALLOW_RELOCK=1` 로 실행.
+- 타일을 손으로 고칠 땐 `data-blog-slot` 속성과 `cap-ready`/`cap-soon` 구조를 유지할 것. 스크립트가 그걸로 칸을 찾는다.
+- 제품군 배정 키워드는 `SLOT_KEYWORDS`, 매칭 순서는 `SLOT_ORDER`(좁은 말 먼저).
 
 ```bash
-# 저장소 클론 (이미 있으면 생략)
-git clone https://github.com/J7NU/yb_eng
-cd yb_eng
-
-# 현재 상태 확인
-git log --oneline -5
-
-# P2 작업 시작
-# 위의 P2-1, P2-2 섹션 참고
+node tools/sync-blog.mjs            # 실제 피드로 실행
+node tools/sync-blog.mjs --dry      # 저장하지 않고 결과만 출력
+RSS_URL=... node tools/sync-blog.mjs  # 다른 피드로 테스트
 ```
 
-Claude + gstack 재설치 후 이 파일을 읽고 시작하면 됩니다.
+## 외부 의존성
+
+- 카카오 Maps SDK (JS 앱키는 공개되는 값 — 도메인 제한 설정으로 방어)
+- **FormSubmit** (`formsubmit.co`, 견적 문의폼·도면 첨부 → `ybeng@hanmail.net`). Formspree 아니다 — `privacy.html` 위탁 고지도 FormSubmit 으로 적혀 있다
+- Pretendard Variable (jsDelivr CDN)
+- Cloudflare Web Analytics 비콘
+
+## 로컬에서 보기
+
+```bash
+git clone https://github.com/J7NU/yb_eng && cd yb_eng
+python3 -m http.server 8931   # http://127.0.0.1:8931
+```

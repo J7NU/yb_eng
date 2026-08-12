@@ -8,7 +8,7 @@
  *
  * 동작:
  *   1. RSS 를 읽어 item 을 뽑는다.
- *   2. 타일 9칸의 제품군 키워드로 글을 배정한다 (한 글은 한 칸에만).
+ *   2. 타일 8칸 중 제품 7칸에 제품군 키워드로 글을 배정한다 (한 글은 한 칸에만, 8번 더보기 제외).
  *   3. index.html 을 정규화(이전 주입 제거)한 뒤 새 상태를 다시 주입한다 → 몇 번 돌려도 결과 동일.
  *   4. 글이 1건이라도 있으면 body[data-blog-ready] 를 true 로 올려 잠금을 푼다.
  *
@@ -34,17 +34,19 @@ const ALLOWED_HOSTS = [/(^|\.)naver\.com$/, /(^|\.)pstatic\.net$/, /(^|\.)naver\
  * 남의 글을 채가지 않는다. 슬롯 번호 순서와 다른 이유가 이것이다.
  */
 const SLOT_KEYWORDS = {
-  1: ['팽창탱크', '팽창 탱크', '팽창수조'],
-  2: ['열교환기', '스파이럴', '스파이랄'],
-  3: ['온수가열', '온수 가열', '가열기', '급탕'],
-  4: ['온수저장', '버퍼탱크', '버퍼 탱크', '축열조'],
-  5: ['판넬탱크', '판넬 탱크', '패널탱크', '패널 탱크'],
-  6: ['SMC'],
-  7: ['압력용기'],
-  8: ['태양열', '축열탱크'],
-  9: ['저유조', '유류탱크', '경유탱크', '기름탱크'],
+  1: ['온수저장', '온수 저장', '버퍼탱크', '축열'],
+  2: ['온수가열', '온수 가열', '가열기', '급탕'],
+  3: ['열교환기', '스파이럴', '스파이랄', '코일'],
+  4: ['헤더', '분배기'],
+  5: ['경유', '유류탱크', '기름탱크', '저유조'],
+  6: ['물탱크', '판넬탱크', '패널탱크'],
+  // '압력용기' 는 넣지 않는다 — 온수가열탱크·열교환기도 압력용기 검사품이라 그 글을 채간다
+  7: ['팽창탱크', '밀폐형'],
 };
-const SLOT_ORDER = [1, 2, 5, 6, 8, 9, 7, 4, 3];
+// 8번 칸은 "더보기"라 글도 안 붙고 스크립트가 아예 손대지 않는다.
+// (문구·링크 주인이 달라서 건드리면 사람이 쓴 카피를 덮어쓴다)
+const TILE_COUNT = 7;
+const SLOT_ORDER = [4, 5, 3, 7, 2, 6, 1];
 
 const CAP_DEFAULT = '블로그에서 보기 →';
 // 제목은 HTML 에 되도록 통째로 남긴다 (검색엔진이 읽는 게 이 연동의 목적).
@@ -106,7 +108,7 @@ function parseFeed(xml) {
     .filter((p) => p.title && p.link);
 }
 
-/** 슬롯 → 글 배정. 한 글이 여러 칸에 겹치지 않도록 이미 쓴 링크는 건너뛴다 */
+/** 슬롯 → 글 배정. 한 글이 여러 칸에 겹치지 않도록 이미 쓴 링크는 건너뛴다 (8번 더보기 칸 제외) */
 function assign(posts) {
   const used = new Set();
   const bySlot = {};
@@ -186,7 +188,7 @@ function inject(html, bySlot, hasAnyPost) {
     (_, open, close) => `${open}${hasAnyPost ? 'true' : 'false'}${close}`
   );
 
-  for (let slot = 1; slot <= 9; slot += 1) {
+  for (let slot = 1; slot <= TILE_COUNT; slot += 1) {
     const re = tileRe(slot);
     const found = out.match(re);
     if (!found) throw new Error(`타일 슬롯 ${slot} 을 index.html 에서 못 찾았다`);
@@ -196,7 +198,7 @@ function inject(html, bySlot, hasAnyPost) {
       if (!tile.includes(esc(bySlot[slot].link))) throw new Error(`슬롯 ${slot}: 링크 주입 실패`);
       if (tile.includes(CAP_DEFAULT)) throw new Error(`슬롯 ${slot}: 글 제목 주입 실패`);
     }
-    // 글이 하나도 없으면 9칸 전부 다시 잠근다
+    // 글이 하나도 없으면 8칸 전부 다시 잠근다
     if (!hasAnyPost) {
       tile = tile.replace(
         /(<a\s+class="tile"[^>]*?)(\s*>)/,

@@ -1,0 +1,44 @@
+name: 블로그 RSS → 납품실적 타일 동기화
+
+# 사장님이 네이버 블로그에 시공사진 글을 올리면 사이트 타일이 자동으로 따라간다.
+# rss.blog.naver.com 은 CORS 를 안 열어줘 브라우저에서 못 읽으므로 빌드 시점에 HTML 을 고친다.
+
+on:
+  schedule:
+    - cron: '0 */6 * * *' # UTC 기준 6시간마다
+  workflow_dispatch: # 글 올린 직후 손으로 돌리고 싶을 때
+
+permissions:
+  contents: write
+
+concurrency:
+  group: blog-sync
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: RSS 읽어 index.html 갱신
+        run: node tools/sync-blog.mjs
+
+      - name: 변경분 커밋
+        run: |
+          if [ -z "$(git status --porcelain index.html)" ]; then
+            echo "변경 없음 — 커밋 생략"
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add index.html
+          git commit -m 'chore(blog): 네이버 블로그 글 반영 (자동)'
+          # 체크아웃과 푸시 사이에 사람이 main 을 밀면 non-fast-forward 로 죽는다
+          git pull --rebase origin "${GITHUB_REF_NAME}"
+          git push

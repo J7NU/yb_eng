@@ -8,8 +8,10 @@ node_modules/
 CLAUDE.md
 HANDOFF.md
 install.cmd
+tools/
 .devcontainer/
 .gitignore
+.worktrees/
 
 # Worker 설정 자체
 wrangler.jsonc

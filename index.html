@@ -407,12 +407,6 @@
       opacity: .28;
     }
 
-    /* 블로그 글이 붙은 칸은 제품 스펙 줄을 감춘다 (제품명 + 스펙 + 글 제목 3단은 모바일에서 넘친다).
-       잠금 상태에서는 글 제목이 안 보이므로 스펙 줄을 그대로 남긴다 */
-    body[data-blog-ready="true"] .tile[data-has-post] .tile-spec {
-      display: none;
-    }
-
     .tile::after {
       content: "";
       position: absolute;
@@ -461,17 +455,6 @@
       font-weight: 500;
     }
 
-    /* 글 제목은 HTML 에 전문이 남고(색인용) 화면에서만 2줄로 자른다.
-       잠금 상태에서 튀어나오지 않도록 body[data-blog-ready="true"] 아래로 묶는다 */
-    body[data-blog-ready="true"] .tile[data-has-post] .cap-ready {
-      display: -webkit-box;
-      -webkit-line-clamp: 2;
-      line-clamp: 2;
-      -webkit-box-orient: vertical;
-      overflow: hidden;
-      text-align: center;
-    }
-
     /* 블로그 잠금(data-blog-ready) 상태 — 기본값(false)이 잠금, [data-blog-ready="true"] 가 해제 오버라이드 */
     .cap-ready {
       display: none;
@@ -499,6 +482,14 @@
       pointer-events: auto;
       cursor: pointer;
       opacity: 1;
+    }
+
+    /* 해제 상태여도 아직 글이 없는 칸은 잠근 채로 둔다.
+       aria-disabled 는 스크린리더용 표시일 뿐 <a href> 의 클릭을 막지 못한다 */
+    body[data-blog-ready="true"] .tile[aria-disabled="true"] {
+      pointer-events: none;
+      cursor: default;
+      opacity: .94;
     }
 
     body[data-blog-ready="true"] .tile:active {
@@ -1320,43 +1311,43 @@
          >
           <span class="tile-media" aria-hidden="true"></span>
           <span class="tile-body"><span class="tile-title">온수<br>저장탱크</span><span class="tile-spec">200~20,000ℓ<br>STS304 · 316L</span><span class="tile-cap"><span
-                class="cap-ready">블로그에서 보기 →</span><span class="cap-soon">시공사진 준비 중</span></span></span>
+                class="cap-ready">시공사례 보기 →</span><span class="cap-soon">시공사진 준비 중</span></span></span>
         </a>
         <a class="tile" data-blog-slot="2" style="background:var(--navy-2);" href="/gallery/hot-water-heater/" aria-disabled="true" tabindex="-1"
          >
           <span class="tile-media" aria-hidden="true"></span>
           <span class="tile-body"><span class="tile-title">온수<br>가열탱크</span><span class="tile-spec">일체형·분리형 (OBS)<br>급탕 800~30,000ℓ/h</span><span class="tile-cap"><span
-                class="cap-ready">블로그에서 보기 →</span><span class="cap-soon">시공사진 준비 중</span></span></span>
+                class="cap-ready">시공사례 보기 →</span><span class="cap-soon">시공사진 준비 중</span></span></span>
         </a>
         <a class="tile" data-blog-slot="3" style="background:var(--navy-3);" href="/gallery/heat-exchanger/" aria-disabled="true" tabindex="-1"
          >
           <span class="tile-media" aria-hidden="true"></span>
           <span class="tile-body"><span class="tile-title">열교환기</span><span class="tile-spec">스파이럴 튜브형<br>10만~200만 kcal/h</span><span class="tile-cap"><span
-                class="cap-ready">시공사례 1건 →</span><span class="cap-soon">시공사진 준비 중</span></span></span>
+                class="cap-ready">시공사례 보기 →</span><span class="cap-soon">시공사진 준비 중</span></span></span>
         </a>
         <a class="tile" data-blog-slot="4" style="background:var(--navy-4);" href="/gallery/header/" aria-disabled="true" tabindex="-1"
          >
           <span class="tile-media" aria-hidden="true"></span>
           <span class="tile-body"><span class="tile-title">헤더</span><span class="tile-spec">스팀·급수·난방 분배<br>현장 규격 제작</span><span class="tile-cap"><span
-                class="cap-ready">블로그에서 보기 →</span><span class="cap-soon">시공사진 준비 중</span></span></span>
+                class="cap-ready">시공사례 보기 →</span><span class="cap-soon">시공사진 준비 중</span></span></span>
         </a>
         <a class="tile" data-blog-slot="5" style="background:var(--navy-5);" href="/gallery/diesel-tank/" aria-disabled="true" tabindex="-1"
          >
           <span class="tile-media" aria-hidden="true"></span>
           <span class="tile-body"><span class="tile-title">경유<br>저장탱크</span><span class="tile-spec">옥외·지하 매설형<br>최대 30,000ℓ</span><span class="tile-cap"><span
-                class="cap-ready">블로그에서 보기 →</span><span class="cap-soon">시공사진 준비 중</span></span></span>
+                class="cap-ready">시공사례 보기 →</span><span class="cap-soon">시공사진 준비 중</span></span></span>
         </a>
         <a class="tile" data-blog-slot="6" style="background:var(--navy-6);" href="/gallery/sts-water-tank/" aria-disabled="true" tabindex="-1"
          >
           <span class="tile-media" aria-hidden="true"></span>
           <span class="tile-body"><span class="tile-title">스테인리스<br>물탱크</span><span class="tile-spec">현장 조립 판넬탱크<br>0.5~2,000톤</span><span class="tile-cap"><span
-                class="cap-ready">블로그에서 보기 →</span><span class="cap-soon">시공사진 준비 중</span></span></span>
+                class="cap-ready">시공사례 보기 →</span><span class="cap-soon">시공사진 준비 중</span></span></span>
         </a>
         <a class="tile" data-blog-slot="7" style="background:var(--navy);" href="/gallery/expansion-vessel/" aria-disabled="true" tabindex="-1"
          >
           <span class="tile-media" aria-hidden="true"></span>
           <span class="tile-body"><span class="tile-title">밀폐형<br>압력용기</span><span class="tile-spec">산업안전 검사품<br>200~10,000ℓ</span><span class="tile-cap"><span
-                class="cap-ready">블로그에서 보기 →</span><span class="cap-soon">시공사진 준비 중</span></span></span>
+                class="cap-ready">시공사례 보기 →</span><span class="cap-soon">시공사진 준비 중</span></span></span>
         </a>
         <a class="tile" data-blog-slot="8" style="background:var(--navy-3);" href="/gallery/" aria-disabled="true" tabindex="-1"
          >

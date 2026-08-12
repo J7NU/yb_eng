@@ -18,7 +18,9 @@
  * 사용: node tools/build-gallery.mjs [--dry]
  */
 
-import { readFileSync, writeFileSync, readdirSync, mkdirSync, existsSync, statSync } from 'node:fs';
+import {
+  readFileSync, writeFileSync, readdirSync, mkdirSync, existsSync, statSync, renameSync, rmSync,
+} from 'node:fs';
 import { execFileSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 import { join, dirname, basename, extname } from 'node:path';
@@ -62,14 +64,15 @@ function parseFrontmatter(raw) {
     if (!line.trim()) continue;
     const item = line.match(/^\s*-\s+(.*)$/);
     if (item && key) {
-      (data[key] ||= []).push(unquote(item[1]));
+      if (!Array.isArray(data[key])) data[key] = [];
+      data[key].push(unquote(item[1]));
       continue;
     }
     const kv = line.match(/^([A-Za-z0-9_-]+)\s*:\s*(.*)$/);
     if (!kv) continue;
     key = kv[1];
-    const value = kv[2].trim();
-    data[key] = value === '' ? [] : unquote(value);
+    // 빈 값을 배열로 만들면 (cover: 처럼) 뒤에서 문자열 메서드가 터진다
+    data[key] = kv[2].trim() === '' ? '' : unquote(kv[2]);
   }
   return { data, body: m[2].trim() };
 }
@@ -140,19 +143,32 @@ function resize(tool, src, dest, width) {
 const IMAGE_RE = /\.(jpe?g|png|webp)$/i;
 
 function prepareImages(tool) {
-  if (!existsSync(IMG_DIR)) return { thumbs: 0 };
+  if (!existsSync(IMG_DIR)) return { thumbs: 0, shrunk: 0 };
   mkdirSync(THUMB_DIR, { recursive: true });
   let thumbs = 0;
+  let shrunk = 0;
   for (const name of readdirSync(IMG_DIR)) {
     const src = join(IMG_DIR, name);
     if (!IMAGE_RE.test(name) || !statSync(src).isFile()) continue;
+
+    // 폰 원본은 5MB 를 넘기도 한다. 레포에도 전송량에도 그대로 둘 이유가 없다
+    if (!DRY && tool && statSync(src).size > 900 * 1024) {
+      const tmp = join(IMG_DIR, `.shrink-${Date.now()}${extname(name)}`);
+      if (resize(tool, src, tmp, MAX_W)) {
+        renameSync(tmp, src);
+        shrunk += 1;
+      } else if (existsSync(tmp)) rmSync(tmp, { force: true });
+    }
+
     const thumb = join(THUMB_DIR, name);
-    if (!existsSync(thumb)) {
+    // 같은 파일명으로 사진을 교체하면 썸네일도 다시 만들어야 한다 (캐시가 1년이라 더 그렇다)
+    const stale = !existsSync(thumb) || statSync(thumb).mtimeMs < statSync(src).mtimeMs;
+    if (stale) {
       if (DRY) thumbs += 1;
       else if (resize(tool, src, thumb, THUMB_W)) thumbs += 1;
     }
   }
-  return { thumbs };
+  return { thumbs, shrunk };
 }
 
 const thumbFor = (publicPath) => {
@@ -343,6 +359,8 @@ ${FOOT}`;
 
 const TILE_RE = (slot) => new RegExp(`<a\\s+class="tile"\\s+data-blog-slot="${slot}"[\\s\\S]*?</a>`);
 const CAP_READY_RE = /(<span\s+class="cap-ready"\s*>)([\s\S]*?)(<\/span>)/;
+/** 글이 없을 때 캡션이 되돌아갈 자리. 건수 문구가 영구 잔류하는 것을 막는다 */
+const CAP_DEFAULT = { product: '시공사례 보기 →', more: '전체 보기 →' };
 
 function injectTiles(html, countBySlug, total) {
   let out = html.replace(
@@ -364,19 +382,22 @@ function injectTiles(html, countBySlug, total) {
       .replace(/\shref="[^"]*"/, () => ` href="${href}"`)
       .replace(/\s(?:aria-disabled="true"|tabindex="-1"|target="_blank"|rel="noopener noreferrer")/g, '');
 
+    const caption = slot === 8 ? CAP_DEFAULT.more : n === 0 ? CAP_DEFAULT.product : `시공사례 ${n}건 →`;
+    tile = tile.replace(CAP_READY_RE, (_, o, __, c) => `${o}${caption}${c}`);
+
     if (n === 0) {
       // 이 칸에 보여줄 게 없다 → 잠금 유지
       tile = tile.replace(
         /(<a\s+class="tile"[^>]*?)(\s*>)/,
         (_, open, close) => `${open} aria-disabled="true" tabindex="-1"${close}`
       );
-    } else if (slot !== 8) {
-      tile = tile.replace(CAP_READY_RE, (_, o, __, c) => `${o}시공사례 ${n}건 →${c}`);
     }
 
     // replace 는 안 맞아도 조용히 통과한다 → 주입됐는지 직접 확인한다
     if (!tile.includes(`href="${href}"`)) throw new Error(`슬롯 ${slot}: 링크 주입 실패`);
     if (n > 0 && tile.includes('aria-disabled')) throw new Error(`슬롯 ${slot}: 잠금 해제 실패`);
+    if (n === 0 && !tile.includes('aria-disabled')) throw new Error(`슬롯 ${slot}: 잠금 유지 실패`);
+    if (!tile.includes(`>${caption}<`)) throw new Error(`슬롯 ${slot}: 캡션 주입 실패 (기대 '${caption}')`);
 
     out = out.replace(re, () => tile);
   }
@@ -388,7 +409,7 @@ function injectTiles(html, countBySlug, total) {
 const tool = detectResizer();
 console.log(tool ? `이미지 축소: ${tool}` : '이미지 축소 도구 없음 — 원본을 그대로 쓴다');
 
-const { thumbs } = prepareImages(tool);
+const { thumbs, shrunk } = prepareImages(tool);
 const posts = loadPosts();
 const countBySlug = Object.fromEntries(
   ALL_CATEGORIES.map((c) => [c.slug, posts.filter((p) => p.category === c.slug).length])
@@ -428,12 +449,18 @@ for (const post of posts) {
 }
 
 // sitemap — 홈·개인정보 + 갤러리 전체
-const today = posts[0]?.date || new Date(statSync(INDEX_HTML).mtime).toISOString().slice(0, 10);
+// 글 날짜가 아니라 빌드 날짜다 — 옛 현장을 과거 날짜로 올렸다고 홈 lastmod 가 역행하면 안 된다
+const today = new Date().toISOString().slice(0, 10);
 const urls = [
   { loc: '/', pri: '1.0', mod: today },
   { loc: '/privacy', pri: '0.3', mod: '2026-07-31' },
   { loc: '/gallery/', pri: '0.8', mod: today },
-  ...ALL_CATEGORIES.map((c) => ({ loc: `/gallery/${c.slug}/`, pri: '0.6', mod: today })),
+  // 글 없는 카테고리는 넣지 않는다 (같은 '준비 중' 문구 12장을 색인에 밀어넣는 꼴이 된다)
+  ...ALL_CATEGORIES.filter((c) => countBySlug[c.slug] > 0).map((c) => ({
+    loc: `/gallery/${c.slug}/`,
+    pri: '0.6',
+    mod: today,
+  })),
   ...posts.map((p) => ({ loc: `/gallery/${encPath(p.id)}/`, pri: '0.7', mod: p.date || today })),
 ];
 changed += write(
@@ -449,6 +476,18 @@ changed += write(
     `\n</urlset>\n`
 ) ? 1 : 0;
 
+// 지운 글의 페이지가 200 으로 계속 살아 있으면 안 된다
+const keep = new Set([...ALL_CATEGORIES.map((c) => c.slug), ...posts.map((p) => p.id)]);
+if (existsSync(GALLERY_DIR)) {
+  for (const name of readdirSync(GALLERY_DIR)) {
+    const dir = join(GALLERY_DIR, name);
+    if (!statSync(dir).isDirectory() || keep.has(name)) continue;
+    if (!DRY) rmSync(dir, { recursive: true, force: true });
+    console.log(`  삭제된 글 정리: gallery/${name}/`);
+    changed += 1;
+  }
+}
+
 const before = readFileSync(INDEX_HTML, 'utf8');
 const after = injectTiles(before, countBySlug, posts.length);
 if (before !== after) {
@@ -457,7 +496,7 @@ if (before !== after) {
 }
 
 console.log(
-  `글 ${posts.length}건 · 썸네일 ${thumbs}장 생성 · 페이지 ${1 + ALL_CATEGORIES.length + posts.length}개 · 변경 ${changed}건${
+  `글 ${posts.length}건 · 원본 축소 ${shrunk}장 · 썸네일 ${thumbs}장 · 페이지 ${1 + ALL_CATEGORIES.length + posts.length}개 · 변경 ${changed}건${
     DRY ? ' (--dry, 저장 안 함)' : ''
   }`
 );

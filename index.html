@@ -5,9 +5,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>(주)영보이엔지 — 탱크·열교환기 전문 제조기업</title>
-  <meta name="description"
-    content="밀폐형 팽창탱크·열교환기·온수저장탱크·스테인리스 물탱크 전문 제조. 1981년 창업, ISO 9001 인증. 경기 광주 곤지암 자체 공장.">
-  <meta name="keywords" content="팽창탱크, 밀폐형 팽창탱크, 열교환기, 스파이럴 열교환기, 스파이랄 열교환기, 온수 가열탱크, 온수가열기, 온수저장탱크, STS 물탱크, 스테인리스 물탱크, 스테인리스 판넬탱크, 헤더, 분배기, 저유조, 경유저장탱크, 유류탱크, 압력용기, 영보이엔지, 영보종합탱크, 곤지암 탱크 제작">
+  <meta name="description" content="밀폐형 팽창탱크·열교환기·온수저장탱크·스테인리스 물탱크 전문 제조. 1981년 창업, ISO 9001 인증. 경기 광주 곤지암 자체 공장.">
+  <meta name="keywords"
+    content="팽창탱크, 밀폐형 팽창탱크, 열교환기, 스파이럴 열교환기, 스파이랄 열교환기, 온수 가열탱크, 온수가열기, 온수저장탱크, STS 물탱크, 스테인리스 물탱크, 스테인리스 판넬탱크, 헤더, 분배기, 저유조, 경유저장탱크, 유류탱크, 압력용기, 영보이엔지, 영보종합탱크, 곤지암 탱크 제작">
   <link rel="canonical" href="https://youngboeng.co.kr/">
 
   <!-- 파비콘 · 앱 아이콘 -->
@@ -26,7 +26,8 @@
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="(주)영보이엔지">
   <meta property="og:title" content="(주)영보이엔지 — 탱크·열교환기 전문 제조기업">
-  <meta property="og:description" content="1981년 창업. 스테인리스 온수저장·가열탱크, 열교환기, 헤더, 경유저장탱크, 스테인리스 물탱크 전문 제조. 용량·형상 주문 제작, 현장 조립 시공.">
+  <meta property="og:description"
+    content="1981년 창업. 스테인리스 온수저장·가열탱크, 열교환기, 헤더, 경유저장탱크, 스테인리스 물탱크 전문 제조. 용량·형상 주문 제작, 현장 조립 시공.">
   <meta property="og:url" content="https://youngboeng.co.kr/">
   <meta property="og:image" content="https://youngboeng.co.kr/images/og-cover-2026.png">
   <meta property="og:image:width" content="1200">
@@ -116,7 +117,9 @@
     }
 
     /* 앵커로 이동할 때 sticky 상단바가 섹션 제목을 가리지 않도록 여유를 둔다 */
-    :target { scroll-margin-top: 86px; }
+    :target {
+      scroll-margin-top: 86px;
+    }
 
     body {
       margin: 0;
@@ -141,12 +144,6 @@
     button {
       font-family: inherit;
       cursor: pointer;
-    }
-
-    .container {
-      max-width: var(--container);
-      margin: 0 auto;
-      padding: 0 var(--pad-x);
     }
 
     /* ── 상단 바 ── */
@@ -324,10 +321,12 @@
       margin: 0 auto;
     }
 
+    /* 설명이 한 줄을 넘기므로 가로(baseline) 배치가 아니라 세로로 쌓는다.
+       가로로 두면 긴 설명이 좁은 칸에 밀려 한글 단어 중간에서 잘린다 */
     .hero-card {
       display: flex;
-      align-items: baseline;
-      gap: 10px;
+      flex-direction: column;
+      gap: 5px;
       background: #fff;
       border: 1px solid var(--border);
       border-radius: 12px;
@@ -343,42 +342,10 @@
 
     .hero-card .l {
       font-size: 13px;
-      color: var(--gray-600);
-    }
-
-    /* ── 자재 보유 띠 (히어로 ↔ 납품실적 사이)
-       사장님 요구: "자재를 이만큼 갖추고 일한다는 걸 보여줘야 회사구나 한다".
-       공장·자재 사진이 생기면 이 자리가 그대로 사진 띠로 승격된다 ── */
-    .stock-band {
-      background: #fff;
-      border-top: 1px solid var(--border);
-      border-bottom: 1px solid var(--border);
-      padding: 22px var(--pad-x);
-    }
-
-    .stock-inner {
-      max-width: var(--container);
-      margin: 0 auto;
-      text-align: center;
-    }
-
-    .stock-head {
-      margin: 0;
-      font-size: 17px;
-      font-weight: 700;
-      letter-spacing: -0.02em;
-      color: var(--navy);
-      word-break: keep-all;
-    }
-
-    .stock-sub {
-      margin: 7px 0 0;
-      font-size: 14px;
       line-height: 1.55;
       color: var(--gray-600);
       word-break: keep-all;
     }
-
     /* ── 작업 그리드 (8칸 = 4열 × 2줄, 마지막은 더보기) ── */
     .grid-section {
       padding: 8px var(--pad-x) 0;
@@ -424,17 +391,6 @@
       inset: 0;
       background-size: cover;
       background-position: center;
-    }
-
-    /* (미사용) 예전 블로그 RSS 썸네일용. 갤러리 전환 후 주입하는 코드가 없다.
-       사진 위에 글자가 얹히므로 불투명도를 낮게 잡는다 — 글씨가 먼저 읽혀야 한다 */
-    .tile-thumb {
-      position: absolute;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      opacity: .28;
     }
 
     .tile::after {
@@ -525,14 +481,6 @@
     body[data-gallery-ready="true"] .tile:active {
       opacity: .9;
     }
-
-    /* ── 섹션 구분 (시안 C: 경계 남색 헤어라인 + 제목 위 강조바)
-       배경이 흰색으로 이어지는 구간(자재 띠 → 납품 실적)이 있어 선만으로는 경계가 약하다 ── */
-    .stock-band {
-      border-top-color: rgba(31, 46, 102, .22);
-      border-bottom-color: rgba(31, 46, 102, .22);
-    }
-
     /* 배너가 있던 자리가 비었으므로 아래 여백을 배너가 주던 만큼 돌려준다.
        구분선은 바로 아래 .contact-section 의 위 테두리 하나로 충분하다 (2겹으로 보였다) */
     .grid-section {
@@ -544,8 +492,7 @@
     }
 
     .grid-heading h2::before,
-    .contact-section h2::before,
-    .stock-head::before {
+    .contact-section h2::before {
       content: "";
       display: block;
       width: 34px;
@@ -735,7 +682,7 @@
     }
 
     .file-upload-label:hover .file-btn,
-    .file-input:focus-visible + .file-btn {
+    .file-input:focus-visible+.file-btn {
       border-color: var(--navy);
       color: var(--navy);
     }
@@ -748,8 +695,15 @@
       white-space: nowrap;
     }
 
-    .file-name.has-file { color: var(--navy); font-weight: 600; }
-    .file-name.is-error { color: #B03A2E; font-weight: 600; }
+    .file-name.has-file {
+      color: var(--navy);
+      font-weight: 600;
+    }
+
+    .file-name.is-error {
+      color: #B03A2E;
+      font-weight: 600;
+    }
 
     .file-hint {
       margin-top: 6px;
@@ -1003,19 +957,7 @@
         font-size: 12px;
       }
 
-      .stock-band {
-        padding: 28px var(--pad-x);
-      }
-
-      .stock-head {
-        font-size: 20px;
-      }
-
-      .stock-sub {
-        font-size: 15px;
-      }
-
-      .grid-heading h2 {
+            .grid-heading h2 {
         font-size: 26px;
       }
 
@@ -1152,21 +1094,7 @@
         margin-top: 9px;
       }
 
-      .stock-band {
-        /* 이 구간의 형제 섹션들은 좌우 40px 을 쓴다 */
-        padding: 34px 40px;
-      }
-
-      .stock-head {
-        font-size: 23px;
-      }
-
-      .stock-sub {
-        font-size: 16px;
-        margin-top: 9px;
-      }
-
-      .tile-cap {
+            .tile-cap {
         font-size: 13.5px;
         margin-top: 12px;
       }
@@ -1298,7 +1226,7 @@
         <div class="hero-text">
           <h1>45년째 탱크를 만듭니다</h1>
           <p class="lead">경기 광주 곤지암 자체 공장에서 제작해 현장까지 설치합니다.</p>
-          <p class="sub">온수저장·가열탱크 · 열교환기 · 헤더 · 경유저장탱크 · 스테인리스 물탱크 — 용량과 형상에 맞춰 제작합니다.</p>
+          <p class="sub">온수저장·가열탱크 · 열교환기 · 헤더 · 경유저장탱크 · 스테인리스 물탱크 — 용량과 도면에 맞춰 제작합니다.</p>
           <p class="sub">현장 시공사진은 아래 납품실적에서 보실 수 있습니다.</p>
           <div class="hero-actions">
             <a class="btn btn-primary hero-btn-ready" href="/gallery/">시공사례 보기</a>
@@ -1308,19 +1236,13 @@
         </div>
         <div class="hero-trust">
           <div class="hero-card"><span class="v">45년 경력</span><span class="l">1981년 창업</span></div>
-          <div class="hero-card"><span class="v">ISO 9001</span><span class="l">품질경영시스템 인증</span></div>
-          <div class="hero-card"><span class="v">CODE 047780</span><span class="l">에너지관리공단 압력용기 검사</span></div>
+          <div class="hero-card"><span class="v">여분 자재 상시 보유</span><span class="l">소형 탱크부터 대형 탱크까지 제작 가능한 충분한 자재가 있습니다</span>
+          </div>
+          <div class="hero-card"><span class="v">에너지관리공단 검사품</span><span class="l">에너지관리공단의 검사를 받은 온수가열탱크와 열교환기</span></div>
         </div>
       </div>
     </section>
 
-    <!-- 자재 보유 띠 -->
-    <section class="stock-band">
-      <div class="stock-inner">
-        <p class="stock-head">모든 자재를 상시 보유합니다</p>
-        <p class="stock-sub">소형 탱크부터 대형 탱크까지 모두 제작 가능합니다.</p>
-      </div>
-    </section>
 
     <!-- 작업 그리드 (8칸 = 4열 × 2줄. 마지막 칸은 더보기) -->
     <!-- 아래 8칸의 링크·잠금 상태는 tools/build-gallery.mjs 가 쓴다 (/admin 에 글이 올라오면 자동).
@@ -1338,50 +1260,57 @@
         <a class="tile" data-blog-slot="1" style="background:var(--navy);" href="/gallery/hot-water-storage/" aria-disabled="true" tabindex="-1"
          >
           <span class="tile-media" aria-hidden="true"></span>
-          <span class="tile-body"><span class="tile-title">온수<br>저장탱크</span><span class="tile-spec">200~20,000ℓ<br>STS304 · 316L</span><span class="tile-cap"><span
-                class="cap-ready">준비 중</span><span class="cap-soon">시공사진 준비 중</span></span></span>
+          <span class="tile-body"><span class="tile-title">온수<br>저장탱크</span><span
+              class="tile-spec">200~20,000ℓ<br>STS304 · 316L</span><span class="tile-cap"><span class="cap-ready">준비 중</span><span class="cap-soon">시공사진 준비 중</span></span></span>
         </a>
         <a class="tile" data-blog-slot="2" style="background:var(--navy-2);" href="/gallery/hot-water-heater/" aria-disabled="true" tabindex="-1"
          >
           <span class="tile-media" aria-hidden="true"></span>
-          <span class="tile-body"><span class="tile-title">온수<br>가열탱크</span><span class="tile-spec">일체형·분리형 (OBS)<br>급탕 800~30,000ℓ/h</span><span class="tile-cap"><span
-                class="cap-ready">준비 중</span><span class="cap-soon">시공사진 준비 중</span></span></span>
+          <span class="tile-body"><span class="tile-title">온수<br>가열탱크</span><span class="tile-spec">일체형·분리형 (OBS)<br>급탕
+              800~30,000ℓ/h</span><span class="tile-cap"><span class="cap-ready">준비 중</span><span class="cap-soon">시공사진
+                준비 중</span></span></span>
         </a>
         <a class="tile" data-blog-slot="3" style="background:var(--navy-3);" href="/gallery/heat-exchanger/" aria-disabled="true" tabindex="-1"
          >
           <span class="tile-media" aria-hidden="true"></span>
-          <span class="tile-body"><span class="tile-title">열교환기</span><span class="tile-spec">스파이럴 튜브형<br>10만~200만 kcal/h</span><span class="tile-cap"><span
-                class="cap-ready">준비 중</span><span class="cap-soon">시공사진 준비 중</span></span></span>
+          <span class="tile-body"><span class="tile-title">열교환기</span><span class="tile-spec">스파이럴 튜브형<br>10만~200만
+              kcal/h</span><span class="tile-cap"><span class="cap-ready">준비 중</span><span class="cap-soon">시공사진 준비
+                중</span></span></span>
         </a>
         <a class="tile" data-blog-slot="4" style="background:var(--navy-4);" href="/gallery/header/" aria-disabled="true" tabindex="-1"
          >
           <span class="tile-media" aria-hidden="true"></span>
-          <span class="tile-body"><span class="tile-title">헤더</span><span class="tile-spec">스팀·급수·난방 분배<br>현장 규격 제작</span><span class="tile-cap"><span
-                class="cap-ready">준비 중</span><span class="cap-soon">시공사진 준비 중</span></span></span>
+          <span class="tile-body"><span class="tile-title">헤더</span><span class="tile-spec">스팀·급수·난방 분배<br>현장 규격
+              제작</span><span class="tile-cap"><span class="cap-ready">준비 중</span><span class="cap-soon">시공사진 준비
+                중</span></span></span>
         </a>
         <a class="tile" data-blog-slot="5" style="background:var(--navy-5);" href="/gallery/diesel-tank/" aria-disabled="true" tabindex="-1"
          >
           <span class="tile-media" aria-hidden="true"></span>
-          <span class="tile-body"><span class="tile-title">경유<br>저장탱크</span><span class="tile-spec">옥외·지하 매설형<br>최대 30,000ℓ</span><span class="tile-cap"><span
-                class="cap-ready">준비 중</span><span class="cap-soon">시공사진 준비 중</span></span></span>
+          <span class="tile-body"><span class="tile-title">경유<br>저장탱크</span><span class="tile-spec">옥외·지하 매설형<br>최대
+              30,000ℓ</span><span class="tile-cap"><span class="cap-ready">준비 중</span><span class="cap-soon">시공사진 준비
+                중</span></span></span>
         </a>
         <a class="tile" data-blog-slot="6" style="background:var(--navy-6);" href="/gallery/sts-water-tank/" aria-disabled="true" tabindex="-1"
          >
           <span class="tile-media" aria-hidden="true"></span>
-          <span class="tile-body"><span class="tile-title">스테인리스<br>물탱크</span><span class="tile-spec">현장 조립 판넬탱크<br>0.5~2,000톤</span><span class="tile-cap"><span
-                class="cap-ready">준비 중</span><span class="cap-soon">시공사진 준비 중</span></span></span>
+          <span class="tile-body"><span class="tile-title">스테인리스<br>물탱크</span><span class="tile-spec">현장 조립
+              판넬탱크<br>0.5~2,000톤</span><span class="tile-cap"><span class="cap-ready">준비 중</span><span
+                class="cap-soon">시공사진 준비 중</span></span></span>
         </a>
         <a class="tile" data-blog-slot="7" style="background:var(--navy);" href="/gallery/expansion-vessel/" aria-disabled="true" tabindex="-1"
          >
           <span class="tile-media" aria-hidden="true"></span>
-          <span class="tile-body"><span class="tile-title">밀폐형<br>압력용기</span><span class="tile-spec">산업안전 검사품<br>200~10,000ℓ</span><span class="tile-cap"><span
-                class="cap-ready">준비 중</span><span class="cap-soon">시공사진 준비 중</span></span></span>
+          <span class="tile-body"><span class="tile-title">밀폐형<br>압력용기</span><span class="tile-spec">산업안전
+              검사품<br>200~10,000ℓ</span><span class="tile-cap"><span class="cap-ready">준비 중</span><span
+                class="cap-soon">시공사진 준비 중</span></span></span>
         </a>
         <a class="tile" data-blog-slot="8" style="background:var(--navy-3);" href="/gallery/" aria-disabled="true" tabindex="-1"
          >
           <span class="tile-media" aria-hidden="true"></span>
-          <span class="tile-body"><span class="tile-title">더보기</span><span class="tile-spec">지금까지 납품한<br>현장 모두 보기</span><span class="tile-cap"><span
-                class="cap-ready">준비 중</span><span class="cap-soon">준비 중</span></span></span>
+          <span class="tile-body"><span class="tile-title">더보기</span><span class="tile-spec">지금까지 납품한<br>현장 모두
+              보기</span><span class="tile-cap"><span class="cap-ready">준비 중</span><span class="cap-soon">준비
+                중</span></span></span>
         </a>
       </div>
     </section>
@@ -1400,7 +1329,6 @@
                 href="mailto:ybeng@hanmail.net">ybeng@hanmail.net</a></div>
             <div class="contact-extra">
               곤지암 공장 보조회선 031-763-8637 · 031-764-0255<br>
-              서울 사무실 02-461-0077 · 02-464-8637 (Fax 02-461-0078)
             </div>
           </div>
 
@@ -1501,11 +1429,7 @@
           <div style="margin-bottom:10px;">
             <strong style="color:#fff;">곤지암 공장</strong><br>
             경기도 광주시 곤지암읍 광여로99번길 7<br>
-            Tel 031-764-0248 · 031-763-8637 · 031-764-0255 · Fax 031-764-0249
-          </div>
-          <div>
-            <strong style="color:#fff;">서울 사무실</strong><br>
-            Tel 02-461-0077 · 02-464-8637 · Fax 02-461-0078
+            Tel : 031-764-0248 (대표전) · 031-763-8637 · 031-764-0255 <br> Fax : 031-764-0249
           </div>
         </div>
         <div class="footer-col">

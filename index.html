@@ -1200,7 +1200,7 @@
 <!-- 갤러리 공개 스위치 — /admin 에 시공사례가 올라가면 빌드가 data-gallery-ready 를 "true" 로 바꾼다.
      타일 8칸·히어로 버튼·상단바·하단바 링크가 전부 한꺼번에 살아난다. -->
 
-<body data-gallery-ready="false">
+<body data-gallery-ready="true">
 
   <!-- 상단 바 -->
   <header class="topbar">
@@ -1262,11 +1262,11 @@
       <!-- 잠금 해제(data-gallery-ready="true" + 타일의 aria-disabled·tabindex 제거)는 갤러리 빌드가 자동으로 한다.
            /admin 에서 시공사례를 저장하면 다음 빌드에서 풀린다 — 손으로 고칠 일 없음 -->
       <div class="work-grid">
-        <a class="tile" data-blog-slot="1" style="background:var(--navy);" href="/gallery/hot-water-storage/" aria-disabled="true" tabindex="-1"
+        <a class="tile" data-blog-slot="1" style="background:var(--navy);" href="/gallery/hot-water-storage/"
          >
           <span class="tile-media" aria-hidden="true"></span>
           <span class="tile-body"><span class="tile-title">온수<br>저장탱크</span><span
-              class="tile-spec">200~20,000ℓ<br>STS304 · 316L</span><span class="tile-cap"><span class="cap-ready">준비 중</span><span class="cap-soon">시공사진 준비 중</span></span></span>
+              class="tile-spec">200~20,000ℓ<br>STS304 · 316L</span><span class="tile-cap"><span class="cap-ready">시공사례 1건 →</span><span class="cap-soon">시공사진 준비 중</span></span></span>
         </a>
         <a class="tile" data-blog-slot="2" style="background:var(--navy-2);" href="/gallery/hot-water-heater/" aria-disabled="true" tabindex="-1"
          >
@@ -1310,11 +1310,11 @@
               검사품<br>200~10,000ℓ</span><span class="tile-cap"><span class="cap-ready">준비 중</span><span
                 class="cap-soon">시공사진 준비 중</span></span></span>
         </a>
-        <a class="tile" data-blog-slot="8" style="background:var(--navy-3);" href="/gallery/" aria-disabled="true" tabindex="-1"
+        <a class="tile" data-blog-slot="8" style="background:var(--navy-3);" href="/gallery/"
          >
           <span class="tile-media" aria-hidden="true"></span>
           <span class="tile-body"><span class="tile-title">더보기</span><span class="tile-spec">지금까지 납품한<br>현장 모두
-              보기</span><span class="tile-cap"><span class="cap-ready">준비 중</span><span class="cap-soon">준비
+              보기</span><span class="tile-cap"><span class="cap-ready">전체 보기 →</span><span class="cap-soon">준비
                 중</span></span></span>
         </a>
       </div>

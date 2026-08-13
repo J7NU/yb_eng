@@ -1354,13 +1354,25 @@
         <div class="contact-form-wrap">
           <form class="quote-form" action="https://formsubmit.co/ybeng@hanmail.net" method="POST"
             enctype="multipart/form-data">
-            <input type="hidden" name="_subject" value="[영보이엔지 홈페이지 문의]">
+            <input type="hidden" name="_subject" value="[영보이엔지 홈페이지 견적문의]">
             <input type="hidden" name="_template" value="table">
             <input type="hidden" name="_captcha" value="true">
 
             <div class="form-group">
               <label class="form-label" for="company">회사명<span class="req">필수</span></label>
               <input type="text" id="company" name="company" class="form-input" placeholder="(주)회사명" required>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="manager">담당자 성함<span class="req">필수</span></label>
+              <input type="text" id="manager" name="manager" class="form-input" placeholder="홍길동" autocomplete="name"
+                maxlength="30" required>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="position">부서 · 직급 <span class="opt">선택</span></label>
+              <input type="text" id="position" name="position" class="form-input" placeholder="설비팀 과장"
+                autocomplete="organization-title" maxlength="40">
             </div>
 
             <div class="form-group">
@@ -1403,7 +1415,7 @@
             <div class="consent">
               <label class="consent-check">
                 <input type="checkbox" name="privacy_agree" value="동의함" required>
-                <span>개인정보(회사명·연락처·이메일·문의 내용·첨부파일) 수집·이용에 동의합니다. 자세한 내용은
+                <span>개인정보(회사명·담당자 성함·부서/직급·연락처·이메일·문의 내용·첨부파일) 수집·이용에 동의합니다. 자세한 내용은
                   <a href="/privacy" target="_blank" rel="noopener">개인정보처리방침</a>에서 확인하실 수 있습니다.</span>
               </label>
             </div>

@@ -40,14 +40,18 @@ jobs:
           node-version: '20'
 
       - name: 이미지 도구 설치·확인
+        # 설치가 실패해도 발행 자체는 막지 않는다 — 사장님이 올린 글이 안 나가는 게 더 큰 손해다.
+        # 대신 경고 주석을 남겨 조용한 열화가 되지 않게 한다
+        continue-on-error: true
         run: |
           # GitHub 러너에는 magick/convert/ffmpeg 가 셋 다 없다 (실제 잡 로그로 확인).
-          # 없으면 폰 원본 수 MB 가 그대로 레포에 쌓이고 방문자에게도 그대로 나가므로 설치한다.
+          # 없으면 폰 원본 수 MB 가 그대로 레포에 쌓이고 방문자에게도 그대로 나간다.
           if ! command -v magick && ! command -v convert && ! command -v ffmpeg; then
-            sudo apt-get update -qq && sudo apt-get install -y -qq imagemagick
+            sudo apt-get update -qq && sudo apt-get install -y -qq imagemagick || true
           fi
-          # 설치까지 실패하면 조용히 열화되게 두지 않고 여기서 멈춘다
-          command -v magick || command -v convert || command -v ffmpeg
+          if ! command -v magick && ! command -v convert && ! command -v ffmpeg; then
+            echo "::warning::이미지 축소 도구 설치 실패 — 원본이 그대로 서빙된다. 이 실행 뒤 사진 용량을 확인할 것"
+          fi
 
       - name: 갤러리 생성
         run: node tools/build-gallery.mjs

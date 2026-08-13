@@ -46,6 +46,12 @@ const esc = (s = '') =>
 /** 카톡에서 온 사진은 한글·공백 파일명이 흔하다. 링크에 쓸 땐 반드시 인코딩한다 */
 const encPath = (p) => p.split('/').map(encodeURIComponent).join('/');
 
+/** 사이트 안 링크용 — 경로만 인코딩하고 #앵커·?쿼리는 살린다 (/#contact 가 /%23contact 가 되면 안 된다) */
+const encHref = (href) => {
+  const m = href.match(/^([^#?]*)([#?].*)?$/);
+  return encPath(m[1]) + (m[2] || '');
+};
+
 const write = (path, content) => {
   mkdirSync(dirname(path), { recursive: true });
   const prev = existsSync(path) ? readFileSync(path, 'utf8') : null;
@@ -88,13 +94,18 @@ function renderMarkdown(md) {
   const out = [];
   let para = [];
   let list = [];
+  let listOrdered = false;
   const flushPara = () => {
     if (para.length) out.push(`<p>${para.map(inline).join('<br>')}</p>`);
     para = [];
   };
   const flushList = () => {
-    if (list.length) out.push(`<ul>${list.map((l) => `<li>${inline(l)}</li>`).join('')}</ul>`);
+    if (list.length) {
+      const tag = listOrdered ? 'ol' : 'ul';
+      out.push(`<${tag}>${list.map((l) => `<li>${inline(l)}</li>`).join('')}</${tag}>`);
+    }
     list = [];
+    listOrdered = false;
   };
 
   for (const raw of esc(md).split(/\r?\n/)) {
@@ -111,9 +122,11 @@ function renderMarkdown(md) {
       out.push(`<h${h[1].length}>${inline(h[2])}</h${h[1].length}>`);
       continue;
     }
-    const li = line.match(/^\s*[-*]\s+(.*)$/);
+    const li = line.match(/^\s*(?:[-*]|\d+\.)\s+(.*)$/);
     if (li) {
       flushPara();
+      // 순서 목록(1. 2. 3.)과 글머리표를 같은 목록으로 모은다. 시공 순서를 번호로 쓰는 일이 많다
+      if (!list.length) listOrdered = /^\s*\d+\./.test(line);
       list.push(li[1]);
       continue;
     }
@@ -138,8 +151,16 @@ const plainText = (md) =>
 
 const inline = (s) =>
   s
-    .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
-    .replace(/\[(.+?)\]\((https?:\/\/[^\s)]+)\)/g, '<a href="$2" target="_blank" rel="noopener noreferrer">$1</a>');
+    .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
+    // 이미지가 먼저다 — 링크 규칙이 ![alt](src) 의 대괄호를 먼저 먹으면 사진이 링크로 둔갑한다.
+    // CMS 본문 에디터의 '이미지' 버튼이 정확히 이 문법을 넣는다
+    .replace(
+      /!\[([^\]]*)\]\(([^)]+)\)/g,
+      (_, alt, src) => `<img class="body-img" src="${encPath(src.startsWith('/') ? src : `/${src}`)}" alt="${alt}" loading="lazy">`
+    )
+    .replace(/\[([^\]]+)\]\((https?:\/\/[^)\s]+)\)/g, '<a href="$2" target="_blank" rel="noopener noreferrer">$1</a>')
+    // 사이트 안 링크(/#contact, /gallery/... )는 새 창으로 열지 않는다
+    .replace(/\[([^\]]+)\]\((\/[^)]*)\)/g, (_, t, href) => `<a href="${encHref(href)}">${t}</a>`);
 
 // ── 이미지 축소 (있으면 쓰고 없으면 원본 그대로. 빌드를 멈추지 않는다) ──
 
@@ -157,6 +178,25 @@ function detectResizer() {
     }
   }
   return null;
+}
+
+/** 가로폭(px). 못 재면 0 을 돌려 축소를 건너뛴다 */
+function imageWidth(tool, src) {
+  try {
+    if (tool === 'ffmpeg') {
+      const out = execFileSync(
+        'ffprobe',
+        ['-v', 'error', '-select_streams', 'v:0', '-show_entries', 'stream=width', '-of', 'csv=p=0', src],
+        { encoding: 'utf8' }
+      );
+      return parseInt(out.trim(), 10) || 0;
+    }
+    const [bin, argv] =
+      tool === 'magick' ? ['magick', ['identify', '-format', '%w', src]] : ['identify', ['-format', '%w', src]];
+    return parseInt(execFileSync(bin, argv, { encoding: 'utf8' }).trim(), 10) || 0;
+  } catch {
+    return 0;
+  }
 }
 
 function resize(tool, src, dest, width) {
@@ -203,8 +243,10 @@ function prepareImages(tool) {
     const src = join(IMG_DIR, name);
     if (!IMAGE_RE.test(name) || !statSync(src).isFile()) continue;
 
-    // 폰 원본은 5MB 를 넘기도 한다. 레포에도 전송량에도 그대로 둘 이유가 없다
-    if (!DRY && tool && statSync(src).size > 900 * 1024) {
+    // 폰 원본은 5MB 를 넘기도 한다. 레포에도 전송량에도 그대로 둘 이유가 없다.
+    // 판정은 '용량'이 아니라 '가로폭'이다 — 용량 기준이면 축소 후에도 900KB 를 넘는 사진이
+    // 매 빌드마다 다시 축소·재커밋되는 루프에 빠진다
+    if (!DRY && tool && imageWidth(tool, src) > MAX_W) {
       const tmp = join(IMG_DIR, `.shrink-${Date.now()}${extname(name)}`);
       if (resize(tool, src, tmp, MAX_W)) {
         renameSync(tmp, src);
@@ -229,6 +271,9 @@ function prepareImages(tool) {
   }
   return { thumbs, shrunk, pruned };
 }
+
+/** 원본이 실제로 있는지 — 없으면 깨진 <img> 를 내보내지 않는다 */
+const imageExists = (publicPath) => existsSync(join(ROOT, decodeURIComponent(publicPath).replace(/^\//, '')));
 
 const thumbFor = (publicPath) => {
   const src = join(ROOT, publicPath.replace(/^\//, ''));
@@ -266,6 +311,8 @@ function assertCategoriesInSync() {
 
 // ── 글 읽기 ──
 
+const skipped = [];
+
 function loadPosts() {
   if (!existsSync(POSTS_DIR)) return [];
   return readdirSync(POSTS_DIR)
@@ -275,24 +322,34 @@ function loadPosts() {
       const images = [data.cover, ...(Array.isArray(data.gallery) ? data.gallery : [])]
         .filter(Boolean)
         .map((p) => (p.startsWith('/') ? p : `/${p}`));
+      const existing = images.filter(imageExists);
+      if (existing.length !== images.length) {
+        console.log(
+          `::warning file=content/posts/${basename(file)}::참조한 사진 ${images.length - existing.length}장이 없다 — 그 사진은 건너뛴다`
+        );
+      }
       return {
         id: basename(file, extname(file)),
         title: data.title || basename(file, '.md'),
         category: data.category || '',
         site: data.site || '',
         date: data.date || '',
-        cover: images[0] || '',
-        images: [...new Set(images)],
+        cover: existing[0] || '',
+        images: [...new Set(existing)],
         body,
       };
     })
     .filter((p) => {
       if (!isKnownCategory(p.category)) {
-        // 조용히 빠지면 글이 사라진 걸 아무도 모른다. 빌드를 세운다
-        throw new Error(
-          `글 '${p.id}' 의 분류 '${p.category}' 가 categories.mjs 에 없다. ` +
+        // 이 글만 빼고 나머지는 계속 발행한다. 여기서 throw 하면 글 하나 때문에
+        // 이후 모든 /admin 저장이 발행되지 않는다 (발행 파이프라인 전체 정지).
+        // 대신 Actions 로그에 error 주석으로 남겨 조용한 유실이 되지 않게 한다
+        console.log(
+          `::error file=content/posts/${p.id}.md::분류 '${p.category}' 가 categories.mjs 에 없어 이 글은 갤러리에 안 나온다. ` +
             `허용값: ${ALL_CATEGORIES.map((c) => c.slug).join(', ')}`
         );
+        skipped.push(p.id);
+        return false;
       }
       return true;
     })
@@ -357,6 +414,8 @@ const HEAD = (title, description, canonical, { image = '/images/og-cover-2026.pn
     .post-body ul { margin:0 0 16px 18px; padding:0; }
     .post-body h2 { font-size:20px; margin:28px 0 10px; }
     .post-body h3 { font-size:17px; margin:22px 0 8px; }
+    .post-body ol { margin:0 0 16px 20px; padding:0; }
+    .body-img { width:100%; height:auto; margin:18px 0; background:var(--gray-100); }
     .shots { display:grid; grid-template-columns:1fr; gap:14px; margin:30px 0 60px; }
     .foot { border-top:1px solid var(--border); padding:26px 0 60px; font-size:13.5px; color:var(--gray-600); }
     .foot a { font-weight:600; color:var(--navy); }
@@ -436,7 +495,7 @@ function postPage(post) {
     .join('\n');
   const meta = [labelOf(post.category), post.site, post.date].filter(Boolean).join(' · ');
   const summary = plainText(post.body).slice(0, 110) || meta;
-  return `${HEAD(`${post.title} — (주)영보이엔지`, summary, `/gallery/${post.id}/`, {
+  return `${HEAD(`${post.title} — (주)영보이엔지`, summary, `/gallery/${encPath(post.id)}/`, {
     image: post.cover || '/images/og-cover-2026.png',
   })}  <main class="wrap">
     <div class="page-head">
@@ -561,14 +620,15 @@ const today = new Date().toISOString().slice(0, 10);
 const urls = [
   { loc: '/', pri: '1.0', mod: today },
   { loc: '/privacy', pri: '0.3', mod: '2026-07-31' },
-  { loc: '/gallery/', pri: '0.8', mod: today },
+  // 글이 0건이면 /gallery/ 는 noindex 라, sitemap 에 넣으면 '제출된 URL이 noindex' 오류가 난다
+  ...(posts.length ? [{ loc: '/gallery/', pri: '0.8', mod: today }] : []),
   // 글 없는 카테고리는 넣지 않는다 (같은 '준비 중' 문구 12장을 색인에 밀어넣는 꼴이 된다)
   ...ALL_CATEGORIES.filter((c) => countBySlug[c.slug] > 0).map((c) => ({
     loc: `/gallery/${c.slug}/`,
     pri: '0.6',
     mod: today,
   })),
-  ...posts.map((p) => ({ loc: `/gallery/${encPath(p.id)}/`, pri: '0.7', mod: p.date || today })),
+  ...posts.map((p) => ({ loc: `/gallery/${encPath(p.id)}/`, pri: '0.7', mod: today })),
 ];
 changed += write(
   join(ROOT, 'sitemap.xml'),
@@ -598,7 +658,13 @@ if (existsSync(GALLERY_DIR)) {
 // 글에서 안 쓰는 업로드 사진은 알려만 준다. 자동 삭제하면 CMS 가 글 저장 전에 먼저 올린
 // 사진을 지워버릴 수 있다 (글 작성 중 이탈 시 복구 불가)
 if (existsSync(IMG_DIR)) {
-  const used = new Set(posts.flatMap((p) => p.images.map((i) => basename(i))));
+  const used = new Set(
+    posts.flatMap((p) => [
+      ...p.images.map((i) => basename(i)),
+      // 본문 마크다운에 박은 사진도 쓰이는 것이다
+      ...[...p.body.matchAll(/!\[[^\]]*\]\(([^)]+)\)/g)].map((m) => basename(decodeURIComponent(m[1]))),
+    ])
+  );
   const orphans = readdirSync(IMG_DIR).filter(
     (f) => IMAGE_RE.test(f) && statSync(join(IMG_DIR, f)).isFile() && !used.has(f)
   );

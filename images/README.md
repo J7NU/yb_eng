@@ -16,7 +16,7 @@
 ## 새 이미지를 넣기 전에
 
 - **시공사진은 이 폴더(`images/`) 말고 `images/posts/` 로 간다.** `/admin` 에서 올리면 CMS 가 거기에 넣고,
-  빌드(`tools/build-gallery.mjs`)가 썸네일(`images/posts/thumb/`)을 만든다. 손으로 복사하지 않는다.
+  빌드(`tools/build-gallery.mjs`)가 썸네일(`images/thumb/`)을 만든다. 손으로 복사하지 않는다.
 - 여기 남는 건 사이트 뼈대에 쓰는 로고·파비콘·공유 카드 4개뿐이다.
 - 로고 원본(ai/psd)·카탈로그 PDF 같은 원본 파일은 이 레포가 아니라 jinu-co `projects/yb_eng/` 에 둔다.
 

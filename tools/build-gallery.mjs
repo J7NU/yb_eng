@@ -43,8 +43,23 @@ const THUMB_W = 640;
 const esc = (s = '') =>
   String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 
+/** 파일명에 리터럴 % 가 있으면 decodeURIComponent 가 던진다. 빌드를 세우지 않는다 */
+const safeDecode = (v) => {
+  try {
+    return decodeURIComponent(v);
+  } catch {
+    return v;
+  }
+};
+
 /** 카톡에서 온 사진은 한글·공백 파일명이 흔하다. 링크에 쓸 땐 반드시 인코딩한다 */
 const encPath = (p) => p.split('/').map(encodeURIComponent).join('/');
+
+/** 사이트 안 링크용 — 경로만 인코딩하고 #앵커·?쿼리는 살린다 (/#contact 가 /%23contact 가 되면 안 된다) */
+const encHref = (href) => {
+  const m = href.match(/^([^#?]*)([#?].*)?$/);
+  return encPath(m[1]) + (m[2] || '');
+};
 
 const write = (path, content) => {
   mkdirSync(dirname(path), { recursive: true });
@@ -88,32 +103,59 @@ function renderMarkdown(md) {
   const out = [];
   let para = [];
   let list = [];
+  let listOrdered = false;
+  let quote = [];
+  const flushQuote = () => {
+    if (quote.length) out.push(`<blockquote>${quote.map(inline).join('<br>')}</blockquote>`);
+    quote = [];
+  };
   const flushPara = () => {
     if (para.length) out.push(`<p>${para.map(inline).join('<br>')}</p>`);
     para = [];
   };
   const flushList = () => {
-    if (list.length) out.push(`<ul>${list.map((l) => `<li>${inline(l)}</li>`).join('')}</ul>`);
+    if (list.length) {
+      const tag = listOrdered ? 'ol' : 'ul';
+      out.push(`<${tag}>${list.map((l) => `<li>${inline(l)}</li>`).join('')}</${tag}>`);
+    }
     list = [];
+    listOrdered = false;
   };
 
   for (const raw of esc(md).split(/\r?\n/)) {
     const line = raw.trimEnd();
     if (!line.trim()) {
       flushList();
+      flushQuote();
       flushPara();
       continue;
     }
-    const h = line.match(/^(#{2,3})\s+(.*)$/);
+    // '# 제목'(h1)도 받는다. 페이지 h1 은 글 제목이 이미 쓰므로 본문 최상위는 h2 로 낮춘다
+    const h = line.match(/^(#{1,4})\s+(.*)$/);
     if (h) {
       flushList();
+      flushQuote();
       flushPara();
-      out.push(`<h${h[1].length}>${inline(h[2])}</h${h[1].length}>`);
+      // 페이지 h1 은 글 제목이 쓰므로 본문 제목은 한 단계씩 내린다 (# → h2, ## → h3)
+      const level = Math.min(h[1].length + 1, 4);
+      out.push(`<h${level}>${inline(h[2])}</h${level}>`);
       continue;
     }
-    const li = line.match(/^\s*[-*]\s+(.*)$/);
-    if (li) {
+    // esc() 를 먼저 태우므로 인용 부호는 이 시점에 '&gt;' 다
+    const bq = line.match(/^\s*&gt;\s?(.*)$/);
+    if (bq) {
+      flushList();
       flushPara();
+      quote.push(bq[1]);
+      continue;
+    }
+    if (quote.length) flushQuote();
+    const li = line.match(/^\s*(?:[-*]|\d+\.)\s+(.*)$/);
+    if (li) {
+      flushQuote();
+      flushPara();
+      // 순서 목록(1. 2. 3.)과 글머리표를 같은 목록으로 모은다. 시공 순서를 번호로 쓰는 일이 많다
+      if (!list.length) listOrdered = /^\s*\d+\./.test(line);
       list.push(li[1]);
       continue;
     }
@@ -121,6 +163,7 @@ function renderMarkdown(md) {
     para.push(line);
   }
   flushList();
+  flushQuote();
   flushPara();
   return out.join('\n');
 }
@@ -136,10 +179,33 @@ const plainText = (md) =>
     .replace(/\s+/g, ' ')
     .trim();
 
-const inline = (s) =>
-  s
-    .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
-    .replace(/\[(.+?)\]\((https?:\/\/[^\s)]+)\)/g, '<a href="$2" target="_blank" rel="noopener noreferrer">$1</a>');
+/**
+ * 인라인 마크다운.
+ * 이미지·링크·코드를 먼저 뽑아 자리표시자로 치워두고 강조를 적용한다.
+ * 순서를 안 지키면 파일명 속 밑줄이 강조로 먹혀 src 안에 <em> 이 박힌다
+ * (한글은 \w 가 아니라서 '탱크_설치_1.jpg' 가 그대로 걸린다).
+ */
+const inline = (raw) => {
+  const slots = [];
+  const hold = (html) => `\u0000${slots.push(html) - 1}\u0000`;
+  const imgSrc = (src) => (/^https?:\/\//.test(src) ? src : encPath(src.startsWith('/') ? src : `/${src}`));
+
+  const withEmphasis = raw
+    .replace(/!\[([^\]]*)\]\(([^)]+)\)/g, (_, alt, src) =>
+      hold(`<img class="body-img" src="${imgSrc(src.trim())}" alt="${alt}" loading="lazy">`)
+    )
+    .replace(/\[([^\]]+)\]\((https?:\/\/[^)\s]+)\)/g, (_, t, href) =>
+      hold(`<a href="${href}" target="_blank" rel="noopener noreferrer">${t}</a>`)
+    )
+    .replace(/\[([^\]]+)\]\((\/[^)]*)\)/g, (_, t, href) => hold(`<a href="${encHref(href.trim())}">${t}</a>`))
+    .replace(/`([^`]+)`/g, (_, c) => hold(`<code>${c}</code>`))
+    .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
+    // 단어 중간의 * _ 는 강조가 아니다 ('5,000ℓ*2기', '탱크_설치_1')
+    .replace(/(^|[\s(])\*(\S[^*\n]*?\S|\S)\*(?=[\s).,!?]|$)/g, '$1<em>$2</em>')
+    .replace(/(^|[\s(])_(\S[^_\n]*?\S|\S)_(?=[\s).,!?]|$)/g, '$1<em>$2</em>');
+
+  return withEmphasis.replace(/\u0000(\d+)\u0000/g, (_, i) => slots[i]);
+};
 
 // ── 이미지 축소 (있으면 쓰고 없으면 원본 그대로. 빌드를 멈추지 않는다) ──
 
@@ -159,16 +225,38 @@ function detectResizer() {
   return null;
 }
 
+/** 가로·세로(px). 못 재면 {w:0,h:0} — 축소를 건너뛴다 */
+function imageSize(tool, src) {
+  try {
+    if (tool === 'ffmpeg') {
+      const out = execFileSync(
+        'ffprobe',
+        ['-v', 'error', '-select_streams', 'v:0', '-show_entries', 'stream=width,height', '-of', 'csv=p=0:s=x', src],
+        { encoding: 'utf8' }
+      ).trim();
+      const [w, h] = out.split('x').map((n) => parseInt(n, 10) || 0);
+      return { w, h };
+    }
+    const [bin, argv] =
+      tool === 'magick'
+        ? ['magick', ['identify', '-format', '%wx%h', src]]
+        : ['identify', ['-format', '%wx%h', src]];
+    const [w, h] = execFileSync(bin, argv, { encoding: 'utf8' }).trim().split('x').map((n) => parseInt(n, 10) || 0);
+    return { w, h };
+  } catch {
+    return { w: 0, h: 0 };
+  }
+}
+
 function resize(tool, src, dest, width) {
   if (!tool) return false;
   try {
     if (tool === 'ffmpeg') {
-      execFileSync(tool, ['-y', '-loglevel', 'error', '-i', src, '-vf', `scale='min(${width},iw)':-2`, dest], {
+      execFileSync(tool, ['-y', '-loglevel', 'error', '-i', src, '-vf', `scale='min(${width},iw)':'min(${width},ih)':force_original_aspect_ratio=decrease`, dest], {
         stdio: 'ignore',
       });
     } else {
-      const argv = tool === 'magick' ? [src] : [src];
-      execFileSync(tool, [...argv, '-auto-orient', '-strip', '-resize', `${width}>`, '-quality', '82', dest], {
+      execFileSync(tool, [src, '-auto-orient', '-strip', '-resize', `${width}x${width}>`, '-quality', '82', dest], {
         stdio: 'ignore',
       });
     }
@@ -201,10 +289,16 @@ function prepareImages(tool) {
   const keepThumbs = new Set();
   for (const name of readdirSync(IMG_DIR)) {
     const src = join(IMG_DIR, name);
-    if (!IMAGE_RE.test(name) || !statSync(src).isFile()) continue;
+    if (name.startsWith('.') || !IMAGE_RE.test(name) || !statSync(src).isFile()) continue;
 
-    // 폰 원본은 5MB 를 넘기도 한다. 레포에도 전송량에도 그대로 둘 이유가 없다
-    if (!DRY && tool && statSync(src).size > 900 * 1024) {
+    // 폰 원본은 5MB 를 넘기도 한다. 레포에도 전송량에도 그대로 둘 이유가 없다.
+    // 판정은 '용량'이 아니라 '가로폭'이다 — 용량 기준이면 축소 후에도 900KB 를 넘는 사진이
+    // 매 빌드마다 다시 축소·재커밋되는 루프에 빠진다
+    const dim = imageSize(tool, src);
+    if (!DRY && tool && !dim.w) {
+      console.log(`  ⚠ 크기를 못 재 축소를 건너뛴다: ${name}`);
+    }
+    if (!DRY && tool && (dim.w > MAX_W || dim.h > MAX_W)) {
       const tmp = join(IMG_DIR, `.shrink-${Date.now()}${extname(name)}`);
       if (resize(tool, src, tmp, MAX_W)) {
         renameSync(tmp, src);
@@ -229,6 +323,9 @@ function prepareImages(tool) {
   }
   return { thumbs, shrunk, pruned };
 }
+
+/** 원본이 실제로 있는지 — 없으면 깨진 <img> 를 내보내지 않는다 */
+const imageExists = (publicPath) => existsSync(join(ROOT, safeDecode(publicPath).replace(/^\//, '')));
 
 const thumbFor = (publicPath) => {
   const src = join(ROOT, publicPath.replace(/^\//, ''));
@@ -266,6 +363,8 @@ function assertCategoriesInSync() {
 
 // ── 글 읽기 ──
 
+const skipped = [];
+
 function loadPosts() {
   if (!existsSync(POSTS_DIR)) return [];
   return readdirSync(POSTS_DIR)
@@ -275,24 +374,34 @@ function loadPosts() {
       const images = [data.cover, ...(Array.isArray(data.gallery) ? data.gallery : [])]
         .filter(Boolean)
         .map((p) => (p.startsWith('/') ? p : `/${p}`));
+      const existing = images.filter(imageExists);
+      if (existing.length !== images.length) {
+        console.log(
+          `::warning file=content/posts/${basename(file)}::참조한 사진 ${images.length - existing.length}장이 없다 — 그 사진은 건너뛴다`
+        );
+      }
       return {
         id: basename(file, extname(file)),
         title: data.title || basename(file, '.md'),
         category: data.category || '',
         site: data.site || '',
         date: data.date || '',
-        cover: images[0] || '',
-        images: [...new Set(images)],
+        cover: existing[0] || '',
+        images: [...new Set(existing)],
         body,
       };
     })
     .filter((p) => {
       if (!isKnownCategory(p.category)) {
-        // 조용히 빠지면 글이 사라진 걸 아무도 모른다. 빌드를 세운다
-        throw new Error(
-          `글 '${p.id}' 의 분류 '${p.category}' 가 categories.mjs 에 없다. ` +
+        // 이 글만 빼고 나머지는 계속 발행한다. 여기서 throw 하면 글 하나 때문에
+        // 이후 모든 /admin 저장이 발행되지 않는다 (발행 파이프라인 전체 정지).
+        // 대신 Actions 로그에 error 주석으로 남겨 조용한 유실이 되지 않게 한다
+        console.log(
+          `::error file=content/posts/${p.id}.md::분류 '${p.category}' 가 categories.mjs 에 없어 이 글은 갤러리에 안 나온다. ` +
             `허용값: ${ALL_CATEGORIES.map((c) => c.slug).join(', ')}`
         );
+        skipped.push(p.id);
+        return false;
       }
       return true;
     })
@@ -357,6 +466,11 @@ const HEAD = (title, description, canonical, { image = '/images/og-cover-2026.pn
     .post-body ul { margin:0 0 16px 18px; padding:0; }
     .post-body h2 { font-size:20px; margin:28px 0 10px; }
     .post-body h3 { font-size:17px; margin:22px 0 8px; }
+    .post-body ol { margin:0 0 16px 20px; padding:0; }
+    .post-body blockquote { margin:0 0 16px; padding:10px 16px; border-left:3px solid var(--navy);
+      background:var(--gray-100); color:var(--gray-600); }
+    .post-body code { background:var(--gray-100); padding:1px 5px; border-radius:4px; font-size:14px; }
+    .body-img { width:100%; height:auto; margin:18px 0; background:var(--gray-100); }
     .shots { display:grid; grid-template-columns:1fr; gap:14px; margin:30px 0 60px; }
     .foot { border-top:1px solid var(--border); padding:26px 0 60px; font-size:13.5px; color:var(--gray-600); }
     .foot a { font-weight:600; color:var(--navy); }
@@ -436,7 +550,7 @@ function postPage(post) {
     .join('\n');
   const meta = [labelOf(post.category), post.site, post.date].filter(Boolean).join(' · ');
   const summary = plainText(post.body).slice(0, 110) || meta;
-  return `${HEAD(`${post.title} — (주)영보이엔지`, summary, `/gallery/${post.id}/`, {
+  return `${HEAD(`${post.title} — (주)영보이엔지`, summary, `/gallery/${encPath(post.id)}/`, {
     image: post.cover || '/images/og-cover-2026.png',
   })}  <main class="wrap">
     <div class="page-head">
@@ -458,8 +572,9 @@ ${FOOT}`;
 
 const TILE_RE = (slot) => new RegExp(`<a\\s+class="tile"\\s+data-blog-slot="${slot}"[\\s\\S]*?</a>`);
 const CAP_READY_RE = /(<span\s+class="cap-ready"\s*>)([\s\S]*?)(<\/span>)/;
-/** 글이 없을 때 캡션이 되돌아갈 자리. 건수 문구가 영구 잔류하는 것을 막는다 */
-const CAP_DEFAULT = { product: '시공사례 보기 →', more: '전체 보기 →' };
+/** 타일 캡션 문구. 건수는 주입 때 만들고, 아래 둘은 고정 문구다 */
+const CAP_EMPTY = '준비 중';
+const CAP_MORE = '전체 보기 →';
 
 function injectTiles(html, countBySlug, total) {
   const flag = total > 0 ? 'true' : 'false';
@@ -488,7 +603,7 @@ function injectTiles(html, countBySlug, total) {
 
     // 잠금이 풀리면 cap-soon 이 숨으므로, 0건 칸의 cap-ready 에 '준비 중' 을 넣어야
     // 눌리지도 않는 칸이 '시공사례 보기 →' 로 클릭을 유도하지 않는다
-    const caption = n === 0 ? '준비 중' : slot === 8 ? CAP_DEFAULT.more : `시공사례 ${n}건 →`;
+    const caption = n === 0 ? CAP_EMPTY : slot === 8 ? CAP_MORE : `시공사례 ${n}건 →`;
     tile = tile.replace(CAP_READY_RE, (_, o, __, c) => `${o}${caption}${c}`);
 
     if (n === 0) {
@@ -561,14 +676,15 @@ const today = new Date().toISOString().slice(0, 10);
 const urls = [
   { loc: '/', pri: '1.0', mod: today },
   { loc: '/privacy', pri: '0.3', mod: '2026-07-31' },
-  { loc: '/gallery/', pri: '0.8', mod: today },
+  // 글이 0건이면 /gallery/ 는 noindex 라, sitemap 에 넣으면 '제출된 URL이 noindex' 오류가 난다
+  ...(posts.length ? [{ loc: '/gallery/', pri: '0.8', mod: today }] : []),
   // 글 없는 카테고리는 넣지 않는다 (같은 '준비 중' 문구 12장을 색인에 밀어넣는 꼴이 된다)
   ...ALL_CATEGORIES.filter((c) => countBySlug[c.slug] > 0).map((c) => ({
     loc: `/gallery/${c.slug}/`,
     pri: '0.6',
     mod: today,
   })),
-  ...posts.map((p) => ({ loc: `/gallery/${encPath(p.id)}/`, pri: '0.7', mod: p.date || today })),
+  ...posts.map((p) => ({ loc: `/gallery/${encPath(p.id)}/`, pri: '0.7', mod: today })),
 ];
 changed += write(
   join(ROOT, 'sitemap.xml'),
@@ -598,7 +714,13 @@ if (existsSync(GALLERY_DIR)) {
 // 글에서 안 쓰는 업로드 사진은 알려만 준다. 자동 삭제하면 CMS 가 글 저장 전에 먼저 올린
 // 사진을 지워버릴 수 있다 (글 작성 중 이탈 시 복구 불가)
 if (existsSync(IMG_DIR)) {
-  const used = new Set(posts.flatMap((p) => p.images.map((i) => basename(i))));
+  const used = new Set(
+    posts.flatMap((p) => [
+      ...p.images.map((i) => basename(i)),
+      // 본문 마크다운에 박은 사진도 쓰이는 것이다
+      ...[...p.body.matchAll(/!\[[^\]]*\]\(([^)]+)\)/g)].map((m) => basename(safeDecode(m[1].trim()))),
+    ])
+  );
   const orphans = readdirSync(IMG_DIR).filter(
     (f) => IMAGE_RE.test(f) && statSync(join(IMG_DIR, f)).isFile() && !used.has(f)
   );
@@ -614,6 +736,9 @@ if (before !== after) {
   changed += 1;
 }
 
+if (skipped.length) {
+  console.log(`  ⚠ 분류가 맞지 않아 빠진 글 ${skipped.length}건: ${skipped.join(', ')}`);
+}
 console.log(
   `글 ${posts.length}건 · 원본 축소 ${shrunk}장 · 썸네일 ${thumbs}장(정리 ${pruned}) · 페이지 ${1 + ALL_CATEGORIES.length + posts.length}개 · 변경 ${changed}건${
     DRY ? ' (--dry, 저장 안 함)' : ''

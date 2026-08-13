@@ -4,5 +4,16 @@
   Referrer-Policy: strict-origin-when-cross-origin
   Permissions-Policy: geolocation=(), microphone=(), camera=()
 
+# 로고·파비콘·공유 카드는 파일명이 바뀔 때만 내용이 바뀐다 → 길게 캐시
 /images/*
+  Cache-Control: public, max-age=31536000, immutable
+
+# 시공사례 원본 사진은 같은 파일명으로 교체되는 일이 있다(잘못 올린 사진 재업로드).
+# 1년 immutable 이면 방문자와 카카오톡 미리보기가 최대 1년간 옛 사진을 본다
+/images/posts/*
+  Cache-Control: public, max-age=3600, must-revalidate
+
+# 썸네일은 파일명에 내용 해시가 박혀 있어 교체 시 URL 자체가 바뀐다 → 길게.
+# 위 /images/posts/* 보다 구체적이므로 반드시 뒤에 온다 (덮어쓰기 순서)
+/images/posts/thumb/*
   Cache-Control: public, max-age=31536000, immutable

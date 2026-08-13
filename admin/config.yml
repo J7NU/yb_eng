@@ -78,4 +78,9 @@ collections:
         name: body
         widget: markdown
         required: false
-        hint: 어떤 작업이었는지, 규격·재질·현장 조건 등을 적는다
+        # 사이트 렌더러가 그리는 구문만 열어둔다 (제목·굵게·기울임·목록·인용·링크·사진).
+        # 표·코드블록 같은 건 편집기에서 만들 수 있어도 사이트에선 안 그려진다
+        buttons: [bold, italic, quote, bulleted-list, numbered-list, link]
+        editor_components: [image]
+        modes: [rich_text, raw]
+        hint: 어떤 작업이었는지, 규격·재질·현장 조건 등을 적는다. 사진은 본문에도 넣을 수 있다

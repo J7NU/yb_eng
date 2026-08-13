@@ -95,6 +95,11 @@ function renderMarkdown(md) {
   let para = [];
   let list = [];
   let listOrdered = false;
+  let quote = [];
+  const flushQuote = () => {
+    if (quote.length) out.push(`<blockquote>${quote.map(inline).join('<br>')}</blockquote>`);
+    quote = [];
+  };
   const flushPara = () => {
     if (para.length) out.push(`<p>${para.map(inline).join('<br>')}</p>`);
     para = [];
@@ -112,16 +117,29 @@ function renderMarkdown(md) {
     const line = raw.trimEnd();
     if (!line.trim()) {
       flushList();
+      flushQuote();
       flushPara();
       continue;
     }
-    const h = line.match(/^(#{2,3})\s+(.*)$/);
+    // '# 제목'(h1)도 받는다. 페이지 h1 은 글 제목이 이미 쓰므로 본문 최상위는 h2 로 낮춘다
+    const h = line.match(/^(#{1,4})\s+(.*)$/);
     if (h) {
       flushList();
       flushPara();
-      out.push(`<h${h[1].length}>${inline(h[2])}</h${h[1].length}>`);
+      // 페이지 h1 은 글 제목이 쓰므로 본문 제목은 한 단계씩 내린다 (# → h2, ## → h3)
+      const level = Math.min(h[1].length + 1, 4);
+      out.push(`<h${level}>${inline(h[2])}</h${level}>`);
       continue;
     }
+    // esc() 를 먼저 태우므로 인용 부호는 이 시점에 '&gt;' 다
+    const bq = line.match(/^\s*&gt;\s?(.*)$/);
+    if (bq) {
+      flushList();
+      flushPara();
+      quote.push(bq[1]);
+      continue;
+    }
+    if (quote.length) flushQuote();
     const li = line.match(/^\s*(?:[-*]|\d+\.)\s+(.*)$/);
     if (li) {
       flushPara();
@@ -134,6 +152,7 @@ function renderMarkdown(md) {
     para.push(line);
   }
   flushList();
+  flushQuote();
   flushPara();
   return out.join('\n');
 }
@@ -152,6 +171,10 @@ const plainText = (md) =>
 const inline = (s) =>
   s
     .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
+    .replace(/`([^`]+)`/g, '<code>$1</code>')
+    // 굵게(**)를 먼저 처리한 뒤라 남은 * 한 쌍만 기울임이다
+    .replace(/(^|[^*])\*([^*\n]+)\*/g, '$1<em>$2</em>')
+    .replace(/(^|[^_\w])_([^_\n]+)_/g, '$1<em>$2</em>')
     // 이미지가 먼저다 — 링크 규칙이 ![alt](src) 의 대괄호를 먼저 먹으면 사진이 링크로 둔갑한다.
     // CMS 본문 에디터의 '이미지' 버튼이 정확히 이 문법을 넣는다
     .replace(
@@ -415,6 +438,9 @@ const HEAD = (title, description, canonical, { image = '/images/og-cover-2026.pn
     .post-body h2 { font-size:20px; margin:28px 0 10px; }
     .post-body h3 { font-size:17px; margin:22px 0 8px; }
     .post-body ol { margin:0 0 16px 20px; padding:0; }
+    .post-body blockquote { margin:0 0 16px; padding:10px 16px; border-left:3px solid var(--navy);
+      background:var(--gray-100); color:var(--gray-600); }
+    .post-body code { background:var(--gray-100); padding:1px 5px; border-radius:4px; font-size:14px; }
     .body-img { width:100%; height:auto; margin:18px 0; background:var(--gray-100); }
     .shots { display:grid; grid-template-columns:1fr; gap:14px; margin:30px 0 60px; }
     .foot { border-top:1px solid var(--border); padding:26px 0 60px; font-size:13.5px; color:var(--gray-600); }
@@ -517,8 +543,9 @@ ${FOOT}`;
 
 const TILE_RE = (slot) => new RegExp(`<a\\s+class="tile"\\s+data-blog-slot="${slot}"[\\s\\S]*?</a>`);
 const CAP_READY_RE = /(<span\s+class="cap-ready"\s*>)([\s\S]*?)(<\/span>)/;
-/** 글이 없을 때 캡션이 되돌아갈 자리. 건수 문구가 영구 잔류하는 것을 막는다 */
-const CAP_DEFAULT = { product: '시공사례 보기 →', more: '전체 보기 →' };
+/** 타일 캡션 문구. 건수는 주입 때 만들고, 아래 둘은 고정 문구다 */
+const CAP_EMPTY = '준비 중';
+const CAP_MORE = '전체 보기 →';
 
 function injectTiles(html, countBySlug, total) {
   const flag = total > 0 ? 'true' : 'false';
@@ -547,7 +574,7 @@ function injectTiles(html, countBySlug, total) {
 
     // 잠금이 풀리면 cap-soon 이 숨으므로, 0건 칸의 cap-ready 에 '준비 중' 을 넣어야
     // 눌리지도 않는 칸이 '시공사례 보기 →' 로 클릭을 유도하지 않는다
-    const caption = n === 0 ? '준비 중' : slot === 8 ? CAP_DEFAULT.more : `시공사례 ${n}건 →`;
+    const caption = n === 0 ? CAP_EMPTY : slot === 8 ? CAP_MORE : `시공사례 ${n}건 →`;
     tile = tile.replace(CAP_READY_RE, (_, o, __, c) => `${o}${caption}${c}`);
 
     if (n === 0) {

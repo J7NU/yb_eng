@@ -1357,6 +1357,9 @@
             <input type="hidden" name="_subject" value="[영보이엔지 홈페이지 견적문의]">
             <input type="hidden" name="_template" value="table">
             <input type="hidden" name="_captcha" value="true">
+            <!-- 제출 후 우리 도메인 완료 페이지로 돌려보낸다.
+                 이게 없으면 FormSubmit 외부 페이지로 넘어가 전환 추적을 심을 자리가 없다 -->
+            <input type="hidden" name="_next" value="https://youngboeng.co.kr/thanks">
 
             <div class="form-group">
               <label class="form-label" for="company">회사명<span class="req">필수</span></label>

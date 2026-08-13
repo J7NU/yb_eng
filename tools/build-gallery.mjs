@@ -43,6 +43,15 @@ const THUMB_W = 640;
 const esc = (s = '') =>
   String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 
+/** 파일명에 리터럴 % 가 있으면 decodeURIComponent 가 던진다. 빌드를 세우지 않는다 */
+const safeDecode = (v) => {
+  try {
+    return decodeURIComponent(v);
+  } catch {
+    return v;
+  }
+};
+
 /** 카톡에서 온 사진은 한글·공백 파일명이 흔하다. 링크에 쓸 땐 반드시 인코딩한다 */
 const encPath = (p) => p.split('/').map(encodeURIComponent).join('/');
 
@@ -125,6 +134,7 @@ function renderMarkdown(md) {
     const h = line.match(/^(#{1,4})\s+(.*)$/);
     if (h) {
       flushList();
+      flushQuote();
       flushPara();
       // 페이지 h1 은 글 제목이 쓰므로 본문 제목은 한 단계씩 내린다 (# → h2, ## → h3)
       const level = Math.min(h[1].length + 1, 4);
@@ -142,6 +152,7 @@ function renderMarkdown(md) {
     if (quote.length) flushQuote();
     const li = line.match(/^\s*(?:[-*]|\d+\.)\s+(.*)$/);
     if (li) {
+      flushQuote();
       flushPara();
       // 순서 목록(1. 2. 3.)과 글머리표를 같은 목록으로 모은다. 시공 순서를 번호로 쓰는 일이 많다
       if (!list.length) listOrdered = /^\s*\d+\./.test(line);
@@ -168,22 +179,33 @@ const plainText = (md) =>
     .replace(/\s+/g, ' ')
     .trim();
 
-const inline = (s) =>
-  s
-    .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
-    .replace(/`([^`]+)`/g, '<code>$1</code>')
-    // 굵게(**)를 먼저 처리한 뒤라 남은 * 한 쌍만 기울임이다
-    .replace(/(^|[^*])\*([^*\n]+)\*/g, '$1<em>$2</em>')
-    .replace(/(^|[^_\w])_([^_\n]+)_/g, '$1<em>$2</em>')
-    // 이미지가 먼저다 — 링크 규칙이 ![alt](src) 의 대괄호를 먼저 먹으면 사진이 링크로 둔갑한다.
-    // CMS 본문 에디터의 '이미지' 버튼이 정확히 이 문법을 넣는다
-    .replace(
-      /!\[([^\]]*)\]\(([^)]+)\)/g,
-      (_, alt, src) => `<img class="body-img" src="${encPath(src.startsWith('/') ? src : `/${src}`)}" alt="${alt}" loading="lazy">`
+/**
+ * 인라인 마크다운.
+ * 이미지·링크·코드를 먼저 뽑아 자리표시자로 치워두고 강조를 적용한다.
+ * 순서를 안 지키면 파일명 속 밑줄이 강조로 먹혀 src 안에 <em> 이 박힌다
+ * (한글은 \w 가 아니라서 '탱크_설치_1.jpg' 가 그대로 걸린다).
+ */
+const inline = (raw) => {
+  const slots = [];
+  const hold = (html) => `\u0000${slots.push(html) - 1}\u0000`;
+  const imgSrc = (src) => (/^https?:\/\//.test(src) ? src : encPath(src.startsWith('/') ? src : `/${src}`));
+
+  const withEmphasis = raw
+    .replace(/!\[([^\]]*)\]\(([^)]+)\)/g, (_, alt, src) =>
+      hold(`<img class="body-img" src="${imgSrc(src.trim())}" alt="${alt}" loading="lazy">`)
     )
-    .replace(/\[([^\]]+)\]\((https?:\/\/[^)\s]+)\)/g, '<a href="$2" target="_blank" rel="noopener noreferrer">$1</a>')
-    // 사이트 안 링크(/#contact, /gallery/... )는 새 창으로 열지 않는다
-    .replace(/\[([^\]]+)\]\((\/[^)]*)\)/g, (_, t, href) => `<a href="${encHref(href)}">${t}</a>`);
+    .replace(/\[([^\]]+)\]\((https?:\/\/[^)\s]+)\)/g, (_, t, href) =>
+      hold(`<a href="${href}" target="_blank" rel="noopener noreferrer">${t}</a>`)
+    )
+    .replace(/\[([^\]]+)\]\((\/[^)]*)\)/g, (_, t, href) => hold(`<a href="${encHref(href.trim())}">${t}</a>`))
+    .replace(/`([^`]+)`/g, (_, c) => hold(`<code>${c}</code>`))
+    .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
+    // 단어 중간의 * _ 는 강조가 아니다 ('5,000ℓ*2기', '탱크_설치_1')
+    .replace(/(^|[\s(])\*(\S[^*\n]*?\S|\S)\*(?=[\s).,!?]|$)/g, '$1<em>$2</em>')
+    .replace(/(^|[\s(])_(\S[^_\n]*?\S|\S)_(?=[\s).,!?]|$)/g, '$1<em>$2</em>');
+
+  return withEmphasis.replace(/\u0000(\d+)\u0000/g, (_, i) => slots[i]);
+};
 
 // ── 이미지 축소 (있으면 쓰고 없으면 원본 그대로. 빌드를 멈추지 않는다) ──
 
@@ -203,22 +225,26 @@ function detectResizer() {
   return null;
 }
 
-/** 가로폭(px). 못 재면 0 을 돌려 축소를 건너뛴다 */
-function imageWidth(tool, src) {
+/** 가로·세로(px). 못 재면 {w:0,h:0} — 축소를 건너뛴다 */
+function imageSize(tool, src) {
   try {
     if (tool === 'ffmpeg') {
       const out = execFileSync(
         'ffprobe',
-        ['-v', 'error', '-select_streams', 'v:0', '-show_entries', 'stream=width', '-of', 'csv=p=0', src],
+        ['-v', 'error', '-select_streams', 'v:0', '-show_entries', 'stream=width,height', '-of', 'csv=p=0:s=x', src],
         { encoding: 'utf8' }
-      );
-      return parseInt(out.trim(), 10) || 0;
+      ).trim();
+      const [w, h] = out.split('x').map((n) => parseInt(n, 10) || 0);
+      return { w, h };
     }
     const [bin, argv] =
-      tool === 'magick' ? ['magick', ['identify', '-format', '%w', src]] : ['identify', ['-format', '%w', src]];
-    return parseInt(execFileSync(bin, argv, { encoding: 'utf8' }).trim(), 10) || 0;
+      tool === 'magick'
+        ? ['magick', ['identify', '-format', '%wx%h', src]]
+        : ['identify', ['-format', '%wx%h', src]];
+    const [w, h] = execFileSync(bin, argv, { encoding: 'utf8' }).trim().split('x').map((n) => parseInt(n, 10) || 0);
+    return { w, h };
   } catch {
-    return 0;
+    return { w: 0, h: 0 };
   }
 }
 
@@ -226,12 +252,11 @@ function resize(tool, src, dest, width) {
   if (!tool) return false;
   try {
     if (tool === 'ffmpeg') {
-      execFileSync(tool, ['-y', '-loglevel', 'error', '-i', src, '-vf', `scale='min(${width},iw)':-2`, dest], {
+      execFileSync(tool, ['-y', '-loglevel', 'error', '-i', src, '-vf', `scale='min(${width},iw)':'min(${width},ih)':force_original_aspect_ratio=decrease`, dest], {
         stdio: 'ignore',
       });
     } else {
-      const argv = tool === 'magick' ? [src] : [src];
-      execFileSync(tool, [...argv, '-auto-orient', '-strip', '-resize', `${width}>`, '-quality', '82', dest], {
+      execFileSync(tool, [src, '-auto-orient', '-strip', '-resize', `${width}x${width}>`, '-quality', '82', dest], {
         stdio: 'ignore',
       });
     }
@@ -264,12 +289,16 @@ function prepareImages(tool) {
   const keepThumbs = new Set();
   for (const name of readdirSync(IMG_DIR)) {
     const src = join(IMG_DIR, name);
-    if (!IMAGE_RE.test(name) || !statSync(src).isFile()) continue;
+    if (name.startsWith('.') || !IMAGE_RE.test(name) || !statSync(src).isFile()) continue;
 
     // 폰 원본은 5MB 를 넘기도 한다. 레포에도 전송량에도 그대로 둘 이유가 없다.
     // 판정은 '용량'이 아니라 '가로폭'이다 — 용량 기준이면 축소 후에도 900KB 를 넘는 사진이
     // 매 빌드마다 다시 축소·재커밋되는 루프에 빠진다
-    if (!DRY && tool && imageWidth(tool, src) > MAX_W) {
+    const dim = imageSize(tool, src);
+    if (!DRY && tool && !dim.w) {
+      console.log(`  ⚠ 크기를 못 재 축소를 건너뛴다: ${name}`);
+    }
+    if (!DRY && tool && (dim.w > MAX_W || dim.h > MAX_W)) {
       const tmp = join(IMG_DIR, `.shrink-${Date.now()}${extname(name)}`);
       if (resize(tool, src, tmp, MAX_W)) {
         renameSync(tmp, src);
@@ -296,7 +325,7 @@ function prepareImages(tool) {
 }
 
 /** 원본이 실제로 있는지 — 없으면 깨진 <img> 를 내보내지 않는다 */
-const imageExists = (publicPath) => existsSync(join(ROOT, decodeURIComponent(publicPath).replace(/^\//, '')));
+const imageExists = (publicPath) => existsSync(join(ROOT, safeDecode(publicPath).replace(/^\//, '')));
 
 const thumbFor = (publicPath) => {
   const src = join(ROOT, publicPath.replace(/^\//, ''));
@@ -689,7 +718,7 @@ if (existsSync(IMG_DIR)) {
     posts.flatMap((p) => [
       ...p.images.map((i) => basename(i)),
       // 본문 마크다운에 박은 사진도 쓰이는 것이다
-      ...[...p.body.matchAll(/!\[[^\]]*\]\(([^)]+)\)/g)].map((m) => basename(decodeURIComponent(m[1]))),
+      ...[...p.body.matchAll(/!\[[^\]]*\]\(([^)]+)\)/g)].map((m) => basename(safeDecode(m[1].trim()))),
     ])
   );
   const orphans = readdirSync(IMG_DIR).filter(
@@ -707,6 +736,9 @@ if (before !== after) {
   changed += 1;
 }
 
+if (skipped.length) {
+  console.log(`  ⚠ 분류가 맞지 않아 빠진 글 ${skipped.length}건: ${skipped.join(', ')}`);
+}
 console.log(
   `글 ${posts.length}건 · 원본 축소 ${shrunk}장 · 썸네일 ${thumbs}장(정리 ${pruned}) · 페이지 ${1 + ALL_CATEGORIES.length + posts.length}개 · 변경 ${changed}건${
     DRY ? ' (--dry, 저장 안 함)' : ''

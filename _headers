@@ -8,11 +8,12 @@
 /images/*
   Cache-Control: public, max-age=31536000, immutable
 
-# 썸네일은 파일명에 내용 해시가 박혀 있어 교체 시 URL 자체가 바뀐다 → 그대로 길게
-/images/posts/thumb/*
-  Cache-Control: public, max-age=31536000, immutable
-
 # 시공사례 원본 사진은 같은 파일명으로 교체되는 일이 있다(잘못 올린 사진 재업로드).
-# 여기까지 1년 immutable 이면 방문자와 카카오톡 미리보기가 최대 1년간 옛 사진을 본다
+# 1년 immutable 이면 방문자와 카카오톡 미리보기가 최대 1년간 옛 사진을 본다
 /images/posts/*
   Cache-Control: public, max-age=3600, must-revalidate
+
+# 썸네일은 파일명에 내용 해시가 박혀 있어 교체 시 URL 자체가 바뀐다 → 길게.
+# 위 /images/posts/* 보다 구체적이므로 반드시 뒤에 온다 (덮어쓰기 순서)
+/images/posts/thumb/*
+  Cache-Control: public, max-age=31536000, immutable

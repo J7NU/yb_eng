@@ -705,6 +705,12 @@
       font-weight: 600;
     }
 
+    .field-hint {
+      margin-top: 6px;
+      font-size: 12.5px;
+      color: var(--gray-400);
+    }
+
     .file-hint {
       margin-top: 6px;
       font-size: 11.5px;
@@ -1359,7 +1365,10 @@
 
             <div class="form-group">
               <label class="form-label" for="contactno">담당자 연락처<span class="req">필수</span></label>
-              <input type="tel" id="contactno" name="contact" class="form-input" placeholder="010-0000-0000" required>
+              <input type="tel" id="contactno" name="contact" class="form-input" placeholder="010-0000-0000"
+                inputmode="numeric" autocomplete="tel" maxlength="14"
+                pattern="[0-9\-]{9,14}" required>
+              <div class="field-hint">휴대폰 또는 사무실 번호 · 예) 010-1234-5678, 031-764-0248</div>
             </div>
 
             <div class="form-group">
@@ -1502,6 +1511,45 @@
     /* ── 첨부 파일명 표시 · 용량 검증 ──
        FormSubmit 은 첨부 합계 10MB 까지 받는다. 넘으면 전송이 조용히 실패하므로
        고르는 시점에 걸러낸다. */
+    // 연락처: 입력하면서 하이픈을 넣고, 자릿수가 모자라면 한국어로 알려준다.
+    // type="tel" 은 형식 검사를 아예 안 해서(스펙상 국가마다 형식이 달라서) required 만으로는
+    // '010' 세 글자도 그대로 통과한다 — 실제로 그렇게 접수된 문의가 있었다.
+    (function () {
+      var el = document.getElementById('contactno');
+      if (!el) return;
+
+      function digits(v) { return (v || '').replace(/[^0-9]/g, ''); }
+
+      function format(d) {
+        if (d.length < 4) return d;
+        if (d.startsWith('02')) {
+          // 서울 지역번호는 2자리
+          if (d.length < 6) return d.slice(0, 2) + '-' + d.slice(2);
+          if (d.length < 10) return d.slice(0, 2) + '-' + d.slice(2, 5) + '-' + d.slice(5, 9);
+          return d.slice(0, 2) + '-' + d.slice(2, 6) + '-' + d.slice(6, 10);
+        }
+        if (d.length < 8) return d.slice(0, 4) + '-' + d.slice(4);
+        if (d.length < 11) return d.slice(0, 3) + '-' + d.slice(3, 6) + '-' + d.slice(6, 10);
+        return d.slice(0, 3) + '-' + d.slice(3, 7) + '-' + d.slice(7, 11);
+      }
+
+      function check() {
+        var n = digits(el.value).length;
+        if (!n) { el.setCustomValidity('연락처를 입력해 주세요.'); return; }
+        if (n < 9) { el.setCustomValidity('번호가 짧습니다. 지역번호나 010 을 포함해 전부 입력해 주세요.'); return; }
+        if (n > 11) { el.setCustomValidity('번호가 너무 깁니다. 다시 확인해 주세요.'); return; }
+        el.setCustomValidity('');
+      }
+
+      el.addEventListener('input', function () {
+        var d = digits(el.value).slice(0, 11);
+        el.value = format(d);
+        check();
+      });
+      el.addEventListener('blur', check);
+      check();
+    })();
+
     function updateFileName(input) {
       var label = input.closest('.file-upload-label');
       var nameEl = label && label.querySelector('.file-name');

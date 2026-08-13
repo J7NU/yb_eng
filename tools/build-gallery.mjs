@@ -7,7 +7,7 @@
  * 출력  : gallery/index.html            전체 목록
  *          gallery/<카테고리>/index.html  카테고리 목록
  *          gallery/<글>/index.html        글 상세 (사진 + 본문)
- *          images/posts/thumb/*           카드용 축소본
+ *          images/thumb/*           카드용 축소본
  *          index.html 의 8칸 타일 링크·잠금 상태 갱신
  *
  * 원칙:
@@ -30,7 +30,9 @@ import { PRODUCT_CATEGORIES, COMPANY_CATEGORIES, ALL_CATEGORIES, labelOf, isKnow
 const ROOT = fileURLToPath(new URL('..', import.meta.url));
 const POSTS_DIR = join(ROOT, 'content/posts');
 const IMG_DIR = join(ROOT, 'images/posts');
-const THUMB_DIR = join(IMG_DIR, 'thumb');
+// 썸네일은 원본과 캐시 정책이 정반대라(해시 파일명 → 영구 캐시) 경로를 분리해 둔다.
+// images/posts/ 안에 두면 Cloudflare _headers 가 두 규칙을 병합해 영구 캐시가 깎인다
+const THUMB_DIR = join(ROOT, 'images/thumb');
 const GALLERY_DIR = join(ROOT, 'gallery');
 const INDEX_HTML = join(ROOT, 'index.html');
 const DRY = process.argv.includes('--dry');
@@ -331,7 +333,7 @@ const thumbFor = (publicPath) => {
   const src = join(ROOT, publicPath.replace(/^\//, ''));
   if (!existsSync(src)) return publicPath;
   const name = thumbName(src);
-  return existsSync(join(THUMB_DIR, name)) ? `/images/posts/thumb/${name}` : publicPath;
+  return existsSync(join(THUMB_DIR, name)) ? `/images/thumb/${name}` : publicPath;
 };
 
 // ── 카테고리 정합 검사 ──

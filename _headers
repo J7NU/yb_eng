@@ -4,8 +4,20 @@
   Referrer-Policy: strict-origin-when-cross-origin
   Permissions-Policy: geolocation=(), microphone=(), camera=()
 
-# 로고·파비콘·공유 카드는 파일명이 바뀔 때만 내용이 바뀐다 → 길게 캐시
-/images/*
+# ⚠️ Cloudflare _headers 는 매칭되는 규칙을 '병합'한다 (덮어쓰기가 아니다).
+# 예전엔 /images/* 로 한 줄에 묶었는데, 그러면 하위 /images/posts/* 까지 함께 걸려
+# 'immutable' 과 'max-age=3600' 이 한 헤더에 같이 실리고 앞의 immutable 이 먼저 읽힌다.
+# 그래서 루트 자산은 와일드카드 없이 파일별로 적는다 (4개뿐이다).
+/images/logo-mark-navy.svg
+  Cache-Control: public, max-age=31536000, immutable
+
+/images/og-cover-2026.png
+  Cache-Control: public, max-age=31536000, immutable
+
+/images/apple-touch-icon.png
+  Cache-Control: public, max-age=31536000, immutable
+
+/images/favicon-32.png
   Cache-Control: public, max-age=31536000, immutable
 
 # 시공사례 원본 사진은 같은 파일명으로 교체되는 일이 있다(잘못 올린 사진 재업로드).
@@ -14,6 +26,6 @@
   Cache-Control: public, max-age=3600, must-revalidate
 
 # 썸네일은 파일명에 내용 해시가 박혀 있어 교체 시 URL 자체가 바뀐다 → 길게.
-# 위 /images/posts/* 보다 구체적이므로 반드시 뒤에 온다 (덮어쓰기 순서)
-/images/posts/thumb/*
+# 경로를 /images/posts/ 밖으로 뺀 이유가 이것이다 — 안에 두면 위 규칙과 병합돼 1시간으로 깎인다
+/images/thumb/*
   Cache-Control: public, max-age=31536000, immutable

@@ -17,7 +17,7 @@
 | `404.html` · `privacy.html` | 없는 페이지 · 개인정보처리방침 |
 | `admin/` | `/admin` 글쓰기 화면 (Sveltia CMS). 사진·글을 여기서 올린다 |
 | `content/posts/` | 시공사례 글 원본(md). CMS 가 커밋한다 |
-| `images/posts/` | 시공사례 사진. `thumb/` 은 빌드가 만든다 |
+| `images/posts/` | 시공사례 사진. `thumb/`썸네일은 images/thumb/ 에 만들어진다 |
 | `gallery/` | **생성물.** 손으로 고치지 말 것 — 빌드가 덮어쓴다 |
 | `tools/build-gallery.mjs`·`tools/categories.mjs` | 갤러리 생성기 + 카테고리 단일 출처 |
 | `.github/workflows/gallery.yml` | 글이 커밋되면 갤러리를 다시 만든다 |

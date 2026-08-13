@@ -507,10 +507,28 @@ const FOOT = `  <footer class="foot">
     <div class="wrap">(주)영보이엔지 · 경기도 광주시 곤지암읍 광여로99번길 7 · <a href="tel:031-764-0248">031-764-0248</a> ·
       <a href="/">홈으로</a></div>
   </footer>
+  <!-- 유입 경로 기록. 홈(index.html)과 같은 파일을 쓴다 —
+       광고 랜딩이 갤러리로 잡혀 있으므로 여기서 파라미터를 받아둬야 문의 메일에 키워드가 찍힌다 -->
+  <script src="/referral.js" defer></script>
 </body>
 
 </html>
 `;
+
+/**
+ * 분류 목록·전체 목록 페이지 하단 문의 띠.
+ * 글 상세에는 POST_SIGNATURE 가 붙지만 목록 페이지엔 아무것도 없어서,
+ * 광고로 들어온 사람이 견적 폼으로 갈 길이 없었다 (전화 링크만 있었다).
+ */
+const LIST_CTA = `    <section class="post-cta">
+      <p class="cta-lead">도면 주시면 견적 회신드립니다</p>
+      <p class="cta-sub">용량·재질·도면에 맞춰 제작합니다. 1981년부터 45년.</p>
+      <div class="cta-contact">
+        <a class="cta-tel" href="tel:031-764-0248">TEL 031-764-0248</a>
+        <span class="cta-line">FAX 031-764-0249 · 경기도 광주시 곤지암읍 광여로99번길 7</span>
+      </div>
+      <p class="cta-note"><a href="/#contact">견적 문의하기 →</a></p>
+    </section>`;
 
 const chips = (current) => {
   const one = (href, label, slug) =>
@@ -549,6 +567,7 @@ function listPage({ title, description, canonical, current, posts, lead }) {
     </div>
 ${chips(current)}
 ${body}
+${LIST_CTA}
   </main>
 ${FOOT}`;
 }

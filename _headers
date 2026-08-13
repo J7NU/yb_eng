@@ -20,6 +20,11 @@
 /images/favicon-32.png
   Cache-Control: public, max-age=31536000, immutable
 
+# 유입 경로 스크립트는 파일명이 고정이라 오래 캐시되면 고쳐도 안 바뀐다.
+# 광고 파라미터 규칙이 바뀔 수 있으므로 짧게 잡고 매번 확인시킨다.
+/referral.js
+  Cache-Control: public, max-age=600, must-revalidate
+
 # 시공사례 원본 사진은 같은 파일명으로 교체되는 일이 있다(잘못 올린 사진 재업로드).
 # 1년 immutable 이면 방문자와 카카오톡 미리보기가 최대 1년간 옛 사진을 본다
 /images/posts/*

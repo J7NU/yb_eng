@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>문의가 접수되었습니다 — (주)영보이엔지</title>
+  <meta name="description" content="견적 문의가 정상 접수되었습니다. 담당자가 확인 후 회신드립니다.">
+  <!-- 폼 제출 완료 페이지. 검색에 뜰 이유가 없다 -->
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="/images/favicon-32.png" sizes="32x32" type="image/png">
+  <meta name="theme-color" content="#1F2E66">
+  <link rel="stylesheet"
+    href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@latest/dist/web/variable/pretendardvariable.css">
+  <style>
+    :root {
+      --navy: #1F2E66;
+      --gray-900: #1C2233;
+      --gray-600: #5B6378;
+      --gray-100: #F4F5F8;
+      --border: #E4E6ED;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      font-family: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, sans-serif;
+      color: var(--gray-900);
+      background: var(--gray-100);
+      line-height: 1.6;
+    }
+
+    .card {
+      width: 100%;
+      max-width: 520px;
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 40px 28px 32px;
+      text-align: center;
+    }
+
+    .mark { width: 54px; height: 54px; margin: 0 auto 18px; }
+
+    h1 { margin: 0 0 10px; font-size: 24px; font-weight: 800; letter-spacing: -.03em; }
+
+    .lead { margin: 0 0 22px; font-size: 15px; color: var(--gray-600); word-break: keep-all; }
+
+    .info {
+      margin: 0 0 24px;
+      padding: 16px;
+      background: var(--gray-100);
+      border-radius: 10px;
+      font-size: 14px;
+      color: var(--gray-600);
+      word-break: keep-all;
+    }
+
+    .info strong { color: var(--navy); }
+
+    .actions { display: flex; flex-direction: column; gap: 10px; }
+
+    .btn {
+      display: block;
+      padding: 14px 18px;
+      border-radius: 10px;
+      font-size: 15px;
+      font-weight: 700;
+      text-decoration: none;
+    }
+
+    .btn-primary { background: var(--navy); color: #fff; }
+
+    .btn-outline { border: 1px solid var(--border); color: var(--gray-900); }
+
+    @media (min-width: 560px) {
+      .card { padding: 48px 40px 36px; }
+      .actions { flex-direction: row; justify-content: center; }
+      .btn { min-width: 180px; }
+    }
+  </style>
+</head>
+
+<body>
+  <main class="card">
+    <img class="mark" src="/images/logo-mark-navy.svg" alt="" aria-hidden="true">
+    <h1>문의가 접수되었습니다</h1>
+    <p class="lead">담당자가 직접 확인 후 회신드립니다.</p>
+
+    <div class="info">
+      영업일 기준 <strong>당일 견적 회신</strong>을 원칙으로 하며,<br>
+      도면 검토가 필요한 경우 1~2일 더 소요될 수 있습니다.<br>
+      급하시면 <strong>031-764-0248</strong> 로 전화 주십시오.
+    </div>
+
+    <div class="actions">
+      <a class="btn btn-primary" href="tel:031-764-0248">전화 031-764-0248</a>
+      <a class="btn btn-outline" href="/">홈으로</a>
+    </div>
+  </main>
+
+  <!-- ⚠️ 네이버 전환 추적 스크립트를 여기에 붙인다.
+       광고주센터 → 도구 → 프리미엄 로그분석 에서 발급받은 '전환' 스크립트를 그대로 넣으면 된다.
+       (공통 스크립트는 전 페이지, 전환 스크립트는 이 페이지에만)
+       스크립트를 받기 전까지는 이 자리가 비어 있어도 페이지는 정상 동작한다. -->
+</body>
+
+</html>

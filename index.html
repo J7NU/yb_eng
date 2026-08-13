@@ -1360,6 +1360,8 @@
             <!-- 제출 후 우리 도메인 완료 페이지로 돌려보낸다.
                  이게 없으면 FormSubmit 외부 페이지로 넘어가 전환 추적을 심을 자리가 없다 -->
             <input type="hidden" name="_next" value="https://youngboeng.co.kr/thanks">
+            <!-- 어느 광고·검색으로 들어온 문의인지 메일에 함께 찍는다 (아래 '유입 경로 기록' 스크립트가 채운다) -->
+            <input type="hidden" id="referral" name="유입경로" value="">
 
             <div class="form-group">
               <label class="form-label" for="company">회사명<span class="req">필수</span></label>
@@ -1526,6 +1528,48 @@
     /* ── 첨부 파일명 표시 · 용량 검증 ──
        FormSubmit 은 첨부 합계 10MB 까지 받는다. 넘으면 전송이 조용히 실패하므로
        고르는 시점에 걸러낸다. */
+    // ── 유입 경로 기록 ──
+    // 광고 랜딩 URL 에 ?src=naver&kw=열교환기제작 처럼 붙여두면 그 값이 문의 메일에 함께 찍힌다.
+    // 네이버 전환 스크립트 없이도 '어느 키워드가 문의를 만들었는지' 를 건별로 알 수 있다.
+    // 첫 유입 기준으로 기억한다 — 사이트 안에서 페이지를 옮겨다녀도 최초 경로가 유지된다.
+    (function () {
+      var KEY = 'yb_referral';
+
+      function fromQuery() {
+        var q = new URLSearchParams(location.search);
+        var src = q.get('src') || q.get('utm_source');
+        var kw = q.get('kw') || q.get('utm_term');
+        var camp = q.get('campaign') || q.get('utm_campaign');
+        if (!src && !kw && !camp) return '';
+        return [src && '출처 ' + src, camp && '캠페인 ' + camp, kw && '키워드 ' + kw].filter(Boolean).join(' · ');
+      }
+
+      function fromReferrer() {
+        if (!document.referrer) return '';
+        try {
+          var h = new URL(document.referrer).hostname;
+          if (h.indexOf(location.hostname) !== -1) return ''; // 사이트 내부 이동
+          if (h.indexOf('naver') !== -1) return '네이버에서 유입 (' + h + ')';
+          if (h.indexOf('google') !== -1) return '구글에서 유입';
+          if (h.indexOf('daum') !== -1 || h.indexOf('kakao') !== -1) return '다음·카카오에서 유입';
+          return h + ' 에서 유입';
+        } catch (e) {
+          return '';
+        }
+      }
+
+      var saved = '';
+      try { saved = sessionStorage.getItem(KEY) || ''; } catch (e) { /* 사파리 사생활 모드 */ }
+
+      var found = fromQuery() || saved || fromReferrer();
+      if (found && found !== saved) {
+        try { sessionStorage.setItem(KEY, found); } catch (e) { /* 저장 못 해도 이번 페이지에선 쓴다 */ }
+      }
+
+      var field = document.getElementById('referral');
+      if (field) field.value = found || '직접 방문';
+    })();
+
     // 연락처: 입력하면서 하이픈을 넣고, 자릿수가 모자라면 한국어로 알려준다.
     // type="tel" 은 형식 검사를 아예 안 해서(스펙상 국가마다 형식이 달라서) required 만으로는
     // '010' 세 글자도 그대로 통과한다 — 실제로 그렇게 접수된 문의가 있었다.

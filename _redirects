@@ -9,3 +9,6 @@
 # 2026-08-12 에 og-cover.png → og-cover-2026.png 로 갈아끼웠다.
 # 카카오톡·페이스북 캐시가 구 절대 URL 을 물고 있어 그대로 두면 미리보기가 깨진다.
 /images/og-cover.png  /images/og-cover-2026.png  301
+
+# 2026-08-15 자재 글 1건을 품목별 4건으로 쪼갰다. 옛 주소가 죽지 않게 분류 목록으로 보낸다.
+/gallery/2026-08-15-보유-자재/  /gallery/material/  301

@@ -11,4 +11,5 @@
 /images/og-cover.png  /images/og-cover-2026.png  301
 
 # 2026-08-15 자재 글 1건을 품목별 4건으로 쪼갰다. 옛 주소가 죽지 않게 분류 목록으로 보낸다.
-/gallery/2026-08-15-보유-자재/  /gallery/material/  301
+# Cloudflare 는 인코딩된 요청 경로로 매칭한다. 한글을 그대로 쓰면 안 걸린다
+/gallery/2026-08-15-%EB%B3%B4%EC%9C%A0-%EC%9E%90%EC%9E%AC/  /gallery/material/  301

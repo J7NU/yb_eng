@@ -13,3 +13,7 @@
 # 2026-08-15 자재 글 1건을 품목별 4건으로 쪼갰다. 옛 주소가 죽지 않게 분류 목록으로 보낸다.
 # Cloudflare 는 인코딩된 요청 경로로 매칭한다. 한글을 그대로 쓰면 안 걸린다
 /gallery/2026-08-15-%EB%B3%B4%EC%9C%A0-%EC%9E%90%EC%9E%AC/  /gallery/material/  301
+
+# 2026-08-15 헤더·열교환기 글도 날짜·물건별로 쪼갰다. 옛 주소를 분류 목록으로 보낸다.
+/gallery/2026-08-15-%ED%97%A4%EB%8D%94-%EC%A0%9C%EC%9E%91/  /gallery/header/  301
+/gallery/2026-08-15-%EC%97%B4%EA%B5%90%ED%99%98%EA%B8%B0-%EC%A0%9C%EC%9E%91-%EB%8F%99%EA%B4%80-%ED%8A%9C%EB%B8%8C%EB%B2%88%EB%93%A4/  /gallery/heat-exchanger/  301

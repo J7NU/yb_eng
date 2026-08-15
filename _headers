@@ -25,6 +25,10 @@
 /referral.js
   Cache-Control: public, max-age=600, must-revalidate
 
+# 이어보기 스크립트도 같은 이유로 짧게 (파일명 고정 · 동작을 손볼 일이 남아 있다)
+/reel.js
+  Cache-Control: public, max-age=600, must-revalidate
+
 # 시공사례 원본 사진은 같은 파일명으로 교체되는 일이 있다(잘못 올린 사진 재업로드).
 # 1년 immutable 이면 방문자와 카카오톡 미리보기가 최대 1년간 옛 사진을 본다
 /images/posts/*

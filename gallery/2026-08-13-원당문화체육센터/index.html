@@ -68,6 +68,23 @@
     .cta-line { font-size:13.5px; color:var(--gray-600); word-break:keep-all; }
     .cta-note { margin:14px 0 0; font-size:13.5px; color:var(--gray-600); }
     .cta-note a { font-weight:700; color:var(--navy); }
+    /* 이어보기 — 글 상세를 계속 내리면 다음 실적이 붙는다 */
+    .reel-rule { display:flex; align-items:center; gap:14px; margin:8px 0 4px; color:var(--gray-400);
+      font-size:12.5px; font-weight:700; letter-spacing:.06em; }
+    .reel-rule::before, .reel-rule::after { content:""; flex:1; height:1px; background:var(--border); }
+    .reel-item h2.reel-title { margin:0; font-size:28px; font-weight:800; letter-spacing:-.03em; }
+    /* 이어붙은 글은 빵부스러기 대신 품목 태그 하나만 (글마다 '홈 › 납품실적 ›' 이 반복되면 시끄럽다) */
+    .reel-tag { display:inline-block; margin-bottom:10px; padding:4px 11px; border:1px solid var(--border);
+      border-radius:999px; font-size:12.5px; font-weight:700; color:var(--gray-600); background:var(--gray-100); }
+    .reel-tag:hover { border-color:var(--navy); color:var(--navy); }
+    .reel-fallback { padding:8px 0 60px; font-size:15px; font-weight:700; color:var(--navy); }
+    .reel-end { padding:26px 0 70px; font-size:15px; font-weight:700; color:var(--navy); }
+    .reel-status { min-height:22px; padding:0 0 12px; font-size:13.5px; color:var(--gray-400); }
+    .reel-more { display:block; width:100%; max-width:420px; margin:22px auto 56px; padding:15px 20px;
+      font:inherit; font-size:15.5px; font-weight:700; letter-spacing:-.01em; color:var(--navy);
+      background:#fff; border:1.5px solid var(--navy); border-radius:6px; cursor:pointer; }
+    .reel-more:hover { background:var(--navy); color:#fff; }
+    #reel-sentinel { height:1px; }
     .foot { border-top:1px solid var(--border); padding:26px 0 60px; font-size:13.5px; color:var(--gray-600); }
     .foot a { font-weight:600; color:var(--navy); }
     @media (min-width:640px) {
@@ -88,16 +105,17 @@
     <a class="topbar-phone" href="tel:031-764-0248">031-764-0248</a>
   </header>
   <main class="wrap">
-    <div class="page-head">
-      <div class="crumb"><a href="/">홈</a> › <a href="/gallery/">납품실적</a> ›
-        <a href="/gallery/hot-water-storage/">온수저장탱크</a></div>
-      <h1>원당문화체육센터 온수저장탱크</h1>
-      <p>온수저장탱크 · STS316 10,000L / ∅ 2,100 x 2,440 H · 2025-06-26</p>
-    </div>
-    <figure class="post-cover"><img src="/images/posts/%EC%9B%90%EB%8B%B9%20%EB%AC%B8%ED%99%94%EC%B2%B4%EC%9C%A1%EC%84%BC%ED%84%B0.jpg" alt="원당문화체육센터 온수저장탱크"></figure>
-    <div class="post-body">
+    <article class="reel-item" data-reel-url="/gallery/2026-08-13-%EC%9B%90%EB%8B%B9%EB%AC%B8%ED%99%94%EC%B2%B4%EC%9C%A1%EC%84%BC%ED%84%B0/" data-reel-title="원당문화체육센터 온수저장탱크 — (주)영보이엔지">
+      <div class="page-head">
+        <div class="crumb"><a href="/">홈</a> › <a href="/gallery/">납품실적</a> ›
+          <a href="/gallery/hot-water-storage/">온수저장탱크</a></div>
+        <h1>원당문화체육센터 온수저장탱크</h1>
+        <p>온수저장탱크 · STS316 10,000L / ∅ 2,100 x 2,440 H · 2025-06-26</p>
+      </div>
+      <figure class="post-cover"><img src="/images/posts/%EC%9B%90%EB%8B%B9%20%EB%AC%B8%ED%99%94%EC%B2%B4%EC%9C%A1%EC%84%BC%ED%84%B0.jpg" alt="원당문화체육센터 온수저장탱크"></figure>
+      <div class="post-body">
 
-    </div>
+      </div>
 
     <section class="post-cta">
       <p class="cta-lead">(주)영보이엔지 · 1981년부터 45년</p>
@@ -108,6 +126,12 @@
       </div>
       <p class="cta-note">도면 주시면 견적 회신드립니다. <a href="/#contact">견적 문의하기 →</a></p>
     </section>
+    </article>
+    <script type="application/json" id="reel-chain">[{"url":"/gallery/2026-08-13-%EC%A7%84%EC%B2%9C-%EC%95%84%EB%82%9C%ED%8B%B0-%EC%A4%91%EC%95%99cc-%EC%98%A8%EC%88%98%EC%A0%80%EC%9E%A5%ED%83%B1%ED%81%AC/","title":"진천 아난티 중앙CC 히트펌프용 온수저장탱크"},{"url":"/gallery/2026-08-13-%EA%B1%B4%EA%B5%AD%EB%8C%80%ED%95%99%EA%B5%90-%EC%9D%BC%EC%9A%B0%ED%97%8C-%EC%98%A8%EC%88%98%ED%83%B1%ED%81%AC/","title":"건국대학교 일우헌 온수탱크"}]</script>
+    <p class="reel-fallback"><a href="/gallery/2026-08-13-%EC%A7%84%EC%B2%9C-%EC%95%84%EB%82%9C%ED%8B%B0-%EC%A4%91%EC%95%99cc-%EC%98%A8%EC%88%98%EC%A0%80%EC%9E%A5%ED%83%B1%ED%81%AC/">다음 납품실적 · 진천 아난티 중앙CC 히트펌프용 온수저장탱크 →</a></p>
+    <div id="reel-sentinel" aria-hidden="true"></div>
+    <p class="reel-status" role="status" aria-live="polite"></p>
+    <script src="/reel.js" defer></script>
   </main>
   <footer class="foot">
     <div class="wrap">(주)영보이엔지 · 경기도 광주시 곤지암읍 광여로99번길 7 · <a href="tel:031-764-0248">031-764-0248</a> ·

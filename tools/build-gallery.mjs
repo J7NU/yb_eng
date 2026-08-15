@@ -482,6 +482,23 @@ const HEAD = (title, description, canonical, { image = '/images/og-cover-2026.pn
     .cta-line { font-size:13.5px; color:var(--gray-600); word-break:keep-all; }
     .cta-note { margin:14px 0 0; font-size:13.5px; color:var(--gray-600); }
     .cta-note a { font-weight:700; color:var(--navy); }
+    /* 이어보기 — 글 상세를 계속 내리면 다음 실적이 붙는다 */
+    .reel-rule { display:flex; align-items:center; gap:14px; margin:8px 0 4px; color:var(--gray-400);
+      font-size:12.5px; font-weight:700; letter-spacing:.06em; }
+    .reel-rule::before, .reel-rule::after { content:""; flex:1; height:1px; background:var(--border); }
+    .reel-item h2.reel-title { margin:0; font-size:28px; font-weight:800; letter-spacing:-.03em; }
+    /* 이어붙은 글은 빵부스러기 대신 품목 태그 하나만 (글마다 '홈 › 납품실적 ›' 이 반복되면 시끄럽다) */
+    .reel-tag { display:inline-block; margin-bottom:10px; padding:4px 11px; border:1px solid var(--border);
+      border-radius:999px; font-size:12.5px; font-weight:700; color:var(--gray-600); background:var(--gray-100); }
+    .reel-tag:hover { border-color:var(--navy); color:var(--navy); }
+    .reel-fallback { padding:8px 0 60px; font-size:15px; font-weight:700; color:var(--navy); }
+    .reel-end { padding:26px 0 70px; font-size:15px; font-weight:700; color:var(--navy); }
+    .reel-status { min-height:22px; padding:0 0 12px; font-size:13.5px; color:var(--gray-400); }
+    .reel-more { display:block; width:100%; max-width:420px; margin:22px auto 56px; padding:15px 20px;
+      font:inherit; font-size:15.5px; font-weight:700; letter-spacing:-.01em; color:var(--navy);
+      background:#fff; border:1.5px solid var(--navy); border-radius:6px; cursor:pointer; }
+    .reel-more:hover { background:var(--navy); color:#fff; }
+    #reel-sentinel { height:1px; }
     .foot { border-top:1px solid var(--border); padding:26px 0 60px; font-size:13.5px; color:var(--gray-600); }
     .foot a { font-weight:600; color:var(--navy); }
     @media (min-width:640px) {
@@ -572,30 +589,73 @@ ${LIST_CTA}
 ${FOOT}`;
 }
 
-function postPage(post) {
+/**
+ * 이 글 다음에 이어 볼 순서.
+ * 같은 품목을 먼저 소진하고(최신순), 그다음 전체 최신순으로 넘어간다.
+ * 온수탱크를 보던 사람은 온수탱크를 더 보고 싶어 한다.
+ * 12건에서 끊는다 — 페이지에 심는 JSON 크기를 묶어두려는 것뿐이고,
+ * 12건을 다 본 사람은 목록으로 보내는 게 낫다.
+ */
+const CHAIN_MAX = 12;
+
+function chainFor(post, all) {
+  const rest = all.filter((p) => p.id !== post.id);
+  const sameCat = rest.filter((p) => p.category === post.category);
+  const others = rest.filter((p) => p.category !== post.category);
+  return [...sameCat, ...others].slice(0, CHAIN_MAX).map((p) => ({
+    url: `/gallery/${encPath(p.id)}/`,
+    title: p.title,
+  }));
+}
+
+function postPage(post, all) {
   const shots = post.images
     .slice(1)
-    .map((src) => `      <img src="${encPath(src)}" alt="${esc(post.title)}" loading="lazy">`)
+    .map((src) => `        <img src="${encPath(src)}" alt="${esc(post.title)}" loading="lazy">`)
     .join('\n');
   const meta = [labelOf(post.category), post.site, post.date].filter(Boolean).join(' · ');
   const summary = plainText(post.body).slice(0, 110) || meta;
+  const chain = chainFor(post, all);
   return `${HEAD(`${post.title} — (주)영보이엔지`, summary, `/gallery/${encPath(post.id)}/`, {
     image: post.cover || '/images/og-cover-2026.png',
   })}  <main class="wrap">
-    <div class="page-head">
-      <div class="crumb"><a href="/">홈</a> › <a href="/gallery/">납품실적</a> ›
-        <a href="/gallery/${encPath(post.category)}/">${esc(labelOf(post.category))}</a></div>
-      <h1>${esc(post.title)}</h1>
-      <p>${esc(meta)}</p>
-    </div>
-${post.cover ? `    <figure class="post-cover"><img src="${encPath(post.cover)}" alt="${esc(post.title)}"></figure>` : ''}
-    <div class="post-body">
+    <article class="reel-item" data-reel-url="/gallery/${encPath(post.id)}/" data-reel-title="${esc(post.title)} — (주)영보이엔지">
+      <div class="page-head">
+        <div class="crumb"><a href="/">홈</a> › <a href="/gallery/">납품실적</a> ›
+          <a href="/gallery/${encPath(post.category)}/">${esc(labelOf(post.category))}</a></div>
+        <h1>${esc(post.title)}</h1>
+        <p>${esc(meta)}</p>
+      </div>
+${post.cover ? `      <figure class="post-cover"><img src="${encPath(post.cover)}" alt="${esc(post.title)}"></figure>` : ''}
+      <div class="post-body">
 ${renderMarkdown(post.body)}
-    </div>
-${shots ? `    <div class="shots">\n${shots}\n    </div>` : ''}
+      </div>
+${shots ? `      <div class="shots">\n${shots}\n      </div>` : ''}
 ${POST_SIGNATURE}
+    </article>
+${reelTail(chain)}
   </main>
 ${FOOT}`;
+}
+
+/**
+ * 이어보기 꼬리.
+ * JS 가 꺼져 있거나 크롤러가 볼 땐 그냥 '다음 실적' 링크 한 줄이다 (.reel-fallback).
+ * JS 가 켜지면 reel.js 가 이 링크를 감추고 센티널을 감시한다.
+ */
+function reelTail(chain) {
+  if (!chain.length) {
+    return `    <p class="reel-end"><a href="/gallery/">← 전체 납품실적 보기</a></p>`;
+  }
+  // 제목에 </script> 가 섞이면 스크립트 블록이 거기서 끊긴다.
+  // 이 파일에서 esc() 를 안 거치는 유일한 출력이라 여기서 막는다
+  // chain[0].url 은 chainFor 에서 이미 encPath 를 거쳤다. 여기서 또 인코딩하면 %25 로 이중 인코딩된다
+  const chainJson = JSON.stringify(chain).replace(/</g, '\\u003c');
+  return `    <script type="application/json" id="reel-chain">${chainJson}</script>
+    <p class="reel-fallback"><a href="${chain[0].url}">다음 납품실적 · ${esc(chain[0].title)} →</a></p>
+    <div id="reel-sentinel" aria-hidden="true"></div>
+    <p class="reel-status" role="status" aria-live="polite"></p>
+    <script src="/reel.js" defer></script>`;
 }
 
 /**
@@ -712,7 +772,7 @@ for (const c of ALL_CATEGORIES) {
 }
 
 for (const post of posts) {
-  changed += write(join(GALLERY_DIR, post.id, 'index.html'), postPage(post)) ? 1 : 0;
+  changed += write(join(GALLERY_DIR, post.id, 'index.html'), postPage(post, posts)) ? 1 : 0;
 }
 
 // sitemap — 홈·개인정보 + 갤러리 전체

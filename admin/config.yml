@@ -74,6 +74,13 @@ collections:
         required: false
         field: { label: 사진, name: image, widget: image }
 
+      - label: 유튜브 영상
+        name: videos
+        widget: list
+        required: false
+        field: { label: 영상 주소, name: url, widget: string }
+        hint: 유튜브 주소를 그대로 붙여넣는다 (예 https://youtu.be/xxxxxxxxxxx). 영상 파일은 사이트에 직접 못 올린다
+
       - label: 내용
         name: body
         widget: markdown

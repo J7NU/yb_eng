@@ -382,8 +382,13 @@ function loadPosts() {
           `::warning file=content/posts/${basename(file)}::참조한 사진 ${images.length - existing.length}장이 없다 — 그 사진은 건너뛴다`
         );
       }
+      // 유튜브 주소는 한 줄(video)로도, 목록(videos)으로도 받는다
+      const videos = [data.video, ...(Array.isArray(data.videos) ? data.videos : [data.videos])]
+        .filter((v) => typeof v === 'string' && v.trim());
+
       return {
         id: basename(file, extname(file)),
+        videos,
         title: data.title || basename(file, '.md'),
         category: data.category || '',
         site: data.site || '',
@@ -462,8 +467,12 @@ const HEAD = (title, description, canonical, { image = '/images/og-cover-2026.pn
     .card-meta { margin-top:5px; font-size:13px; color:var(--gray-600); }
     .empty { padding:60px 0 90px; color:var(--gray-600); font-size:15px; }
     .post-cover { margin:0 0 26px; background:var(--gray-100); }
-    .post-cover img { width:100%; max-height:620px; object-fit:cover; }
-    .post-body { font-size:16px; max-width:760px; }
+    /* 사진마다 비율이 달라(세로 26·가로 21) 그대로 두면 글마다 높이가 들쭉날쭉하다.
+       4:3 틀에 맞추되 잘라내지 않고 남는 자리를 배경으로 채운다 — 탱크 길이가 사진에서 사라지면 안 된다 */
+    .post-cover img { width:100%; aspect-ratio:4/3; object-fit:contain; background:var(--gray-100); }
+    /* 본문·문의 블록은 사진과 좌우 끝을 맞춘다 (진우 선택, 2026-08-15).
+       긴 설명을 넣기 시작하면 한 줄이 길어 읽기 불편해지므로 그때 .post-body 만 다시 좁힌다 */
+    .post-body { font-size:16px; }
     .post-body p { margin:0 0 16px; }
     .post-body ul { margin:0 0 16px 18px; padding:0; }
     .post-body h2 { font-size:20px; margin:28px 0 10px; }
@@ -473,8 +482,12 @@ const HEAD = (title, description, canonical, { image = '/images/og-cover-2026.pn
       background:var(--gray-100); color:var(--gray-600); }
     .post-body code { background:var(--gray-100); padding:1px 5px; border-radius:4px; font-size:14px; }
     .body-img { width:100%; height:auto; margin:18px 0; background:var(--gray-100); }
+    .videos { display:grid; grid-template-columns:1fr; gap:14px; margin:0 0 26px; }
+    .video { position:relative; aspect-ratio:16/9; background:#000; }
+    .video iframe { position:absolute; inset:0; width:100%; height:100%; border:0; }
     .shots { display:grid; grid-template-columns:1fr; gap:14px; margin:30px 0 40px; }
-    .post-cta { margin:36px 0 60px; padding:24px; border-top:2px solid var(--navy); background:var(--gray-100); max-width:760px; }
+    .shots img { width:100%; aspect-ratio:4/3; object-fit:contain; background:var(--gray-100); }
+    .post-cta { margin:36px 0 60px; padding:24px; border-top:2px solid var(--navy); background:var(--gray-100); }
     .cta-lead { margin:0; font-size:16px; font-weight:700; color:var(--navy); letter-spacing:-.02em; }
     .cta-sub { margin:4px 0 14px; font-size:14px; color:var(--gray-600); word-break:keep-all; }
     .cta-contact { display:flex; flex-direction:column; gap:4px; }
@@ -504,6 +517,10 @@ const HEAD = (title, description, canonical, { image = '/images/og-cover-2026.pn
     @media (min-width:640px) {
       .cards { grid-template-columns:repeat(2,1fr); gap:28px; }
       .shots { grid-template-columns:repeat(2,1fr); }
+      /* 사진 수가 홀수면 마지막 한 장이 왼쪽 반쪽에 걸려 어색하다 — 두 칸을 차지시키고 가운데로 보낸다 */
+      .shots img:last-child:nth-child(odd) { grid-column:1 / -1; justify-self:center; width:calc(50% - 7px); }
+      /* 사진이 한 장뿐이면 대표 사진과 같은 폭으로 (반쪽짜리로 뜨면 페이지가 한쪽으로 쏠린다) */
+      .shots img:only-child { width:100%; }
       .page-head h1 { font-size:34px; }
     }
     @media (min-width:1024px) {
@@ -590,6 +607,41 @@ ${FOOT}`;
 }
 
 /**
+ * 유튜브 주소에서 영상 ID만 뽑는다.
+ * 영상 파일은 레포에 넣지 않는다 (하나가 100MB에 육박한다). 유튜브에 올리고 여기선 끼워 넣기만 한다.
+ * watch?v= · youtu.be/ · shorts/ · embed/ · 그냥 ID 를 모두 받는다.
+ */
+function youtubeId(raw) {
+  const v = String(raw || '').trim();
+  if (!v) return '';
+  if (/^[\w-]{11}$/.test(v)) return v;
+  const m =
+    v.match(/[?&]v=([\w-]{11})/) ||
+    v.match(/youtu\.be\/([\w-]{11})/) ||
+    v.match(/\/(?:shorts|embed|live)\/([\w-]{11})/);
+  return m ? m[1] : '';
+}
+
+/** 글에 붙은 유튜브 영상들. 쿠키 없는 도메인을 쓰고, 스크롤이 닿을 때 불러온다 */
+function videoBlock(post) {
+  const ids = post.videos.map(youtubeId).filter(Boolean);
+  if (!ids.length) return '';
+  return (
+    `      <div class="videos">\n` +
+    ids
+      .map(
+        (id) =>
+          `        <div class="video"><iframe src="https://www.youtube-nocookie.com/embed/${id}" ` +
+          `title="${esc(post.title)}" loading="lazy" allowfullscreen ` +
+          `allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" ` +
+          `referrerpolicy="strict-origin-when-cross-origin"></iframe></div>`
+      )
+      .join('\n') +
+    `\n      </div>`
+  );
+}
+
+/**
  * 이 글 다음에 이어 볼 순서.
  * 같은 품목을 먼저 소진하고(최신순), 그다음 전체 최신순으로 넘어간다.
  * 온수탱크를 보던 사람은 온수탱크를 더 보고 싶어 한다.
@@ -627,6 +679,7 @@ function postPage(post, all) {
         <p>${esc(meta)}</p>
       </div>
 ${post.cover ? `      <figure class="post-cover"><img src="${encPath(post.cover)}" alt="${esc(post.title)}"></figure>` : ''}
+${videoBlock(post)}
       <div class="post-body">
 ${renderMarkdown(post.body)}
       </div>

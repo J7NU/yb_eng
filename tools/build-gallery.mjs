@@ -284,7 +284,7 @@ const thumbName = (src) => {
 };
 
 function prepareImages(tool) {
-  if (!existsSync(IMG_DIR)) return { thumbs: 0, shrunk: 0 };
+  if (!existsSync(IMG_DIR)) return { thumbs: 0, shrunk: 0, pruned: 0 };
   mkdirSync(THUMB_DIR, { recursive: true });
   let thumbs = 0;
   let shrunk = 0;
@@ -330,7 +330,9 @@ function prepareImages(tool) {
 const imageExists = (publicPath) => existsSync(join(ROOT, safeDecode(publicPath).replace(/^\//, '')));
 
 const thumbFor = (publicPath) => {
-  const src = join(ROOT, publicPath.replace(/^\//, ''));
+  // imageExists 와 경로 해석이 달라지면 '원본은 있는데 썸네일은 못 찾는' 상태가 되어
+  // 카드에 1600px 원본이 조용히 나간다. 같은 safeDecode 를 태운다
+  const src = join(ROOT, safeDecode(publicPath).replace(/^\//, ''));
   if (!existsSync(src)) return publicPath;
   const name = thumbName(src);
   return existsSync(join(THUMB_DIR, name)) ? `/images/thumb/${name}` : publicPath;
@@ -511,16 +513,19 @@ const HEAD = (title, description, canonical, { image = '/images/og-cover-2026.pn
       font:inherit; font-size:15.5px; font-weight:700; letter-spacing:-.01em; color:var(--navy);
       background:#fff; border:1.5px solid var(--navy); border-radius:6px; cursor:pointer; }
     .reel-more:hover { background:var(--navy); color:#fff; }
+    /* 작성자 스타일 display:block 이 브라우저 기본 [hidden]{display:none} 을 이겨
+       JS 의 moreBtn.hidden = true 가 안 먹는다. 명시적으로 되돌린다 */
+    .reel-more[hidden] { display:none; }
     #reel-sentinel { height:1px; }
     .foot { border-top:1px solid var(--border); padding:26px 0 60px; font-size:13.5px; color:var(--gray-600); }
     .foot a { font-weight:600; color:var(--navy); }
     @media (min-width:640px) {
       .cards { grid-template-columns:repeat(2,1fr); gap:28px; }
       .shots { grid-template-columns:repeat(2,1fr); }
-      /* 사진 수가 홀수면 마지막 한 장이 왼쪽 반쪽에 걸려 어색하다 — 두 칸을 차지시키고 가운데로 보낸다 */
+      /* 사진 수가 홀수면 마지막 한 장이 왼쪽 반쪽에 걸려 어색하다 — 두 칸을 차지시키고 가운데로 보낸다.
+         사진이 한 장뿐인 글도 이 규칙에 걸려 반쪽 크기로 가운데 놓인다 (2026-08-15 진우 선택).
+         여기에 :only-child 로 100% 를 주려 해도 위 선택자가 명시도에서 이겨 안 먹는다 — 규칙을 늘리지 말 것 */
       .shots img:last-child:nth-child(odd) { grid-column:1 / -1; justify-self:center; width:calc(50% - 7px); }
-      /* 사진이 한 장뿐이면 대표 사진과 같은 폭으로 (반쪽짜리로 뜨면 페이지가 한쪽으로 쏠린다) */
-      .shots img:only-child { width:100%; }
       .page-head h1 { font-size:34px; }
     }
     @media (min-width:1024px) {
@@ -625,6 +630,13 @@ function youtubeId(raw) {
 /** 글에 붙은 유튜브 영상들. 쿠키 없는 도메인을 쓰고, 스크롤이 닿을 때 불러온다 */
 function videoBlock(post) {
   const ids = post.videos.map(youtubeId).filter(Boolean);
+  // 조용히 버리면 사장님은 "왜 영상이 안 나오지"만 남는다. 재생목록·채널 주소가 흔한 실수다
+  if (ids.length !== post.videos.length) {
+    const bad = post.videos.filter((v) => !youtubeId(v));
+    console.log(
+      `::warning file=content/posts/${post.id}.md::유튜브 주소를 못 알아봤다 — 이 영상은 안 나간다: ${bad.join(', ')}`
+    );
+  }
   if (!ids.length) return '';
   return (
     `      <div class="videos">\n` +

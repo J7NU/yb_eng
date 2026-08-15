@@ -92,16 +92,19 @@
       font:inherit; font-size:15.5px; font-weight:700; letter-spacing:-.01em; color:var(--navy);
       background:#fff; border:1.5px solid var(--navy); border-radius:6px; cursor:pointer; }
     .reel-more:hover { background:var(--navy); color:#fff; }
+    /* 작성자 스타일 display:block 이 브라우저 기본 [hidden]{display:none} 을 이겨
+       JS 의 moreBtn.hidden = true 가 안 먹는다. 명시적으로 되돌린다 */
+    .reel-more[hidden] { display:none; }
     #reel-sentinel { height:1px; }
     .foot { border-top:1px solid var(--border); padding:26px 0 60px; font-size:13.5px; color:var(--gray-600); }
     .foot a { font-weight:600; color:var(--navy); }
     @media (min-width:640px) {
       .cards { grid-template-columns:repeat(2,1fr); gap:28px; }
       .shots { grid-template-columns:repeat(2,1fr); }
-      /* 사진 수가 홀수면 마지막 한 장이 왼쪽 반쪽에 걸려 어색하다 — 두 칸을 차지시키고 가운데로 보낸다 */
+      /* 사진 수가 홀수면 마지막 한 장이 왼쪽 반쪽에 걸려 어색하다 — 두 칸을 차지시키고 가운데로 보낸다.
+         사진이 한 장뿐인 글도 이 규칙에 걸려 반쪽 크기로 가운데 놓인다 (2026-08-15 진우 선택).
+         여기에 :only-child 로 100% 를 주려 해도 위 선택자가 명시도에서 이겨 안 먹는다 — 규칙을 늘리지 말 것 */
       .shots img:last-child:nth-child(odd) { grid-column:1 / -1; justify-self:center; width:calc(50% - 7px); }
-      /* 사진이 한 장뿐이면 대표 사진과 같은 폭으로 (반쪽짜리로 뜨면 페이지가 한쪽으로 쏠린다) */
-      .shots img:only-child { width:100%; }
       .page-head h1 { font-size:34px; }
     }
     @media (min-width:1024px) {

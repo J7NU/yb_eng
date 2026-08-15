@@ -17,3 +17,12 @@
 # 2026-08-15 헤더·열교환기 글도 날짜·물건별로 쪼갰다. 옛 주소를 분류 목록으로 보낸다.
 /gallery/2026-08-15-%ED%97%A4%EB%8D%94-%EC%A0%9C%EC%9E%91/  /gallery/header/  301
 /gallery/2026-08-15-%EC%97%B4%EA%B5%90%ED%99%98%EA%B8%B0-%EC%A0%9C%EC%9E%91-%EB%8F%99%EA%B4%80-%ED%8A%9C%EB%B8%8C%EB%B2%88%EB%93%A4/  /gallery/heat-exchanger/  301
+
+# 슬래시 없는 형태(.../보유-자재)도 같은 곳으로 보낸다. 위 규칙은 슬래시 있는 것만 매칭한다
+/gallery/2026-08-15-%EB%B3%B4%EC%9C%A0-%EC%9E%90%EC%9E%AC  /gallery/material/  301
+/gallery/2026-08-15-%ED%97%A4%EB%8D%94-%EC%A0%9C%EC%9E%91  /gallery/header/  301
+/gallery/2026-08-15-%EC%97%B4%EA%B5%90%ED%99%98%EA%B8%B0-%EC%A0%9C%EC%9E%91-%EB%8F%99%EA%B4%80-%ED%8A%9C%EB%B8%8C%EB%B2%88%EB%93%A4  /gallery/heat-exchanger/  301
+
+# 2026-08-15 진우가 /admin 에서 지운 글. 공유된 링크가 죽지 않게 분류 목록으로 보낸다
+/gallery/2026-08-15-%ED%99%94%EC%B2%9C-00%EB%B6%80%EB%8C%80-%EC%A0%80%EC%9E%A5%ED%83%B1%ED%81%AC-%EC%88%98%EC%A7%81%ED%98%95/  /gallery/diesel-tank/  301
+/gallery/2026-08-15-%ED%99%94%EC%B2%9C-00%EB%B6%80%EB%8C%80-%EC%A0%80%EC%9E%A5%ED%83%B1%ED%81%AC-%EC%88%98%EC%A7%81%ED%98%95  /gallery/diesel-tank/  301

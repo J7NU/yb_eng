@@ -50,6 +50,25 @@ collections:
           - { label: '제작 공정 (회사)', value: process }
           - { label: '인증·허가 (회사)', value: certificate }
 
+      - label: 추가 분류
+        name: also
+        widget: select
+        multiple: true
+        required: false
+        hint: 두 곳에 걸치는 글일 때만 고른다 (예 온수저장탱크 현장인데 제작 공정 사진이기도 할 때). 빵부스러기·이어보기 순서는 위 '분류'를 따른다
+        options:
+          - { label: 온수저장탱크, value: hot-water-storage }
+          - { label: 온수가열탱크, value: hot-water-heater }
+          - { label: 열교환기, value: heat-exchanger }
+          - { label: 헤더, value: header }
+          - { label: 경유저장탱크, value: diesel-tank }
+          - { label: 스테인리스 물탱크, value: sts-water-tank }
+          - { label: 밀폐형 압력용기, value: expansion-vessel }
+          - { label: '공장 전경 (회사)', value: factory }
+          - { label: '자재·재고 (회사)', value: material }
+          - { label: '제작 공정 (회사)', value: process }
+          - { label: '인증·허가 (회사)', value: certificate }
+
       - label: 현장·규격
         name: site
         widget: string

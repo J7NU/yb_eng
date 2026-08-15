@@ -388,9 +388,17 @@ function loadPosts() {
       const videos = [data.video, ...(Array.isArray(data.videos) ? data.videos : [data.videos])]
         .filter((v) => typeof v === 'string' && v.trim());
 
+      // 추가 분류(also) — 한 글이 두 목록에 걸칠 때 쓴다.
+      // 대표(category)는 그대로 하나다. 빵부스러기·카드 이름·이어보기 순서는 대표만 본다
+      const also = (Array.isArray(data.also) ? data.also : [data.also])
+        .filter((v) => typeof v === 'string' && v.trim())
+        .map((v) => v.trim())
+        .filter((v, i, arr) => arr.indexOf(v) === i && v !== data.category);
+
       return {
         id: basename(file, extname(file)),
         videos,
+        also,
         title: data.title || basename(file, '.md'),
         category: data.category || '',
         site: data.site || '',
@@ -399,6 +407,15 @@ function loadPosts() {
         images: [...new Set(existing)],
         body,
       };
+    })
+    .map((p) => {
+      const bad = p.also.filter((c) => !isKnownCategory(c));
+      if (bad.length) {
+        console.log(
+          `::warning file=content/posts/${p.id}.md::추가 분류 '${bad.join(', ')}' 가 categories.mjs 에 없어 그 목록엔 안 나온다`
+        );
+      }
+      return { ...p, also: p.also.filter(isKnownCategory) };
     })
     .filter((p) => {
       if (!isKnownCategory(p.category)) {
@@ -416,6 +433,9 @@ function loadPosts() {
     })
     .sort((a, b) => String(b.date).localeCompare(String(a.date)) || a.id.localeCompare(b.id));
 }
+
+/** 이 글이 뜨는 분류 전부. 대표가 먼저다 */
+const catsOf = (post) => [post.category, ...post.also];
 
 // ── 페이지 템플릿 (사이트 톤 유지: Pretendard · 네이비 · 흰 배경 카드) ──
 
@@ -664,8 +684,9 @@ const CHAIN_MAX = 12;
 
 function chainFor(post, all) {
   const rest = all.filter((p) => p.id !== post.id);
-  const sameCat = rest.filter((p) => p.category === post.category);
-  const others = rest.filter((p) => p.category !== post.category);
+  // 대표가 같은 글뿐 아니라 '추가 분류'로 같은 품목을 단 글도 같은 품목으로 본다
+  const sameCat = rest.filter((p) => catsOf(p).includes(post.category));
+  const others = rest.filter((p) => !catsOf(p).includes(post.category));
   return [...sameCat, ...others].slice(0, CHAIN_MAX).map((p) => ({
     url: `/gallery/${encPath(p.id)}/`,
     title: p.title,
@@ -804,7 +825,7 @@ assertCategoriesInSync();
 const { thumbs, shrunk, pruned } = prepareImages(tool);
 const posts = loadPosts();
 const countBySlug = Object.fromEntries(
-  ALL_CATEGORIES.map((c) => [c.slug, posts.filter((p) => p.category === c.slug).length])
+  ALL_CATEGORIES.map((c) => [c.slug, posts.filter((p) => catsOf(p).includes(c.slug)).length])
 );
 
 let changed = 0;
@@ -822,7 +843,7 @@ changed += write(
 ) ? 1 : 0;
 
 for (const c of ALL_CATEGORIES) {
-  const list = posts.filter((p) => p.category === c.slug);
+  const list = posts.filter((p) => catsOf(p).includes(c.slug));
   changed += write(
     join(GALLERY_DIR, c.slug, 'index.html'),
     listPage({

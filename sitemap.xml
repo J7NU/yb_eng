@@ -61,7 +61,25 @@
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://youngboeng.co.kr/gallery/2026-08-17-%EC%9E%91%EC%97%85%EC%A4%91-%EA%B3%B5%EC%9E%A5-%EC%A0%84%EA%B2%BD/</loc>
+    <loc>https://youngboeng.co.kr/gallery/2026-08-19-%EA%B3%A4%EC%A7%80%EC%95%94-%EA%B3%B5%EC%9E%A5-%EC%A0%84%EA%B2%BD/</loc>
+    <lastmod>2026-08-19</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://youngboeng.co.kr/gallery/2026-08-19-%EA%B3%A4%EC%A7%80%EC%95%94-%EA%B3%B5%EC%9E%A5-%EC%A0%84%EA%B2%BD-1/</loc>
+    <lastmod>2026-08-19</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://youngboeng.co.kr/gallery/2026-08-19-%EA%B3%A4%EC%A7%80%EC%95%94-%EA%B3%B5%EC%9E%A5-%EC%A0%84%EA%B2%BD-2/</loc>
+    <lastmod>2026-08-19</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://youngboeng.co.kr/gallery/2026-08-19-%EA%B3%A4%EC%A7%80%EC%95%94-%EA%B3%B5%EC%9E%A5-%EC%A0%84%EA%B2%BD-3/</loc>
     <lastmod>2026-08-19</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>

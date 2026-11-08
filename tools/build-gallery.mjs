@@ -475,7 +475,10 @@ const HEAD = (title, description, canonical, { image = '/images/og-cover-2026.pn
     .topbar-phone { font-weight:700; font-size:14.5px; color:var(--navy); white-space:nowrap; }
     .page-head { padding:44px 0 22px; }
     .page-head h1 { margin:0; font-size:28px; font-weight:800; letter-spacing:-.03em; }
-    .page-head p { margin:8px 0 0; color:var(--gray-600); font-size:15px; }
+    .page-head p { margin:8px 0 0; color:var(--gray-600); font-size:15px; word-break:keep-all; }
+    /* 영보 강점 한 줄. 폰에서는 문장마다 줄을 나눠 읽기 쉽게, 넓은 화면에서는 한 줄로 잇는다 */
+    .page-head .pitch { margin-top:10px; color:var(--navy); font-weight:600; line-height:1.55; }
+    .page-head .pitch span { display:block; }
     .crumb { font-size:13.5px; color:var(--gray-400); margin-bottom:10px; }
     .crumb a:hover { color:var(--navy); }
     .chips { display:flex; flex-wrap:wrap; gap:8px; padding:6px 0 28px; }
@@ -550,6 +553,8 @@ const HEAD = (title, description, canonical, { image = '/images/og-cover-2026.pn
     }
     @media (min-width:1024px) {
       .cards { grid-template-columns:repeat(3,1fr); }
+      /* 한 줄로 다 들어가는 폭부터 잇는다. 그보다 좁으면 애매한 자리에서 꺾여서 조각마다 줄을 나눈 채로 둔다 */
+      .page-head .pitch span { display:inline; }
       .page-head { padding:56px 0 26px; }
     }
   </style>
@@ -609,7 +614,7 @@ const card = (post) => `        <a class="card" href="/gallery/${encPath(post.id
           </div>
         </a>`;
 
-function listPage({ title, description, canonical, current, posts, lead }) {
+function listPage({ title, description, canonical, current, posts, lead, pitch = [] }) {
   const head = HEAD(title, description, canonical, {
     image: posts[0]?.cover || '/images/og-cover-2026.png',
     noindex: posts.length === 0,
@@ -622,7 +627,9 @@ function listPage({ title, description, canonical, current, posts, lead }) {
     <div class="page-head">
       <div class="crumb"><a href="/">홈</a> › <a href="/gallery/">납품실적</a></div>
       <h1>${esc(lead || title)}</h1>
-      <p>${esc(description)}</p>
+      <p>${esc(description)}</p>${
+        pitch.length ? `\n      <p class="pitch">${pitch.map((s) => `<span>${esc(s)}</span>`).join(' ')}</p>` : ''
+      }
     </div>
 ${chips(current)}
 ${body}
@@ -839,6 +846,13 @@ changed += write(
     current: 'all',
     posts,
     lead: '납품실적',
+    // 폰에서는 이 조각마다 줄이 나뉜다
+    pitch: [
+      '영보가 만든 건 다릅니다.',
+      '45년 노하우와 톤수 맞춤 원판으로',
+      '용접을 최소화한 고품질 탱크를',
+      '타사와 사진으로 비교해보세요.',
+    ],
   })
 ) ? 1 : 0;
 
